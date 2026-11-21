@@ -1,6 +1,8 @@
 /* Trainingsplan für Satzbuch.
    Wochentage: 0 = Sonntag … 6 = Samstag.
-   Jede Übung: name, stufe (1 Einstieg · 2 Mittel · 3 Fortgeschritten), einheit ('reps' | 'sec'),
+   Jeder Übungsplatz (Slot) hat Calisthenics-Stufen (art 'cali') und Gym-Alternativen mit Geräten (art 'gym'),
+   die dieselben Muskeln trainieren. std = Vorauswahl im Stil „Gemischt“.
+   Übung: name, art, geraet, stufe (nur cali: 1 Einstieg · 2 Mittel · 3 Fortgeschritten), einheit ('reps' | 'sec'),
    bw (Körpergewicht, Gewichtsfeld = Zusatzgewicht), s × von–bis (Ziel), seite (pro Seite), yt (YouTube-Suche), tipp. */
 
 window.WOCHE = {
@@ -15,37 +17,52 @@ window.GYM_TAGE = { A: 3, B: 5, C: 6 };
 
 window.WORKOUTS = [
   {
-    id: 'A', name: 'Push · Planche', kurz: 'Push', dauer: '~60 min',
+    id: 'A', name: 'Push · Planche', kurz: 'Push', dauer: '~65 min',
     hinweis: 'Zwischen zwei Leichtathletik-Tagen: nur Oberkörper, Beine bleiben frisch für Donnerstag.',
     aufwaermen: '5 min Handgelenke kreisen und dehnen, 2 × 10 Scap-Push-ups, 2 lockere Planche Leans.',
     slots: [
-      { id: 'A1', titel: 'Planche-Halte', gruppe: 'push', pause: '2 min', optionen: [
-        { name: 'Planche Lean', stufe: 1, einheit: 'sec', bw: true, s: 4, von: 10, bis: 20, yt: 'planche lean tutorial', tipp: 'Arme gestreckt, Schultern weit vor die Hände schieben, oberer Rücken rund.' },
-        { name: 'Tuck Planche', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 5, bis: 12, yt: 'tuck planche tutorial', tipp: 'Knie an die Brust, Hüfte auf Schulterhöhe, Arme durchgestreckt.' },
-        { name: 'Advanced Tuck Planche', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 12, yt: 'advanced tuck planche tutorial', tipp: 'Rücken flach, Knie unter der Hüfte. Erst wenn die Tuck Planche 15 s sitzt.' },
-        { name: 'Straddle Planche mit Band', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 10, yt: 'band assisted straddle planche', tipp: 'Band an der Stange, um die Hüfte. Mit dünnerem Band steigern.' },
+      { id: 'A1', titel: 'Planche-Halte', gruppe: 'push', pause: '2 min', std: 'Planche Lean', optionen: [
+        { name: 'Planche Lean', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'sec', bw: true, s: 4, von: 10, bis: 20, yt: 'planche lean tutorial', tipp: 'Arme gestreckt, Schultern weit vor die Hände schieben, oberer Rücken rund.' },
+        { name: 'Tuck Planche', art: 'cali', geraet: 'Parallettes', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 5, bis: 12, yt: 'tuck planche tutorial', tipp: 'Knie an die Brust, Hüfte auf Schulterhöhe, Arme durchgestreckt.' },
+        { name: 'Advanced Tuck Planche', art: 'cali', geraet: 'Parallettes', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 12, yt: 'advanced tuck planche tutorial', tipp: 'Rücken flach, Knie unter der Hüfte. Erst wenn die Tuck Planche 15 s sitzt.' },
+        { name: 'Straddle Planche mit Band', art: 'cali', geraet: 'Stange + Band', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 10, yt: 'band assisted straddle planche', tipp: 'Band an der Stange, um die Hüfte. Mit dünnerem Band steigern.' },
+        { name: 'Kabel-Frontheben mit Halt', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'cable front raise straight arm hold', tipp: 'Arm gestreckt bis Schulterhöhe heben, oben 3 s halten. Gleiche Schulter wie in der Planche.' },
+        { name: 'Langhantel-Frontheben', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'barbell front raise form', tipp: 'Arme gestreckt, ohne Schwung, langsam runter.' },
       ]},
-      { id: 'A2', titel: 'Planche-Kraft', gruppe: 'push', pause: '2 min', optionen: [
-        { name: 'Pseudo-Planche-Liegestütze', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 6, bis: 10, yt: 'pseudo planche push up tutorial', tipp: 'Hände auf Hüfthöhe, Finger nach außen gedreht, Schultern bleiben vor den Händen.' },
-        { name: 'Pseudo-Planche-Liegestütze auf Parallettes', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 6, bis: 10, yt: 'pseudo planche push ups parallettes', tipp: 'Tiefer runter als am Boden und mehr Vorlage. Schont die Handgelenke.' },
-        { name: 'Tuck-Planche-Liegestütze', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, yt: 'tuck planche push up tutorial', tipp: 'Aus der Tuck Planche langsam runter und wieder hoch, Füße bleiben in der Luft.' },
+      { id: 'A2', titel: 'Planche-Drücken', gruppe: 'push', pause: '2 min', std: 'Pseudo-Planche-Liegestütze', optionen: [
+        { name: 'Pseudo-Planche-Liegestütze', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 6, bis: 10, yt: 'pseudo planche push up tutorial', tipp: 'Hände auf Hüfthöhe, Finger nach außen gedreht, Schultern bleiben vor den Händen.' },
+        { name: 'Pseudo-Planche-Liegestütze auf Parallettes', art: 'cali', geraet: 'Parallettes', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 6, bis: 10, yt: 'pseudo planche push ups parallettes', tipp: 'Tiefer runter als am Boden und mehr Vorlage. Schont die Handgelenke.' },
+        { name: 'Tuck-Planche-Liegestütze', art: 'cali', geraet: 'Parallettes', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, yt: 'tuck planche push up tutorial', tipp: 'Aus der Tuck Planche langsam runter und wieder hoch, Füße bleiben in der Luft.' },
+        { name: 'Brustpresse-Maschine', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'chest press machine form', tipp: 'Griffe auf Brusthöhe. Am Ende die Schultern noch ein Stück nach vorn schieben.' },
+        { name: 'Kurzhantel-Bankdrücken', art: 'gym', geraet: 'Kurzhantel', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'dumbbell bench press form', tipp: 'Schulterblätter zusammen, Hanteln kontrolliert bis zur Brust.' },
+        { name: 'Kabel-Brustpresse vorgelehnt', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 8, bis: 12, yt: 'standing cable chest press', tipp: 'Weit vorgelehnt wie in der Planche, Arme nach vorn-unten drücken.' },
       ]},
-      { id: 'A3', titel: 'Drücken', gruppe: 'push', pause: '2–3 min', optionen: [
-        { name: 'Dips', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, yt: 'dips proper form', tipp: 'Schultern unten, bis die Oberarme waagrecht sind. Ab 3 × 10 mit Zusatzgewicht.' },
-        { name: 'Ring-Dips', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'ring dips tutorial', tipp: 'Ringe eng am Körper, oben die Hände nach außen drehen.' },
-        { name: 'Kurzhantel-Schrägbankdrücken', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'incline dumbbell press form', tipp: 'Bank auf ca. 30°, Schulterblätter zusammen, kontrolliert ablassen.' },
-        { name: 'Bankdrücken', stufe: 1, einheit: 'reps', s: 3, von: 5, bis: 8, yt: 'bench press form', tipp: 'Füße fest am Boden, Stange zur unteren Brust.' },
+      { id: 'A3', titel: 'Dips', gruppe: 'push', pause: '2–3 min', std: 'Dips', optionen: [
+        { name: 'Dips', art: 'cali', geraet: 'Barren', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, yt: 'dips proper form', tipp: 'Schultern unten, bis die Oberarme waagrecht sind. Ab 3 × 10 mit Zusatzgewicht.' },
+        { name: 'Ring-Dips', art: 'cali', geraet: 'Ringe', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'ring dips tutorial', tipp: 'Ringe eng am Körper, oben die Hände nach außen drehen.' },
+        { name: 'Dip-Maschine', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 12, yt: 'seated dip machine form', tipp: 'Oberkörper aufrecht, Griffe bis zur Hüfte drücken.' },
+        { name: 'Unterstützte Dips', art: 'gym', geraet: 'Gegengewicht-Maschine', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'assisted dip machine', tipp: 'Gegengewicht so wählen, dass 10 sauber gehen. Weniger Hilfe = Fortschritt.' },
+        { name: 'Enges Bankdrücken', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 6, bis: 8, yt: 'close grip bench press form', tipp: 'Hände schulterbreit, Ellbogen nah am Körper.' },
       ]},
-      { id: 'A4', titel: 'Schulter, gestreckter Arm', gruppe: 'push', pause: '90 s', optionen: [
-        { name: 'Kabel-Frontheben', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'cable front raise straight arm', tipp: 'Arm gestreckt bis Augenhöhe, langsam runter. Das ist die Planche-Schulter.' },
-        { name: 'Kurzhantel-Frontheben', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'dumbbell front raise form', tipp: 'Nicht schwingen, Arm bleibt gestreckt.' },
-        { name: 'Serratus-Liegestütze', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 12, bis: 15, yt: 'scapula push ups protraction', tipp: 'Arme bleiben gestreckt, nur die Schulterblätter auseinanderdrücken.' },
-        { name: 'Überkopfdrücken', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'overhead press form', tipp: 'Bauch fest, Stange nah am Gesicht vorbei nach oben.' },
+      { id: 'A4', titel: 'Schulterdrücken', gruppe: 'push', pause: '2 min', std: 'Kurzhantel-Schulterdrücken', optionen: [
+        { name: 'Pike-Liegestütze', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'pike push up tutorial', tipp: 'Hüfte hoch, Kopf zwischen die Hände senken.' },
+        { name: 'Erhöhte Pike-Liegestütze', art: 'cali', geraet: 'Bank', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, yt: 'elevated pike push up', tipp: 'Füße auf der Bank. Je höher, desto näher am Handstand.' },
+        { name: 'Handstand-Liegestütze an der Wand', art: 'cali', geraet: 'Wand', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, yt: 'wall handstand push up progression', tipp: 'Kopf und Hände bilden ein Dreieck, kontrolliert runter.' },
+        { name: 'Kurzhantel-Schulterdrücken', art: 'gym', geraet: 'Kurzhantel', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'seated dumbbell shoulder press form', tipp: 'Sitzend, Rücken an der Lehne, Hanteln bis über den Kopf.' },
+        { name: 'Schulterpresse-Maschine', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'shoulder press machine form', tipp: 'Griffe auf Kinnhöhe starten, nicht ganz durchdrücken.' },
+        { name: 'Langhantel-Überkopfdrücken', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 5, bis: 8, yt: 'overhead press form', tipp: 'Bauch fest, Stange nah am Gesicht vorbei nach oben.' },
       ]},
-      { id: 'A5', titel: 'Core', gruppe: 'core', pause: '60 s', optionen: [
-        { name: 'Hollow Body Hold', stufe: 1, einheit: 'sec', bw: true, s: 3, von: 20, bis: 40, yt: 'hollow body hold tutorial', tipp: 'Lendenwirbel in den Boden drücken, Arme und Beine lang.' },
-        { name: 'L-Sit', stufe: 2, einheit: 'sec', bw: true, s: 3, von: 10, bis: 20, yt: 'l sit tutorial', tipp: 'Schultern runterdrücken, Beine gestreckt. Anfangs ein Bein angewinkelt.' },
-        { name: 'Hängendes Beinheben', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'hanging leg raise form', tipp: 'Ohne Schwung, Beine bis mindestens waagrecht.' },
+      { id: 'A5', titel: 'Vordere Schulter', gruppe: 'push', pause: '90 s', std: 'Kabel-Frontheben', optionen: [
+        { name: 'Serratus-Liegestütze', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 12, bis: 15, yt: 'scapula push ups protraction', tipp: 'Arme bleiben gestreckt, nur die Schulterblätter auseinanderdrücken.' },
+        { name: 'Kabel-Frontheben', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'cable front raise straight arm', tipp: 'Arm gestreckt bis Augenhöhe, langsam runter.' },
+        { name: 'Kabel-Serratus-Stoßen', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 10, bis: 12, seite: true, yt: 'cable serratus punch', tipp: 'Arm gestreckt nach vorn stoßen, nur die Schulter bewegt sich.' },
+        { name: 'Kurzhantel-Frontheben', art: 'gym', geraet: 'Kurzhantel', einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'dumbbell front raise form', tipp: 'Nicht schwingen, Arm bleibt gestreckt.' },
+      ]},
+      { id: 'A6', titel: 'Core', gruppe: 'core', pause: '60 s', std: 'Hollow Body Hold', optionen: [
+        { name: 'Hollow Body Hold', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'sec', bw: true, s: 3, von: 20, bis: 40, yt: 'hollow body hold tutorial', tipp: 'Lendenwirbel in den Boden drücken, Arme und Beine lang.' },
+        { name: 'L-Sit', art: 'cali', geraet: 'Parallettes', stufe: 2, einheit: 'sec', bw: true, s: 3, von: 10, bis: 20, yt: 'l sit tutorial', tipp: 'Schultern runterdrücken, Beine gestreckt. Anfangs ein Bein angewinkelt.' },
+        { name: 'Kabel-Crunch', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'kneeling cable crunch form', tipp: 'Kniend, Seil am Kopf, Rücken einrollen. Hüfte bleibt stehen.' },
+        { name: 'Crunch-Maschine', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'ab crunch machine form', tipp: 'Langsam einrollen, unten nicht ablegen.' },
       ]},
     ],
   },
@@ -54,76 +71,92 @@ window.WORKOUTS = [
     hinweis: 'Am Tag vor der Leichtathletik: Oberkörper hart, Beine schonen.',
     aufwaermen: 'Schulterkreisen, 2 × 10 Scap-Pull-ups am Hang, ein lockerer Tuck-Halt.',
     slots: [
-      { id: 'B1', titel: 'Front-Lever-Halte', gruppe: 'pull', pause: '2 min', optionen: [
-        { name: 'Tuck Front Lever', stufe: 1, einheit: 'sec', bw: true, s: 4, von: 8, bis: 15, yt: 'tuck front lever tutorial', tipp: 'Arme gestreckt, Schulterblätter nach unten ziehen, Rücken waagrecht.' },
-        { name: 'Advanced Tuck Front Lever', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 6, bis: 12, yt: 'advanced tuck front lever tutorial', tipp: 'Rücken ganz flach, Knie weg von der Brust.' },
-        { name: 'Front Lever mit Band', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 6, bis: 12, yt: 'band assisted front lever', tipp: 'Band an der Stange, um Hüfte oder Füße. Körper komplett gestreckt.' },
-        { name: 'Ein-Bein Front Lever', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 10, yt: 'one leg front lever tutorial', tipp: 'Ein Bein gestreckt, eins angewinkelt. Seiten abwechseln.' },
-        { name: 'Straddle Front Lever', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 4, bis: 10, yt: 'straddle front lever tutorial', tipp: 'Beine weit grätschen, Hüfte bleibt gestreckt.' },
+      { id: 'B1', titel: 'Front-Lever-Halte', gruppe: 'pull', pause: '2 min', std: 'Tuck Front Lever', optionen: [
+        { name: 'Tuck Front Lever', art: 'cali', geraet: 'Stange', stufe: 1, einheit: 'sec', bw: true, s: 4, von: 8, bis: 15, yt: 'tuck front lever tutorial', tipp: 'Arme gestreckt, Schulterblätter nach unten ziehen, Rücken waagrecht.' },
+        { name: 'Advanced Tuck Front Lever', art: 'cali', geraet: 'Stange', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 6, bis: 12, yt: 'advanced tuck front lever tutorial', tipp: 'Rücken ganz flach, Knie weg von der Brust.' },
+        { name: 'Front Lever mit Band', art: 'cali', geraet: 'Stange + Band', stufe: 2, einheit: 'sec', bw: true, s: 4, von: 6, bis: 12, yt: 'band assisted front lever', tipp: 'Band um Hüfte oder Füße. Körper komplett gestreckt.' },
+        { name: 'Ein-Bein Front Lever', art: 'cali', geraet: 'Stange', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 5, bis: 10, yt: 'one leg front lever tutorial', tipp: 'Ein Bein gestreckt, eins angewinkelt. Seiten abwechseln.' },
+        { name: 'Straddle Front Lever', art: 'cali', geraet: 'Stange', stufe: 3, einheit: 'sec', bw: true, s: 4, von: 4, bis: 10, yt: 'straddle front lever tutorial', tipp: 'Beine weit grätschen, Hüfte bleibt gestreckt.' },
+        { name: 'Straight-Arm-Latzug mit Halt', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'straight arm lat pulldown', tipp: 'Arme gestreckt bis zu den Oberschenkeln ziehen, unten 3 s halten. Das ist die Front-Lever-Bewegung.' },
+        { name: 'Pullover-Maschine', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 12, yt: 'pullover machine form', tipp: 'Arme fast gestreckt, unten kurz halten, langsam zurück.' },
       ]},
-      { id: 'B2', titel: 'Front-Lever-Kraft', gruppe: 'pull', pause: '2 min', optionen: [
-        { name: 'Tuck Front Lever Raises', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'tuck front lever raises', tipp: 'Aus dem Hang langsam in den Tuck heben, oben 1 s halten.' },
-        { name: 'Front-Lever-Negativ', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 3, bis: 5, yt: 'front lever negatives', tipp: 'Oben starten und in 5 Sekunden kontrolliert ablassen.' },
-        { name: 'Ice Cream Makers', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 4, bis: 6, yt: 'ice cream makers calisthenics', tipp: 'Klimmzug hoch, in die Waagrechte kippen und zurück.' },
-        { name: 'Tuck-Front-Lever-Rudern', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'tuck front lever rows', tipp: 'Im Tuck Front Lever die Stange zur Hüfte ziehen.' },
+      { id: 'B2', titel: 'Front-Lever-Kraft', gruppe: 'pull', pause: '2 min', std: 'Tuck Front Lever Raises', optionen: [
+        { name: 'Tuck Front Lever Raises', art: 'cali', geraet: 'Stange', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'tuck front lever raises', tipp: 'Aus dem Hang langsam in den Tuck heben, oben 1 s halten.' },
+        { name: 'Front-Lever-Negativ', art: 'cali', geraet: 'Stange', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 3, bis: 5, yt: 'front lever negatives', tipp: 'Oben starten und in 5 Sekunden kontrolliert ablassen.' },
+        { name: 'Ice Cream Makers', art: 'cali', geraet: 'Stange', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 4, bis: 6, yt: 'ice cream makers calisthenics', tipp: 'Klimmzug hoch, in die Waagrechte kippen und zurück.' },
+        { name: 'Tuck-Front-Lever-Rudern', art: 'cali', geraet: 'Stange', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'tuck front lever rows', tipp: 'Im Tuck Front Lever die Stange zur Hüfte ziehen.' },
+        { name: 'Kurzhantel-Pullover', art: 'gym', geraet: 'Kurzhantel + Bank', einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'dumbbell pullover form', tipp: 'Arme leicht gebeugt, weit hinter den Kopf und zurück über die Brust.' },
+        { name: 'Kabel-Pullover liegend', art: 'gym', geraet: 'Kabelzug + Bank', einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'lying cable pullover', tipp: 'Rücklings auf der Bank, Stange hinter dem Kopf, gestreckt bis zur Hüfte ziehen.' },
       ]},
-      { id: 'B3', titel: 'Vertikal ziehen', gruppe: 'pull', pause: '2–3 min', optionen: [
-        { name: 'Klimmzüge', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'pull up proper form', tipp: 'Ganz aus dem Hang, Brust zur Stange. Ab 4 × 8 mit Zusatzgewicht.' },
-        { name: 'Klimmzüge mit Band', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'band assisted pull ups', tipp: 'Band so wählen, dass die letzte Wiederholung schwer ist.' },
-        { name: 'Latzug', stufe: 1, einheit: 'reps', s: 4, von: 6, bis: 10, yt: 'lat pulldown form', tipp: 'Stange zur oberen Brust, Ellbogen nach unten führen.' },
+      { id: 'B3', titel: 'Vertikal ziehen', gruppe: 'pull', pause: '2–3 min', std: 'Klimmzüge', optionen: [
+        { name: 'Klimmzüge mit Band', art: 'cali', geraet: 'Stange + Band', stufe: 1, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'band assisted pull ups', tipp: 'Band so wählen, dass die letzte Wiederholung schwer ist.' },
+        { name: 'Klimmzüge', art: 'cali', geraet: 'Stange', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 5, bis: 8, yt: 'pull up proper form', tipp: 'Ganz aus dem Hang, Brust zur Stange. Ab 4 × 8 mit Zusatzgewicht.' },
+        { name: 'Archer-Klimmzüge', art: 'cali', geraet: 'Stange', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, seite: true, yt: 'archer pull ups tutorial', tipp: 'Zu einer Hand ziehen, der andere Arm bleibt gestreckt.' },
+        { name: 'Latzug', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 4, von: 6, bis: 10, yt: 'lat pulldown form', tipp: 'Stange zur oberen Brust, Ellbogen nach unten führen.' },
+        { name: 'Unterstützte Klimmzüge', art: 'gym', geraet: 'Gegengewicht-Maschine', einheit: 'reps', s: 4, von: 6, bis: 10, yt: 'assisted pull up machine', tipp: 'Gleiche Bewegung wie Klimmzüge. Jede Woche etwas weniger Gegengewicht.' },
+        { name: 'Einarmiger Latzug', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 8, bis: 10, seite: true, yt: 'single arm lat pulldown', tipp: 'Kniend oder sitzend, Ellbogen zur Hüfte ziehen.' },
       ]},
-      { id: 'B4', titel: 'Rudern', gruppe: 'pull', pause: '90 s', optionen: [
-        { name: 'Kabelrudern', stufe: 1, einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'seated cable row form', tipp: 'Brust raus, Ellbogen nah am Körper, Schulterblätter zusammen.' },
-        { name: 'Kurzhantelrudern', stufe: 1, einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'one arm dumbbell row form', tipp: 'Rücken gerade, Hantel zur Hüfte ziehen.', seite: true },
-        { name: 'Ring-Rudern', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'ring rows tutorial', tipp: 'Körper wie ein Brett. Je flacher, desto schwerer.' },
+      { id: 'B4', titel: 'Rudern', gruppe: 'pull', pause: '90 s', std: 'Kabelrudern', optionen: [
+        { name: 'Ring-Rudern', art: 'cali', geraet: 'Ringe', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'ring rows tutorial', tipp: 'Körper wie ein Brett. Je flacher, desto schwerer.' },
+        { name: 'Australische Klimmzüge', art: 'cali', geraet: 'Stange im Rack', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'australian pull ups', tipp: 'Unter der tiefen Stange, Brust zur Stange, Füße erhöht macht es schwerer.' },
+        { name: 'Kabelrudern', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'seated cable row form', tipp: 'Brust raus, Ellbogen nah am Körper, Schulterblätter zusammen.' },
+        { name: 'Kurzhantelrudern', art: 'gym', geraet: 'Kurzhantel + Bank', einheit: 'reps', s: 3, von: 8, bis: 10, seite: true, yt: 'one arm dumbbell row form', tipp: 'Rücken gerade, Hantel zur Hüfte ziehen.' },
+        { name: 'Brustgestütztes Rudern', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'chest supported row machine', tipp: 'Brust bleibt am Polster, kein Schwung aus dem Rücken.' },
       ]},
-      { id: 'B5', titel: 'Lat, gestreckter Arm', gruppe: 'pull', pause: '90 s', optionen: [
-        { name: 'Straight-Arm-Latzug', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'straight arm lat pulldown', tipp: 'Arme fast gestreckt, Stange bis zu den Oberschenkeln. Das ist die Front-Lever-Bewegung.' },
-        { name: 'Kurzhantel-Pullover', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 12, yt: 'dumbbell pullover form', tipp: 'Arme leicht gebeugt, weit hinter den Kopf und zurück.' },
-      ]},
-      { id: 'B6', titel: 'Core', gruppe: 'core', pause: '60 s', optionen: [
-        { name: 'Dragon Flag Negativ', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 3, bis: 5, yt: 'dragon flag negative tutorial', tipp: 'Schultern am Boden, Körper gerade und langsam ablassen.' },
-        { name: 'Hängendes Beinheben', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'hanging leg raise form', tipp: 'Ohne Schwung, Beine bis mindestens waagrecht.' },
-        { name: 'Ab Wheel', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, yt: 'ab wheel rollout form', tipp: 'Bauch fest, kein Hohlkreuz. Erst auf den Knien.' },
+      { id: 'B5', titel: 'Core', gruppe: 'core', pause: '60 s', std: 'Hängendes Beinheben', optionen: [
+        { name: 'Hängendes Beinheben', art: 'cali', geraet: 'Stange', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'hanging leg raise form', tipp: 'Ohne Schwung, Beine bis mindestens waagrecht.' },
+        { name: 'Dragon Flag Negativ', art: 'cali', geraet: 'Bank', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 5, yt: 'dragon flag negative tutorial', tipp: 'Schultern auf der Bank, Körper gerade und langsam ablassen.' },
+        { name: 'Ab Wheel', art: 'cali', geraet: 'Bauchroller', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, yt: 'ab wheel rollout form', tipp: 'Bauch fest, kein Hohlkreuz. Erst auf den Knien.' },
+        { name: 'Beinheben am Dip-Stuhl', art: 'gym', geraet: 'Dip-Stuhl', einheit: 'reps', bw: true, s: 3, von: 10, bis: 15, yt: 'captains chair leg raise', tipp: 'Rücken an der Lehne, Beine gestreckt oder angewinkelt heben.' },
+        { name: 'Kabel-Holzhacker', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 10, bis: 12, seite: true, yt: 'cable woodchopper form', tipp: 'Von oben schräg nach unten ziehen, Drehung aus dem Oberkörper.' },
       ]},
     ],
   },
   {
-    id: 'C', name: 'Beine · Core', kurz: 'Beine', dauer: '~50 min',
+    id: 'C', name: 'Beine · Core', kurz: 'Beine', dauer: '~55 min',
     hinweis: 'Nach der Leichtathletik: mindestens 3 h Pause dazwischen, wenige schwere Sätze, nie bis zum Muskelversagen.',
     aufwaermen: '5 min Rad, Hüfte mobilisieren, 2 leichte Aufwärmsätze bei der ersten Übung.',
     slots: [
-      { id: 'C1', titel: 'Kniebeuge', gruppe: 'beine', pause: '3 min', optionen: [
-        { name: 'Kniebeuge', stufe: 2, einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'barbell back squat form', tipp: 'Schwer, aber sauber. 2 Wiederholungen im Tank lassen.' },
-        { name: 'Front-Kniebeuge', stufe: 2, einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'front squat form', tipp: 'Ellbogen hoch, Oberkörper aufrecht.' },
-        { name: 'Goblet-Kniebeuge', stufe: 1, einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'goblet squat form', tipp: 'Kurzhantel vor der Brust, tief runter.' },
-        { name: 'Beinpresse', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'leg press form', tipp: 'Rücken bleibt am Polster, Knie nicht ganz durchdrücken.' },
+      { id: 'C1', titel: 'Kniebeuge', gruppe: 'beine', pause: '3 min', std: 'Kniebeuge', optionen: [
+        { name: 'Shrimp Squat', art: 'cali', geraet: 'Boden', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 4, bis: 8, seite: true, yt: 'shrimp squat progression', tipp: 'Hinteren Fuß greifen, Knie langsam zum Boden.' },
+        { name: 'Pistol Squat', art: 'cali', geraet: 'Boden', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, seite: true, yt: 'pistol squat progression', tipp: 'Anfangs an einer Stange festhalten oder auf eine Bank setzen.' },
+        { name: 'Kniebeuge', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'barbell back squat form', tipp: 'Schwer, aber sauber. 2 Wiederholungen im Tank lassen.' },
+        { name: 'Front-Kniebeuge', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'front squat form', tipp: 'Ellbogen hoch, Oberkörper aufrecht.' },
+        { name: 'Beinpresse', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'leg press form', tipp: 'Rücken bleibt am Polster, Knie nicht ganz durchdrücken.' },
+        { name: 'Hackenschmidt-Kniebeuge', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'hack squat machine form', tipp: 'Füße schulterbreit, tief runter, Rücken am Polster.' },
       ]},
-      { id: 'C2', titel: 'Hüfte & hintere Kette', gruppe: 'beine', pause: '2–3 min', optionen: [
-        { name: 'Rumänisches Kreuzheben', stufe: 1, einheit: 'reps', s: 3, von: 5, bis: 8, yt: 'romanian deadlift form', tipp: 'Hüfte nach hinten schieben, Rücken gerade, Stange nah am Bein.' },
-        { name: 'Trap-Bar-Kreuzheben', stufe: 2, einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'trap bar deadlift form', tipp: 'Explosiv hoch. Gut für Sprinter.' },
-        { name: 'Hip Thrust', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'barbell hip thrust form', tipp: 'Oben 1 s halten, Kinn zur Brust.' },
+      { id: 'C2', titel: 'Hüfte & hintere Kette', gruppe: 'beine', pause: '2–3 min', std: 'Rumänisches Kreuzheben', optionen: [
+        { name: 'Einbeinige Hüftbrücke', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 10, bis: 15, seite: true, yt: 'single leg glute bridge', tipp: 'Schulter auf der Bank macht es schwerer. Oben 1 s halten.' },
+        { name: 'Rumänisches Kreuzheben', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 5, bis: 8, yt: 'romanian deadlift form', tipp: 'Hüfte nach hinten schieben, Rücken gerade, Stange nah am Bein.' },
+        { name: 'Trap-Bar-Kreuzheben', art: 'gym', geraet: 'Trap-Bar', einheit: 'reps', s: 3, von: 4, bis: 6, yt: 'trap bar deadlift form', tipp: 'Explosiv hoch. Gut für Sprinter.' },
+        { name: 'Hip Thrust', art: 'gym', geraet: 'Langhantel + Bank', einheit: 'reps', s: 3, von: 6, bis: 10, yt: 'barbell hip thrust form', tipp: 'Oben 1 s halten, Kinn zur Brust.' },
+        { name: 'Rückenstrecker', art: 'gym', geraet: '45°-Bank', einheit: 'reps', s: 3, von: 10, bis: 12, yt: '45 degree back extension glutes', tipp: 'Aus der Hüfte beugen, oben den Po anspannen. Mit Hantelscheibe schwerer.' },
       ]},
-      { id: 'C3', titel: 'Einbeinig', gruppe: 'beine', pause: '90 s', optionen: [
-        { name: 'Bulgarische Split-Kniebeuge', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 8, seite: true, yt: 'bulgarian split squat form', tipp: 'Hinterer Fuß auf der Bank, vorderes Knie über dem Fuß.' },
-        { name: 'Step-ups', stufe: 1, einheit: 'reps', s: 3, von: 6, bis: 8, seite: true, yt: 'dumbbell step ups form', tipp: 'Nur mit dem oberen Bein hochdrücken, nicht abspringen.' },
-        { name: 'Pistol Squat', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, seite: true, yt: 'pistol squat progression', tipp: 'Die Calisthenics-Variante. Anfangs an einer Stange festhalten.' },
-        { name: 'Ausfallschritte gehend', stufe: 1, einheit: 'reps', s: 3, von: 8, bis: 10, seite: true, yt: 'walking lunges form', tipp: 'Großer Schritt, hinteres Knie knapp über dem Boden.' },
+      { id: 'C3', titel: 'Einbeinig', gruppe: 'beine', pause: '90 s', std: 'Bulgarische Split-Kniebeuge', optionen: [
+        { name: 'Skater Squat', art: 'cali', geraet: 'Boden', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, seite: true, yt: 'skater squat tutorial', tipp: 'Hinteres Knie Richtung Boden, Arme nach vorn als Gegengewicht.' },
+        { name: 'Bulgarische Split-Kniebeuge', art: 'gym', geraet: 'Kurzhantel + Bank', einheit: 'reps', s: 3, von: 6, bis: 8, seite: true, yt: 'bulgarian split squat form', tipp: 'Hinterer Fuß auf der Bank, vorderes Knie über dem Fuß.' },
+        { name: 'Step-ups', art: 'gym', geraet: 'Kurzhantel + Box', einheit: 'reps', s: 3, von: 6, bis: 8, seite: true, yt: 'dumbbell step ups form', tipp: 'Nur mit dem oberen Bein hochdrücken, nicht abspringen.' },
+        { name: 'Ausfallschritte gehend', art: 'gym', geraet: 'Kurzhantel', einheit: 'reps', s: 3, von: 8, bis: 10, seite: true, yt: 'walking lunges form', tipp: 'Großer Schritt, hinteres Knie knapp über dem Boden.' },
       ]},
-      { id: 'C4', titel: 'Beinbeuger', gruppe: 'beine', pause: '2 min', optionen: [
-        { name: 'Nordic Curls', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, yt: 'nordic hamstring curl progression', tipp: 'Schützt vor Zerrungen beim Sprinten. So langsam wie möglich ablassen.' },
-        { name: 'Beinbeuger-Maschine', stufe: 1, einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'lying leg curl form', tipp: 'Langsam zurück, Hüfte bleibt am Polster.' },
-        { name: 'Glute-Ham Raise', stufe: 3, einheit: 'reps', bw: true, s: 3, von: 4, bis: 8, yt: 'glute ham raise form', tipp: 'Körper gerade von Knie bis Kopf.' },
+      { id: 'C4', titel: 'Beinbeuger', gruppe: 'beine', pause: '2 min', std: 'Nordic Curls', optionen: [
+        { name: 'Gleit-Beinbeuger', art: 'cali', geraet: 'Handtuch / Slider', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'slider hamstring curl', tipp: 'In der Hüftbrücke die Fersen langsam wegschieben und zurückziehen.' },
+        { name: 'Nordic Curls', art: 'cali', geraet: 'Bank / Partner', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 3, bis: 6, yt: 'nordic hamstring curl progression', tipp: 'Schützt vor Zerrungen beim Sprinten. So langsam wie möglich ablassen.' },
+        { name: 'Beinbeuger liegend', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'lying leg curl form', tipp: 'Langsam zurück, Hüfte bleibt am Polster.' },
+        { name: 'Beinbeuger sitzend', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 8, bis: 10, yt: 'seated leg curl form', tipp: 'Oberkörper leicht vor, unten 1 s halten.' },
+        { name: 'Glute-Ham Raise', art: 'gym', geraet: 'GHD-Gerät', einheit: 'reps', bw: true, s: 3, von: 4, bis: 8, yt: 'glute ham raise form', tipp: 'Körper gerade von Knie bis Kopf.' },
       ]},
-      { id: 'C5', titel: 'Waden & Füße', gruppe: 'beine', pause: '90 s', optionen: [
-        { name: 'Wadenheben stehend', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'standing calf raise form', tipp: 'Unten kurz dehnen, oben 1 s halten.' },
-        { name: 'Einbeiniges Wadenheben', stufe: 1, einheit: 'reps', s: 3, von: 10, bis: 12, seite: true, yt: 'single leg calf raise', tipp: 'Auf einer Stufe, volle Bewegung.' },
-        { name: 'Wadenheben sitzend', stufe: 1, einheit: 'reps', s: 3, von: 12, bis: 15, yt: 'seated calf raise form', tipp: 'Trifft den tiefen Wadenmuskel, wichtig für die Achillessehne.' },
+      { id: 'C5', titel: 'Waden & Füße', gruppe: 'beine', pause: '90 s', std: 'Wadenheben stehend', optionen: [
+        { name: 'Einbeiniges Wadenheben', art: 'cali', geraet: 'Stufe', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 10, bis: 15, seite: true, yt: 'single leg calf raise', tipp: 'Auf einer Stufe, volle Bewegung, oben 1 s halten.' },
+        { name: 'Wadenheben stehend', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'standing calf raise form', tipp: 'Unten kurz dehnen, oben 1 s halten.' },
+        { name: 'Wadenheben sitzend', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 12, bis: 15, yt: 'seated calf raise form', tipp: 'Trifft den tiefen Wadenmuskel, wichtig für die Achillessehne.' },
+        { name: 'Wadenheben an der Beinpresse', art: 'gym', geraet: 'Maschine', einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'leg press calf raise', tipp: 'Nur die Fußballen auf der Platte, Knie gestreckt.' },
       ]},
-      { id: 'C6', titel: 'Kompression', gruppe: 'core', pause: '60–90 s', optionen: [
-        { name: 'L-Sit', stufe: 2, einheit: 'sec', bw: true, s: 3, von: 10, bis: 20, yt: 'l sit tutorial', tipp: 'Schultern runterdrücken, Beine gestreckt. Anfangs ein Bein angewinkelt.' },
-        { name: 'Pike-Kompression', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'pike compression lifts', tipp: 'Im Sitzen die gestreckten Beine anheben. Hilft bei L-Sit und Planche.' },
-        { name: 'Hängendes Beinheben', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'hanging leg raise form', tipp: 'Ohne Schwung, Beine bis mindestens waagrecht.' },
+      { id: 'C6', titel: 'Kompression', gruppe: 'core', pause: '60–90 s', std: 'L-Sit', optionen: [
+        { name: 'L-Sit', art: 'cali', geraet: 'Parallettes', stufe: 2, einheit: 'sec', bw: true, s: 3, von: 10, bis: 20, yt: 'l sit tutorial', tipp: 'Schultern runterdrücken, Beine gestreckt. Anfangs ein Bein angewinkelt.' },
+        { name: 'Pike-Kompression', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, yt: 'pike compression lifts', tipp: 'Im Sitzen die gestreckten Beine anheben. Hilft bei L-Sit und Planche.' },
+        { name: 'Reverse Crunch an der Schrägbank', art: 'gym', geraet: 'Schrägbank', einheit: 'reps', bw: true, s: 3, von: 10, bis: 15, yt: 'incline bench reverse crunch', tipp: 'Kopf oben, an der Bank festhalten, Hüfte einrollen und Knie zur Brust ziehen.' },
+        { name: 'Beinheben am Dip-Stuhl', art: 'gym', geraet: 'Dip-Stuhl', einheit: 'reps', bw: true, s: 3, von: 10, bis: 15, yt: 'captains chair leg raise', tipp: 'Rücken an der Lehne, Beine gestreckt oder angewinkelt heben.' },
+        { name: 'Kabel-Crunch', art: 'gym', geraet: 'Kabelzug', einheit: 'reps', s: 3, von: 10, bis: 15, yt: 'kneeling cable crunch form', tipp: 'Kniend, Seil am Kopf, Rücken einrollen. Hüfte bleibt stehen.' },
       ]},
     ],
   },

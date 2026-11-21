@@ -231,6 +231,14 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .lv span{font-size:11px;color:var(--muted);font-weight:650;margin-right:4px}
 .opt-ziel{font-size:13px;color:var(--muted)}
 .opt-tipp{font-size:13.5px;color:var(--text);opacity:.85;line-height:1.45}
+.tag{display:inline-block;vertical-align:1px;margin-left:7px;padding:2px 6px;border-radius:5px;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.tag.cali{background:var(--accent-soft);color:var(--accent)}
+.tag.gym{background:rgba(124,198,255,.12);color:#7cc6ff}
+.optgroup{display:flex;align-items:center;gap:2px;font:700 16px/1.2 var(--display);margin:18px 2px 4px}
+.optgroup .tag{margin:0 8px 0 0}
+.sheet-head + .optgroup{margin-top:4px}
+.geraet{font-size:11.5px;font-weight:650;color:#7cc6ff;flex:none}
+.seg.stil{margin-bottom:8px}
 .yt{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:650;color:var(--accent);text-decoration:none;margin-top:4px;justify-self:start}
 .yt svg{width:16px;height:16px}
 
@@ -288,7 +296,17 @@ const GRUPPEN = { push:'Push', pull:'Pull', beine:'Beine', core:'Core', sonst:'S
 function planCfg(){ if(!db.plan) db.plan = { wahl:{}, cTag: GYM_TAGE.C }; return db.plan; }
 function gymDay(id){ return id === 'C' ? planCfg().cTag : GYM_TAGE[id]; }
 function workoutOn(dow){ return WORKOUTS.find(w => gymDay(w.id) === dow); }
-function chosen(slot){ return slot.optionen[planCfg().wahl[slot.id] ?? 0] || slot.optionen[0]; }
+/* Wahl wird als Übungsname gespeichert; fehlt sie, gilt die Vorauswahl des Slots */
+function chosen(slot){
+  const w = planCfg().wahl[slot.id];
+  return slot.optionen.find(o => o.name === w) || slot.optionen.find(o => o.name === slot.std) || slot.optionen[0];
+}
+const allSlots = () => WORKOUTS.flatMap(w => w.slots);
+function stilPick(slot, stil){
+  if(stil === 'mix') return slot.std;
+  return (slot.optionen.find(o => o.art === stil) || slot.optionen.find(o => o.name === slot.std)).name;
+}
+function currentStil(){ return ['mix','cali','gym'].find(st => allSlots().every(s => chosen(s).name === stilPick(s, st))) || ''; }
 function optionFor(name){
   const n = String(name).trim().toLowerCase(); if(!n) return null;
   for(const w of WORKOUTS) for(const slot of w.slots) for(const opt of slot.optionen)
@@ -438,6 +456,8 @@ function renderPlan(){
       ${tw ? `<button class="smallbtn" data-open="${tw.id}">Training ansehen</button>` : ''}
     </section>
     <h2 class="section"><span>Trainings</span><span>3 × pro Woche</span></h2>
+    <div class="seg stil">${[['mix','Gemischt'],['cali','Calisthenics'],['gym','Gym']].map(([k,l]) => `<button data-stil="${k}" class="${currentStil() === k ? 'on' : ''}">${l}</button>`).join('')}</div>
+    <p class="info" style="margin:0 2px 12px">${{ mix:'Skills mit Körpergewicht, Kraft mit Geräten.', cali:'Alles mit Körpergewicht, in Stufen.', gym:'Alles an Geräten, trainiert dieselben Muskeln.' }[currentStil()] || 'Eigene Auswahl. Tipp auf ⇄ neben einer Übung zum Wechseln.'}</p>
     ${WORKOUTS.map(workoutHtml).join('')}
     <h2 class="section"><span>So steigerst du dich</span></h2>
     <section class="card rules">
@@ -453,6 +473,10 @@ function renderPlan(){
   });
   app.querySelectorAll('[data-log]').forEach(b => b.onclick = () => openLog(b.dataset.log));
   app.querySelectorAll('[data-swap]').forEach(b => b.onclick = () => openSwap(b.dataset.swap));
+  app.querySelectorAll('[data-stil]').forEach(b => b.onclick = () => {
+    for(const s of allSlots()) planCfg().wahl[s.id] = stilPick(s, b.dataset.stil);
+    save(); renderPlan();
+  });
   app.querySelectorAll('[data-ctag]').forEach(b => b.onclick = () => { planCfg().cTag = +b.dataset.ctag; save(); renderPlan(); });
   const mb = document.getElementById('menuBtn'); if(mb) mb.onclick = openMenu;
 }
@@ -482,7 +506,7 @@ function slotHtml(slot, i){
   return `<div class="slot">
     <button class="slot-main" data-log="${esc(o.name)}">
       <span class="slot-n ${ok ? 'ok' : ''}">${ok ? I.check : i + 1}</span>
-      <div style="min-width:0"><p class="slot-t">${slot.titel}</p><p class="slot-name">${esc(o.name)}</p>
+      <div style="min-width:0"><p class="slot-t">${slot.titel}<span class="tag ${o.art}">${o.art === 'gym' ? 'Gym' : 'Cali'}</span></p><p class="slot-name">${esc(o.name)}</p>
         <p class="slot-ziel">${zielText(o)} · Pause ${slot.pause}</p>${ready ? `<span class="ready">${ready}</span>` : ''}</div>
       <span class="slot-cnt num">${n ? `${n}/${o.s}` : ''}</span>
     </button>
@@ -492,19 +516,27 @@ function slotHtml(slot, i){
 function openSwap(slotId){
   let slot; for(const w of WORKOUTS) for(const s of w.slots) if(s.id === slotId) slot = s;
   const cur = chosen(slot);
-  openSheet(`<div class="sheet-head"><div><h2>${slot.titel}</h2><p>${slot.optionen.length} Möglichkeiten · wähl, was zu dir passt</p></div><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
-    ${slot.optionen.map((o, i) => `<div class="opt ${o === cur ? 'on' : ''}">
+  const card = (o, i) => `<div class="opt ${o === cur ? 'on' : ''}">
       <button class="opt-pick" data-pick="${i}">
         <span class="opt-top"><span class="opt-name">${esc(o.name)}</span>
-          <span class="lv"><span>${STUFE[o.stufe]}</span>${[1,2,3].map(l => `<i class="${l <= o.stufe ? 'on' : ''}"></i>`).join('')}</span></span>
-        <span class="opt-ziel">${zielText(o)}${o.bw ? ' · Körpergewicht' : ''}</span>
+          ${o.art === 'cali'
+            ? `<span class="lv"><span>${STUFE[o.stufe]}</span>${[1,2,3].map(l => `<i class="${l <= o.stufe ? 'on' : ''}"></i>`).join('')}</span>`
+            : `<span class="geraet">${esc(o.geraet)}</span>`}</span>
+        <span class="opt-ziel">${zielText(o)}${o.art === 'cali' ? ` · ${esc(o.geraet)}` : ''}${o.name === slot.std ? ' · Vorschlag' : ''}</span>
         <span class="opt-tipp">${esc(o.tipp)}</span>
       </button>
       <a class="yt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(o.yt)}" target="_blank" rel="noopener">${I.play}Auf YouTube ansehen</a>
-    </div>`).join('')}`);
+    </div>`;
+  const group = (art, title, sub) => {
+    const list = slot.optionen.map((o, i) => [o, i]).filter(([o]) => o.art === art);
+    return list.length ? `<h3 class="optgroup"><span class="tag ${art}">${art === 'gym' ? 'Gym' : 'Cali'}</span>${title}</h3><p class="info" style="margin:0 2px 10px">${sub}</p>${list.map(([o, i]) => card(o, i)).join('')}` : '';
+  };
+  openSheet(`<div class="sheet-head"><div><h2>${slot.titel}</h2><p>Wähl, was du heute machst</p></div><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
+    ${group('cali', 'Calisthenics', 'Mit Körpergewicht, von leicht nach schwer. Nimm die Stufe, bei der du das Ziel knapp schaffst.')}
+    ${group('gym', 'Im Gym mit Geräten', 'Trainiert dieselben Muskeln mit Gewicht. Baut Kraft für den Skill auf, auch wenn der Halt noch nicht klappt.')}`);
   document.getElementById('closeBtn').onclick = () => closeSheet();
   sheet.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
-    planCfg().wahl[slot.id] = +b.dataset.pick; save(); closeSheet(); render();
+    planCfg().wahl[slot.id] = slot.optionen[+b.dataset.pick].name; save(); closeSheet(); render();
   });
 }
 

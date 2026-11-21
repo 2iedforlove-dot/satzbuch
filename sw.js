@@ -1,5 +1,5 @@
 // Bei jeder Änderung an der App VERSION hochzählen, sonst bleibt am Handy die alte Fassung im Speicher.
-const VERSION = 'satzbuch-v2';
+const VERSION = 'satzbuch-v3';
 const FILES = ['./', 'index.html', 'plan.js', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

@@ -214,8 +214,32 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .primary{width:100%;height:56px;border-radius:16px;background:var(--accent);color:var(--accent-ink);font-weight:750;font-size:17px;transition:transform .12s,opacity .2s}
 .primary:active{transform:scale(.98)}
 .primary:disabled{opacity:.35}
-.rest{display:flex;justify-content:center;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin-top:12px;min-height:20px}
-.rest b{color:var(--text)}
+.chips-t{font-size:12px;color:var(--muted);font-weight:600;margin:12px 2px -4px}
+.chips-t b{color:var(--text)}
+.chips-t:empty{display:none}
+.cdot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.cdot.cali{background:var(--accent)} .cdot.gym{background:#7cc6ff}
+.timer{margin-top:12px}
+.timer-pre{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;color:var(--muted);font-weight:600}
+.pchips{display:flex;gap:6px}
+.pchips button{padding:7px 10px;border-radius:10px;background:var(--surface);font-size:13px;font-weight:650;color:var(--muted);font-variant-numeric:tabular-nums}
+.pchips button.on{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line)}
+.timer-run{display:none;background:var(--surface);border-radius:var(--r);padding:12px 14px 14px}
+.timer.on .timer-pre{display:none}
+.timer.on .timer-run{display:block}
+.timer-top{display:flex;justify-content:space-between;align-items:center}
+.timer-skip{font-size:13px;font-weight:650;color:var(--muted);padding:4px 2px}
+.timer-row{display:grid;grid-template-columns:64px 1fr 64px;align-items:center;margin:4px 0 10px}
+.timer-row button{height:44px;border-radius:12px;background:var(--surface2);font-weight:700;font-size:15px}
+.timer-row button:active{background:var(--line)}
+.timer-clock{text-align:center;font:700 46px/1 var(--display);letter-spacing:-.03em}
+.timer.soon .timer-clock{color:var(--accent)}
+.timer-bar{height:6px;border-radius:3px;background:var(--surface2);overflow:hidden}
+.timer-bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .25s linear}
+.fab.timing{background:var(--surface2);color:var(--text);box-shadow:0 0 0 1.5px var(--line),0 8px 24px rgba(0,0,0,.5);padding:0 24px 0 18px;font-size:18px}
+.fab.timing svg{width:24px;height:24px}
+.fab.done{animation:pulse 1s ease-in-out 3}
+@keyframes pulse{50%{box-shadow:0 0 0 10px rgba(212,255,58,.18),0 2px 8px rgba(0,0,0,.5)}}
 .menu{display:grid;gap:4px}
 .menu button{text-align:left;padding:16px;border-radius:14px;background:var(--surface);font-weight:600;font-size:16px}
 .menu button.danger{color:var(--danger)}
@@ -381,6 +405,7 @@ function relDay(k){
 
 /* ---------- Symbole ---------- */
 const I = {
+  next:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h13M13 6l6 6-6 6"/></svg>',
   plus:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
   back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>',
   more:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg>',
@@ -410,7 +435,10 @@ addEventListener('popstate', e => {
   render();
 });
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => { if(view.name !== t.dataset.tab) go({ name:t.dataset.tab }, true); else scrollTo({ top:0, behavior:'smooth' }); });
-document.getElementById('fab').onclick = () => openLog(view.name === 'ex' ? db.ex[view.id].name : '');
+document.getElementById('fab').onclick = () => {
+  const timerEx = rest?.ex || (restDone && Date.now() - restDone.at < 8000 ? restDone.ex : '');
+  openLog(timerEx || (view.name === 'ex' ? db.ex[view.id].name : ''));
+};
 
 const app = document.getElementById('app');
 function render(){
@@ -741,7 +769,7 @@ function drawChart(ses, m, unit){
 
 /* ---------- Sheet ---------- */
 const sheet = document.getElementById('sheet'), scrim = document.getElementById('scrim');
-let log = null, restTimer = null;
+let log = null;
 function openSheet(html){
   sheet.innerHTML = '<div class="grab"></div>' + html;
   sheet.scrollTop = 0;
@@ -751,19 +779,21 @@ function openSheet(html){
 function closeSheet(fromPop){
   if(!sheetOpen) return;
   sheetOpen = false; sheet.classList.remove('open'); scrim.classList.remove('open');
-  clearInterval(restTimer); restTimer = null; log = null;
+  log = null;
   if(!fromPop) history.back();
+  updateTimerUI();
 }
 scrim.onclick = () => closeSheet();
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeSheet(); });
 
 /* ---------- Eintragen ---------- */
 function openLog(name = ''){
-  log = { name, w: 20, r: 8, unit: 'reps', restStart: null };
+  log = { name, w: 20, r: 8, unit: 'reps', pause: 90 };
   applyDefaults();
   openSheet(`
     <div class="sheet-head"><h2>Satz eintragen</h2><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
     <input class="field" id="exName" placeholder="Übung, z. B. Bankdrücken" autocomplete="off" autocapitalize="words" value="${esc(name)}" enterkeyhint="next">
+    <p class="chips-t" id="chipsT"></p>
     <div class="chips" id="chips"></div>
     <div class="seg unitseg" id="unitSeg"><button data-unit="reps">Wiederholungen</button><button data-unit="sec">Sekunden halten</button></div>
     <p class="info ziel" id="ziel"></p>
@@ -775,8 +805,18 @@ function openLog(name = ''){
         <div class="btns"><button data-s="r" data-d="-1" aria-label="Weniger">−</button><button data-s="r" data-d="1" aria-label="Mehr">+</button></div></div>
     </div>
     <button class="primary" id="saveBtn">Satz speichern</button>
-    <div class="rest" id="rest"></div>
+    <div class="timer" id="timer">
+      <div class="timer-pre"><span>Pause danach</span><div class="pchips" id="pchips"></div></div>
+      <div class="timer-run">
+        <div class="timer-top"><span class="eyebrow">Pause</span><button class="timer-skip" id="skipBtn">Überspringen</button></div>
+        <div class="timer-row"><button data-shift="-15" aria-label="15 Sekunden weniger">−15</button><b class="timer-clock num">0:00</b><button data-shift="15" aria-label="15 Sekunden mehr">+15</button></div>
+        <div class="timer-bar"><i></i></div>
+      </div>
+    </div>
     <div id="todayList"></div>`);
+  sheet.querySelectorAll('[data-shift]').forEach(b => b.onclick = () => shiftRest(+b.dataset.shift));
+  document.getElementById('skipBtn').onclick = stopRest;
+  updateTimerUI();
   const nameEl = document.getElementById('exName');
   document.getElementById('closeBtn').onclick = () => closeSheet();
   nameEl.oninput = () => { log.name = nameEl.value; applyDefaults(); syncLog(); };
@@ -794,6 +834,7 @@ function openLog(name = ''){
 /* Vorschlag: letzter Satz der Übung, sonst das Planziel */
 function applyDefaults(){
   const id = findEx(log.name), po = optionFor(log.name);
+  log.pause = po ? pauseSec(po.slot.pause) : (db.ex[id]?.pause || 90);
   if(po){ log.unit = po.opt.einheit; log.w = po.opt.bw ? 0 : log.w; log.r = po.opt.von; }
   if(id){
     if(db.ex[id].unit) log.unit = db.ex[id].unit;
@@ -811,12 +852,28 @@ function syncLog(){
   us.style.display = named && !id && !po ? '' : 'none';
   us.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.unit === log.unit));
 
-  const ids = exercisesSorted().slice(0, 12);
-  const chips = document.getElementById('chips');
-  chips.innerHTML = ids.map(x => `<button class="chip ${x===id?'on':''}" data-pick="${x}">${esc(db.ex[x].name)}</button>`).join('');
-  chips.style.display = ids.length ? '' : 'none';
-  chips.querySelectorAll('[data-pick]').forEach(b => b.onclick = () => {
-    log.name = db.ex[b.dataset.pick].name; document.getElementById('exName').value = log.name; applyDefaults(); syncLog(); });
+  /* Plan-Übung: nur die Alternativen dieses Platzes. Sonst: zuletzt benutzte Übungen. */
+  const chips = document.getElementById('chips'), chipsT = document.getElementById('chipsT');
+  const cur = log.name.trim().toLowerCase();
+  let items;
+  if(po){
+    items = po.slot.optionen.map(o => ({ name: o.name, art: o.art, on: o.name.toLowerCase() === cur }));
+    chipsT.innerHTML = `Alternativen für <b>${esc(po.slot.titel)}</b>`;
+  } else {
+    items = exercisesSorted().slice(0, 12).map(x => ({ name: db.ex[x].name, on: x === id }));
+    chipsT.textContent = items.length ? 'Zuletzt benutzt' : '';
+  }
+  chips.innerHTML = items.map((it, i) => `<button class="chip ${it.on ? 'on' : ''}" data-i="${i}">${it.art ? `<span class="cdot ${it.art}"></span>` : ''}${esc(it.name)}</button>`).join('');
+  chips.style.display = items.length ? '' : 'none';
+  chips.querySelectorAll('[data-i]').forEach(b => b.onclick = () => {
+    const it = items[+b.dataset.i]; log.name = it.name; document.getElementById('exName').value = it.name;
+    if(po){ planCfg().wahl[po.slot.id] = it.name; save(); render(); }
+    applyDefaults(); syncLog(); });
+  const onChip = chips.querySelector('.on'); if(onChip) chips.scrollLeft = onChip.offsetLeft - chips.clientWidth / 2 + onChip.offsetWidth / 2;
+
+  const pv = [...new Set([60, 90, 120, 180, log.pause])].sort((a,b) => a - b);
+  document.getElementById('pchips').innerHTML = pv.map(v => `<button class="${v === log.pause ? 'on' : ''}" data-p="${v}">${fmtClock(v)}</button>`).join('');
+  document.querySelectorAll('[data-p]').forEach(b => b.onclick = () => { log.pause = +b.dataset.p; syncLog(); });
 
   document.getElementById('ziel').textContent = po ? `Ziel: ${zielText(po.opt)} · Pause ${po.slot.pause}` : '';
   const lastEl = document.getElementById('last');
@@ -855,14 +912,81 @@ function saveSet(){
   if(prIds(id).has(set.id)){ toast('Neuer Rekord 🎉', true); confetti(); }
   else if(po && n === po.opt.s) toast('Übung geschafft ✓');
   else toast('Gespeichert');
-  log.restStart = Date.now(); tickRest(); clearInterval(restTimer); restTimer = setInterval(tickRest, 1000);
+  if(!po) ex.pause = log.pause;
+  save();
+  startRest(log.pause, name);
   syncLog(); render();
 }
-function tickRest(){
-  const el = document.getElementById('rest'); if(!el || !log?.restStart) return;
-  const s = Math.floor((Date.now() - log.restStart) / 1000);
-  el.innerHTML = `Pause <b class="num">${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}</b>`;
+
+/* ---------- Pausen-Timer (Countdown, läuft auch bei geschlossenem Fenster weiter) ---------- */
+const REST_KEY = 'satzbuch.pause';
+let rest = null, restTick = null, restDone = null, audio = null, fabState = '';
+try{ rest = JSON.parse(localStorage.getItem(REST_KEY)); }catch(e){}
+function pauseSec(p){ const m = String(p || '').match(/\d+/), n = m ? +m[0] : 90; return /min/.test(p) ? n * 60 : n; }
+function fmtClock(s){ return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; }
+function saveRest(){ try{ rest ? localStorage.setItem(REST_KEY, JSON.stringify(rest)) : localStorage.removeItem(REST_KEY); }catch(e){} }
+function restLeft(){ return rest ? Math.max(0, Math.ceil((rest.end - Date.now()) / 1000)) : 0; }
+function startRest(sec, ex){
+  unlockAudio();
+  rest = { end: Date.now() + sec * 1000, total: sec, ex }; restDone = null; saveRest();
+  clearInterval(restTick); restTick = setInterval(updateTimerUI, 250); updateTimerUI();
 }
+function shiftRest(d){
+  if(!rest) return;
+  rest.end = Math.max(Date.now() + 1000, rest.end + d * 1000); rest.total = Math.max(restLeft(), rest.total + d);
+  saveRest(); updateTimerUI(); navigator.vibrate?.(5);
+}
+function stopRest(){ rest = null; saveRest(); clearInterval(restTick); restTick = null; updateTimerUI(); }
+function finishRest(){
+  restDone = { ex: rest.ex, at: Date.now() };
+  rest = null; saveRest(); clearInterval(restTick); restTick = null;
+  beep(); navigator.vibrate?.([250, 120, 250, 120, 400]);
+  toast('Pause vorbei · nächster Satz', true);
+  updateTimerUI(); setTimeout(updateTimerUI, 8100);
+}
+function updateTimerUI(){
+  if(rest && Date.now() >= rest.end) return finishRest();
+  const left = restLeft();
+  const t = document.getElementById('timer');
+  if(t){
+    t.classList.toggle('on', !!rest);
+    if(rest){
+      t.querySelector('.timer-clock').textContent = fmtClock(left);
+      t.querySelector('.timer-bar i').style.width = (left / rest.total * 100).toFixed(1) + '%';
+      t.classList.toggle('soon', left <= 10);
+    }
+  }
+  /* Hauptknopf zeigt den Timer, solange das Fenster zu ist */
+  const fab = document.getElementById('fab');
+  const done = restDone && Date.now() - restDone.at < 8000;
+  const state = rest && !sheetOpen ? 'run' : done && !sheetOpen ? 'done' : 'idle';
+  if(state === 'run') fab.innerHTML = `${miniRing(left / rest.total)}<span class="num">${fmtClock(left)}</span>`;
+  else if(state !== fabState) fab.innerHTML = state === 'done' ? `${I.next}<span>Nächster Satz</span>` : `${I.plus}Satz`;
+  fab.classList.toggle('timing', state === 'run'); fab.classList.toggle('done', state === 'done');
+  fabState = state;
+}
+function miniRing(f){
+  const c = 2 * Math.PI * 9;
+  return `<svg viewBox="0 0 24 24" style="transform:rotate(-90deg)"><circle cx="12" cy="12" r="9" fill="none" stroke="var(--line)" stroke-width="3"/><circle cx="12" cy="12" r="9" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(c * Math.max(0, f)).toFixed(1)} ${c.toFixed(1)}"/></svg>`;
+}
+function unlockAudio(){
+  try{ audio = audio || new (window.AudioContext || window.webkitAudioContext)(); if(audio.state === 'suspended') audio.resume(); }catch(e){}
+}
+function beep(){
+  if(!audio) return;
+  try{
+    const t0 = audio.currentTime;
+    [0, .28, .56].forEach((d, i) => {
+      const o = audio.createOscillator(), g = audio.createGain();
+      o.type = 'sine'; o.frequency.value = i === 2 ? 1175 : 880;
+      g.gain.setValueAtTime(0.0001, t0 + d);
+      g.gain.exponentialRampToValueAtTime(0.3, t0 + d + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + d + (i === 2 ? 0.45 : 0.2));
+      o.connect(g).connect(audio.destination); o.start(t0 + d); o.stop(t0 + d + 0.5);
+    });
+  }catch(e){}
+}
+document.addEventListener('visibilitychange', () => { if(!document.hidden) updateTimerUI(); });
 function deleteSet(sid){
   const i = db.sets.findIndex(s => s.id === sid); if(i < 0) return;
   const [removed] = db.sets.splice(i, 1); save(); render();
@@ -965,6 +1089,9 @@ function confetti(){
 }
 
 render();
+/* Laufende Pause nach dem Neuladen fortsetzen */
+if(rest){ if(rest.end > Date.now()) restTick = setInterval(updateTimerUI, 250); else { rest = null; saveRest(); } }
+updateTimerUI();
 if('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>

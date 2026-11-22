@@ -265,6 +265,18 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .sheet-head + .optgroup{margin-top:4px}
 .geraet{font-size:11.5px;font-weight:650;color:#7cc6ff;flex:none}
 .seg.stil{margin-bottom:8px}
+.vid-row{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);border-radius:14px;padding:8px 10px 8px 8px;margin-top:10px;transition:background .15s}
+.vid-row:active{background:var(--surface2)}
+.opt .vid-row{background:var(--surface2);margin-top:8px}
+.vid-row img{width:76px;height:43px;object-fit:cover;border-radius:8px;flex:none;background:var(--surface2)}
+.vid-t{min-width:0;flex:1}
+.vid-t b{display:block;font-size:14px;font-weight:650}
+.vid-t small{display:block;color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vid-pl{width:34px;height:34px;border-radius:50%;background:var(--accent);color:var(--accent-ink);display:grid;place-items:center;flex:none}
+.vid-pl svg{width:16px;height:16px;margin-left:2px}
+.vid-frame{margin-top:10px}
+.vid-frame iframe{display:block;width:100%;aspect-ratio:16/9;border:0;border-radius:14px;background:#000}
+.vid-ext{display:inline-block;margin-top:6px;font-size:12.5px;font-weight:650;color:var(--muted);text-decoration:none}
 .yt{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:650;color:var(--accent);text-decoration:none;margin-top:4px;justify-self:start}
 .yt svg{width:16px;height:16px}
 
@@ -291,6 +303,7 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 <input type="file" id="importFile" accept="application/json,.json" hidden>
 
 <script src="plan.js"></script>
+<script src="videos.js"></script>
 <script>
 /* ---------- Daten ---------- */
 const KEY = 'satzbuch.v1';
@@ -418,6 +431,27 @@ const I = {
   play:'<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.6 2.6 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4a2.6 2.6 0 0 0-1.8 1.8C2 8.8 2 12 2 12s0 3.2.4 4.8a2.6 2.6 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.6 2.6 0 0 0 1.8-1.8c.4-1.6.4-4.8.4-4.8s0-3.2-.4-4.8zM10 15V9l5.2 3L10 15z"/></svg>',
   bars:'<svg viewBox="0 0 24 24" width="28" height="28" fill="var(--accent)"><rect x="3" y="13" width="4.5" height="8" rx="1.5"/><rect x="9.75" y="8" width="4.5" height="13" rx="1.5"/><rect x="16.5" y="3" width="4.5" height="18" rx="1.5"/></svg>',
 };
+
+/* ---------- Übungsvideos (eingebettet über youtube-nocookie, nichts wird heruntergeladen) ---------- */
+const videoOf = name => (window.VIDEOS || {})[name];
+function videoRow(name, label = 'So geht’s'){
+  const v = videoOf(name); if(!v) return '';
+  return `<button class="vid-row" data-vrow="${v.id}" aria-label="Video abspielen: ${esc(name)}">
+    <img src="https://i.ytimg.com/vi/${v.id}/mqdefault.jpg" alt="" loading="lazy">
+    <span class="vid-t"><b>${label}</b><small>${v.dauer ? fmtClock(v.dauer) + ' · ' : ''}${esc(v.kanal || 'YouTube')}</small></span>
+    <span class="vid-pl"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5z"/></svg></span>
+  </button>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('[data-vrow]'); if(!b) return;
+  e.stopPropagation();
+  const id = b.dataset.vrow, f = document.createElement('div');
+  f.className = 'vid-frame';
+  /* YouTube verlangt die Herkunft der einbettenden Seite (sonst Fehler 153): Referrer mitschicken */
+  f.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&playsinline=1&loop=1&playlist=${id}&rel=0&origin=${encodeURIComponent(location.origin)}" title="Übungsvideo" referrerpolicy="strict-origin-when-cross-origin" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>
+    <a class="vid-ext" href="https://www.youtube.com/watch?v=${id}" target="_blank" rel="noopener">Auf YouTube öffnen ↗</a>`;
+  b.replaceWith(f);
+}, true);
 
 /* ---------- Navigation ---------- */
 let view = { name:'plan' };
@@ -556,7 +590,7 @@ function openSwap(slotId){
         <span class="opt-ziel">${zielText(o)}${o.art === 'cali' ? ` · ${esc(o.geraet)}` : ''}${o.name === slot.std ? ' · Vorschlag' : ''}</span>
         <span class="opt-tipp">${esc(o.tipp)}</span>
       </button>
-      <a class="yt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(o.yt)}" target="_blank" rel="noopener">${I.play}Auf YouTube ansehen</a>
+      ${videoRow(o.name, 'Video ansehen') || `<a class="yt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(o.yt)}" target="_blank" rel="noopener">${I.play}Auf YouTube ansehen</a>`}
     </div>`;
   const group = (art, title, sub) => {
     const list = slot.optionen.map((o, i) => [o, i]).filter(([o]) => o.art === art);
@@ -713,6 +747,7 @@ function renderEx(id){
     </header>
     <section class="hero">${hero}</section>
     ${po ? `<p class="planlink"><span class="wk-tag" style="width:30px;height:30px;font-size:13px;border-radius:9px">${po.w.id}</span><span>Im Plan: <b>${po.w.name}</b> · Ziel ${zielText(po.opt)}${ready ? ` · <span class="up">${ready}</span>` : ''}</span></p>` : ''}
+    ${videoOf(ex.name) ? `<div style="margin:-6px 0 16px">${videoRow(ex.name)}</div>` : ''}
     ${ses.length > 1 ? `
       ${metrics.length > 1 ? `<div class="seg">${metrics.map(m => `<button data-m="${m[0]}" class="${m[0]===metric?'on':''}">${m[1]}</button>`).join('')}</div>` : ''}
       <section class="card chart"><div class="readout" id="readout"></div><div id="chart"></div></section>` : ''}
@@ -801,6 +836,7 @@ function openLog(name = ''){
     <div class="seg unitseg" id="unitSeg"><button data-unit="reps">Wiederholungen</button><button data-unit="sec">Sekunden halten</button></div>
     <p class="info ziel" id="ziel"></p>
     <p class="info" id="last"></p>
+    <div id="vidBox"></div>
     <div class="steppers">
       <div class="stepper"><label for="w" id="wLabel">Gewicht kg</label><input id="w" class="num" inputmode="decimal" autocomplete="off">
         <div class="btns"><button data-s="w" data-d="-2.5" aria-label="Weniger Gewicht">−</button><button data-s="w" data-d="2.5" aria-label="Mehr Gewicht">+</button></div></div>
@@ -886,6 +922,9 @@ function syncLog(){
     lastEl.innerHTML = `Letztes Mal (${relDay(s.day)}): <b class="num">${s.sets.map(x => fmtSetPlain(x, mode).replace(' kg × ', '×')).join(' · ')}</b>`;
   } else lastEl.textContent = named && !id ? (po ? 'Erstes Mal – starte locker.' : 'Neue Übung') : '';
   document.getElementById('saveBtn').disabled = !named;
+  /* Video nur neu setzen, wenn die Übung wechselt – sonst würde ein laufendes Video abbrechen */
+  const vb = document.getElementById('vidBox'), vNow = videoOf(log.name.trim()) ? log.name.trim() : '';
+  if(vb.dataset.cur !== vNow){ vb.dataset.cur = vNow; vb.innerHTML = vNow ? videoRow(vNow) : ''; }
   renderTodayList(id);
 }
 function renderTodayList(id){

@@ -258,6 +258,8 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .tag{display:inline-block;vertical-align:1px;margin-left:7px;padding:2px 6px;border-radius:5px;font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .tag.cali{background:var(--accent-soft);color:var(--accent)}
 .tag.gym{background:rgba(124,198,255,.12);color:#7cc6ff}
+.tag.opt{background:var(--surface);color:var(--muted);margin-left:4px}
+.slot.optional{opacity:.85}
 .optgroup{display:flex;align-items:center;gap:2px;font:700 16px/1.2 var(--display);margin:18px 2px 4px}
 .optgroup .tag{margin:0 8px 0 0}
 .sheet-head + .optgroup{margin-top:4px}
@@ -511,7 +513,8 @@ function renderPlan(){
 
 function workoutHtml(w){
   const d = gymDay(w.id), isOpen = offen === w.id;
-  const done = w.slots.filter(s => setsToday(chosen(s).name).length).length;
+  const pflicht = w.slots.filter(s => !s.optional);
+  const done = pflicht.filter(s => setsToday(chosen(s).name).length).length;
   const when = TAGE_LANG[d] + ((WOCHE[d] || []).length ? ' nachmittags' : '');
   const cChoice = w.id === 'C' ? `
     <div class="seg"><button data-ctag="6" class="${d === 6 ? 'on' : ''}">Sa nachmittags</button><button data-ctag="0" class="${d === 0 ? 'on' : ''}">Sonntag</button></div>
@@ -519,7 +522,7 @@ function workoutHtml(w){
   return `<section class="card wk ${isOpen ? 'open' : ''}" id="wk-${w.id}">
     <button class="wk-head" data-toggle="${w.id}">
       <span class="wk-tag">${w.id}</span>
-      <div><h3>${w.name}</h3><p class="meta">${when} · ${w.dauer}${done ? ` · <span class="up">${done}/${w.slots.length} heute</span>` : ''}</p></div>
+      <div><h3>${w.name}</h3><p class="meta">${when} · ${w.dauer}${done ? ` · <span class="up">${done}/${pflicht.length} heute</span>` : ''}</p></div>
       <span class="chev">${I.chev}</span>
     </button>
     <div class="wk-body">
@@ -534,7 +537,7 @@ function slotHtml(slot, i){
   return `<div class="slot">
     <button class="slot-main" data-log="${esc(o.name)}">
       <span class="slot-n ${ok ? 'ok' : ''}">${ok ? I.check : i + 1}</span>
-      <div style="min-width:0"><p class="slot-t">${slot.titel}<span class="tag ${o.art}">${o.art === 'gym' ? 'Gym' : 'Cali'}</span></p><p class="slot-name">${esc(o.name)}</p>
+      <div style="min-width:0"><p class="slot-t">${slot.titel}${slot.optional ? ' · optional' : ''}<span class="tag ${o.art}">${o.art === 'gym' ? 'Gym' : 'Cali'}</span></p><p class="slot-name">${esc(o.name)}</p>
         <p class="slot-ziel">${zielText(o)} · Pause ${slot.pause}</p>${ready ? `<span class="ready">${ready}</span>` : ''}</div>
       <span class="slot-cnt num">${n ? `${n}/${o.s}` : ''}</span>
     </button>

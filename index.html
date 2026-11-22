@@ -88,6 +88,25 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .slot-ziel{font-size:12.5px;color:var(--muted);margin-top:1px}
 .ready{display:inline-flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;font-weight:750;color:var(--accent)}
 .ready::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.slot-auf{font-size:11.5px;color:var(--faint);margin-top:3px;font-weight:600}
+.slot-auf b{color:var(--muted);font-weight:650}
+/* Progressionsleiter */
+.prog{background:var(--surface);border-radius:14px;padding:12px 12px 11px;margin-top:10px}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:11px;font-weight:750;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.prog-top .num{letter-spacing:0;color:var(--text);font-size:12px}
+.rungs{display:flex;flex-wrap:wrap;align-items:center;gap:5px 4px;margin-top:9px}
+.rungs::-webkit-scrollbar{display:none}
+.rung{flex:none;font-size:12px;font-weight:650;padding:5px 9px;border-radius:9px;background:var(--surface2);color:var(--faint);white-space:nowrap}
+.rung.done{color:var(--muted)}
+.rung.done::before{content:"✓ ";color:var(--accent)}
+.rung.cur{background:var(--accent);color:var(--accent-ink)}
+.rung.nx{color:var(--text);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.rungs .ar{flex:none;color:var(--faint);font-size:11px}
+.prog-bar{height:5px;border-radius:3px;background:var(--surface2);margin-top:10px;overflow:hidden}
+.prog-bar i{display:block;height:100%;background:var(--accent);border-radius:3px;transition:width .3s}
+.prog p{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.4}
+.prog p b{color:var(--text);font-weight:650}
+.prog.win{box-shadow:inset 0 0 0 1.5px var(--accent)}
 .slot-cnt{font-size:13px;font-weight:700;color:var(--muted);padding-right:4px}
 .swap{width:46px;display:grid;place-items:center;color:var(--muted);border-left:1px solid var(--line)}
 .swap:active{background:var(--line)}
@@ -280,7 +299,7 @@ h1{font:700 34px/1.05 var(--display);letter-spacing:-.02em}
 .yt{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:650;color:var(--accent);text-decoration:none;margin-top:4px;justify-self:start}
 .yt svg{width:16px;height:16px}
 
-.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translate(-50%,-140%);background:var(--text);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:650;z-index:20;transition:transform .35s cubic-bezier(.2,.9,.25,1.2);white-space:nowrap;box-shadow:0 8px 30px rgba(0,0,0,.4)}
+.toast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 14px);transform:translate(-50%,-140%);background:var(--text);color:var(--bg);padding:12px 18px;border-radius:14px;font-weight:650;z-index:20;transition:transform .35s cubic-bezier(.2,.9,.25,1.2);white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis;box-shadow:0 8px 30px rgba(0,0,0,.4)}
 .toast.show{transform:translate(-50%,0)}
 .toast.pr{background:var(--accent);color:var(--accent-ink)}
 #confetti{position:fixed;inset:0;pointer-events:none;z-index:19}
@@ -337,6 +356,12 @@ function gymDay(id){ return id === 'C' ? planCfg().cTag : GYM_TAGE[id]; }
 function workoutOn(dow){ return WORKOUTS.find(w => gymDay(w.id) === dow); }
 /* Wahl wird als Übungsname gespeichert; fehlt sie, gilt die Vorauswahl des Slots */
 function chosen(slot){
+  /* Aufstieg aus einem früheren Training: ab heute gilt die nächste Stufe */
+  const a = planCfg().auf?.[slot.id];
+  if(a && a.tag !== today()){
+    if((planCfg().wahl[slot.id] || slot.std) === a.von) planCfg().wahl[slot.id] = a.nach;
+    delete planCfg().auf[slot.id]; save();
+  }
   const w = planCfg().wahl[slot.id];
   return slot.optionen.find(o => o.name === w) || slot.optionen.find(o => o.name === slot.std) || slot.optionen[0];
 }
@@ -403,14 +428,104 @@ function prIds(id){
 function lastUsed(id){ const s = setsOf(id); return s.length ? s[s.length-1].t : (db.ex[id]?.created || 0); }
 function exercisesSorted(){ return Object.keys(db.ex).sort((a,b) => lastUsed(b) - lastUsed(a)); }
 function setsToday(name){ const id = findEx(name); return id ? setsOf(id).filter(s => dayKey(s.t) === today()) : []; }
-/* Steigern, wenn im letzten Training alle Sätze das obere Ziel erreicht haben */
-function readyFor(o){
-  const id = findEx(o.name); if(!id) return '';
-  const ses = sessions(id).filter(s => s.day !== today()); if(!ses.length) return '';
-  const last = ses[ses.length-1];
-  if(last.sets.length < o.s || !last.sets.every(x => x.r >= o.bis)) return '';
-  if(o.einheit === 'sec') return 'Bereit für die nächste Stufe';
-  return o.bw ? 'Bereit: Zusatzgewicht oder nächste Stufe' : 'Bereit: +2,5 kg';
+/* ---------- Progression ----------
+   Ziel erreicht = mindestens s Sätze am oberen Ende (bis), mit dem schwersten Gewicht dieses Trainings.
+   Gibt es im Slot eine nächste Stufe (slot.auf), wechselt der Plan beim nächsten Training dorthin.
+   Sonst Doppelte Progression: beim nächsten Mal + o.plus kg und wieder unten im Wiederholungsbereich anfangen. */
+const zielKurz = o => `${o.s} × ${o.bis}${o.einheit === 'sec' ? ' s' : ''}`;
+function amZiel(o, sets){
+  if(!sets.length) return 0;
+  const top = Math.max(...sets.map(x => x.w));
+  return sets.filter(x => x.w >= top - 1e-9 && x.r >= o.bis).length;
+}
+const zielErreicht = (o, sets) => amZiel(o, sets) >= o.s;
+function nextOf(slot, name){ const n = slot.auf?.[name]; return n ? slot.optionen.find(o => o.name === n) : null; }
+/* Platz, in dem diese Übung gerade dran ist (heutiges Training bevorzugt) */
+function slotFor(name){
+  const n = String(name).trim().toLowerCase(); if(!n) return null;
+  const tw = workoutOn(new Date().getDay());
+  const hits = allSlots().filter(s => chosen(s).name.toLowerCase() === n);
+  return hits.find(s => tw?.slots.includes(s)) || hits[0] || optionFor(name)?.slot || null;
+}
+/* Ganze Leiter, in der die Übung steht: Vorgänger (bevorzugt die schon trainierten) und Nachfolger */
+function leiterOf(slot, name){
+  const auf = slot.auf || {}, chain = [name];
+  for(let cur = name, i = 0; i < 8; i++){
+    const prev = Object.keys(auf).filter(k => auf[k] === cur && !chain.includes(k));
+    if(!prev.length) break;
+    cur = prev.find(k => findEx(k)) || prev.find(k => k === slot.std) || prev[0]; chain.unshift(cur);
+  }
+  for(let cur = name, i = 0; i < 8 && auf[cur] && !chain.includes(auf[cur]); i++){ cur = auf[cur]; chain.push(cur); }
+  return chain;
+}
+/* Gewichtssprung fürs nächste Training, falls das letzte Training (nicht heute) das Ziel geschafft hat */
+function steigerung(slot, o){
+  if(!o.plus || (slot && nextOf(slot, o.name))) return null;
+  const id = findEx(o.name); if(!id) return null;
+  const ses = sessions(id), last = ses[ses.length-1];
+  if(!last || last.day === today() || !zielErreicht(o, last.sets)) return null;
+  return { w: last.top + o.plus, plus: o.plus };
+}
+function readyFor(o, slot){
+  slot = slot || slotFor(o.name);
+  const a = slot && planCfg().auf?.[slot.id];
+  if(a && a.von === o.name) return `Nächstes Mal: ${a.nach}`;
+  const st = slot ? steigerung(slot, o) : null;
+  if(st) return `Heute +${fmt(st.plus)} kg → ${fmt(st.w)} kg`;
+  return '';
+}
+/* Nach dem Speichern: Ziel geschafft → Aufstieg vormerken (gilt ab dem nächsten Training) */
+function pruefeAufstieg(name, id){
+  const heute = setsOf(id).filter(s => dayKey(s.t) === today()), neu = [];
+  for(const slot of allSlots()){
+    const o = chosen(slot); if(o.name !== name) continue;
+    const nx = nextOf(slot, o.name), p = planCfg();
+    if(!nx || p.auf?.[slot.id] || !zielErreicht(o, heute)) continue;
+    (p.auf ||= {})[slot.id] = { von: o.name, nach: nx.name, tag: today() };
+    (p.verlauf ||= []).push({ slot: slot.id, von: o.name, nach: nx.name, t: Date.now() });
+    neu.push({ slot, nx });
+  }
+  if(neu.length) save();
+  return neu;
+}
+function aufstiegZurueck(slotId){
+  const p = planCfg(), a = p.auf?.[slotId]; if(!a) return;
+  delete p.auf[slotId];
+  const i = (p.verlauf || []).findLastIndex(v => v.slot === slotId && v.nach === a.nach);
+  if(i >= 0) p.verlauf.splice(i, 1);
+  save();
+}
+/* Satz gelöscht: Aufstieg von heute zurücknehmen, wenn das Ziel nicht mehr erfüllt ist */
+function aufstiegeNachpruefen(){
+  for(const [sid, a] of Object.entries(planCfg().auf || {})){
+    if(a.tag !== today()) continue;
+    const slot = allSlots().find(s => s.id === sid), o = slot?.optionen.find(x => x.name === a.von), id = findEx(a.von);
+    const heute = id ? setsOf(id).filter(s => dayKey(s.t) === today()) : [];
+    if(!o || !zielErreicht(o, heute)) aufstiegZurueck(sid);
+  }
+}
+/* Fortschrittskasten: Leiter, Aufstiegsziel und wie viele Sätze heute schon am Ziel sind */
+function progHtml(slot, o, withToday = true){
+  if(!slot || !o) return '';
+  const nx = nextOf(slot, o.name), a = planCfg().auf?.[slot.id], won = a && a.von === o.name;
+  const chain = leiterOf(slot, o.name), at = chain.indexOf(o.name);
+  if(!nx && !o.plus && chain.length < 2) return '';
+  const id = findEx(o.name), heute = id && withToday ? setsOf(id).filter(s => dayKey(s.t) === today()) : [];
+  const n = Math.min(o.s, amZiel(o, heute));
+  const rungs = chain.length > 1 ? `<div class="rungs">${chain.map((c, i) =>
+    `${i ? '<span class="ar">›</span>' : ''}<span class="rung ${i < at || (won && i === at) ? 'done' : i === at ? 'cur' : i === at + 1 ? 'nx' : ''}">${esc(c)}</span>`).join('')}</div>` : '';
+  let text;
+  if(won) text = `Stufe geschafft. <b>Ab dem nächsten Training: ${esc(a.nach)}</b>. Die alte Stufe passt gut zum Aufwärmen.`;
+  else if(nx) text = `Aufstieg bei <b>${zielKurz(o)}${o.seite ? ' pro Seite' : ''}</b> in allen Sätzen → danach <b>${esc(nx.name)}</b>`;
+  else if(o.plus){
+    const st = steigerung(slot, o);
+    text = st ? `Letztes Mal alle Sätze geschafft: <b>heute +${fmt(st.plus)} kg</b>, wieder bei ${o.von} ${o.einheit === 'sec' ? 's' : 'Wdh.'} anfangen.`
+              : `Schaffst du <b>${zielKurz(o)}</b> in allen Sätzen, kommen beim nächsten Mal <b>+${fmt(o.plus)} kg</b> drauf.`;
+  } else text = `Endstufe der Leiter. Steigern: langsamer absenken, länger halten oder ${o.bw ? 'Zusatzgewicht' : 'mehr Gewicht'}.`;
+  const showBar = withToday && !won && (nx || o.plus);
+  return `<div class="prog ${won ? 'win' : ''}">
+    <div class="prog-top"><span>${nx || won ? `Progression · Stufe ${at + 1}/${chain.length}` : 'Progression'}</span>${showBar ? `<span class="num">${n}/${o.s} am Ziel</span>` : ''}</div>
+    ${rungs}${showBar ? `<div class="prog-bar"><i style="width:${n / o.s * 100}%"></i></div>` : ''}<p>${text}</p></div>`;
 }
 function relDay(k){
   const diff = Math.round((keyToDate(today()) - keyToDate(k)) / 864e5);
@@ -525,7 +640,9 @@ function renderPlan(){
     ${WORKOUTS.map(workoutHtml).join('')}
     <h2 class="section"><span>So steigerst du dich</span></h2>
     <section class="card rules">
-      <p><b>Ziel erreicht → steigern.</b> Schaffst du bei allen Sätzen das obere Ende, zeigt die Übung „Bereit“. Bei Halten kommt dann die nächste Stufe, bei Gewichten +2,5 kg.</p>
+      <p><b>Stufe geschafft → nächste Stufe.</b> Schaffst du in allen Sätzen das obere Ziel (z. B. 4 × 10 Pseudo-Planche-Liegestütze), steht beim nächsten Training automatisch die nächste Stufe im Plan. Die Grenzen folgen gängigen Calisthenics-Plänen: 3 × 8 bis 3 × 12 Wiederholungen oder 10 bis 30 s Halten.</p>
+      <p><b>Gewichte: erst Wiederholungen, dann Kilo.</b> Arbeite dich bis ans obere Ende hoch, dann schlägt die App beim nächsten Mal +2,5 kg vor (Kurzhanteln +2 kg, große Beinübungen +5 kg) und du fängst wieder unten an.</p>
+      <p><b>Neue Stufe zu schwer?</b> Über ⇄ zurückwechseln. Schaffst du die untere Grenze nicht, ist die alte Stufe noch die richtige.</p>
       <p><b>Saubere Form vor längeren Halten.</b> Ein Halt zählt nur mit gestreckten Armen und geradem Körper.</p>
       <p><b>Leichtathletik geht vor.</b> Fühlen sich die Beine vor einem Wettkampf schwer an, lass Tag C ausfallen oder mach nur die Hälfte der Sätze.</p>
     </section>`;
@@ -567,12 +684,13 @@ function workoutHtml(w){
   </section>`;
 }
 function slotHtml(slot, i){
-  const o = chosen(slot), n = setsToday(o.name).length, ok = n >= o.s, ready = readyFor(o);
+  const o = chosen(slot), n = setsToday(o.name).length, ok = n >= o.s, ready = readyFor(o, slot), nx = nextOf(slot, o.name);
+  const hint = ready ? '' : nx ? `<p class="slot-auf">↑ Ab ${zielKurz(o)}: <b>${esc(nx.name)}</b></p>` : o.plus ? `<p class="slot-auf">↑ Ab ${zielKurz(o)}: <b>+${fmt(o.plus)} kg</b></p>` : '';
   return `<div class="slot">
     <button class="slot-main" data-log="${esc(o.name)}">
       <span class="slot-n ${ok ? 'ok' : ''}">${ok ? I.check : i + 1}</span>
       <div style="min-width:0"><p class="slot-t">${slot.titel}${slot.optional ? ' · optional' : ''}<span class="tag ${o.art}">${o.art === 'gym' ? 'Gym' : 'Cali'}</span></p><p class="slot-name">${esc(o.name)}</p>
-        <p class="slot-ziel">${zielText(o)} · Pause ${slot.pause}</p>${ready ? `<span class="ready">${ready}</span>` : ''}</div>
+        <p class="slot-ziel">${zielText(o)} · Pause ${slot.pause}</p>${ready ? `<span class="ready">${esc(ready)}</span>` : hint}</div>
       <span class="slot-cnt num">${n ? `${n}/${o.s}` : ''}</span>
     </button>
     <button class="swap" data-swap="${slot.id}" aria-label="Übung wechseln">${I.swap}</button>
@@ -588,6 +706,7 @@ function openSwap(slotId){
             ? `<span class="lv"><span>${STUFE[o.stufe]}</span>${[1,2,3].map(l => `<i class="${l <= o.stufe ? 'on' : ''}"></i>`).join('')}</span>`
             : `<span class="geraet">${esc(o.geraet)}</span>`}</span>
         <span class="opt-ziel">${zielText(o)}${o.art === 'cali' ? ` · ${esc(o.geraet)}` : ''}${o.name === slot.std ? ' · Vorschlag' : ''}</span>
+        ${nextOf(slot, o.name) ? `<span class="opt-ziel" style="color:var(--faint)">↑ Ab ${zielKurz(o)} weiter mit ${esc(nextOf(slot, o.name).name)}</span>` : ''}
         <span class="opt-tipp">${esc(o.tipp)}</span>
       </button>
       ${videoRow(o.name, 'Video ansehen') || `<a class="yt" href="https://www.youtube.com/results?search_query=${encodeURIComponent(o.yt)}" target="_blank" rel="noopener">${I.play}Auf YouTube ansehen</a>`}
@@ -747,6 +866,7 @@ function renderEx(id){
     </header>
     <section class="hero">${hero}</section>
     ${po ? `<p class="planlink"><span class="wk-tag" style="width:30px;height:30px;font-size:13px;border-radius:9px">${po.w.id}</span><span>Im Plan: <b>${po.w.name}</b> · Ziel ${zielText(po.opt)}${ready ? ` · <span class="up">${ready}</span>` : ''}</span></p>` : ''}
+    ${po ? (s => s ? `<div style="margin:-16px 0 16px">${progHtml(s, s.optionen.find(o => o.name === ex.name), false)}</div>` : '')(slotFor(ex.name)) : ''}
     ${videoOf(ex.name) ? `<div style="margin:-6px 0 16px">${videoRow(ex.name)}</div>` : ''}
     ${ses.length > 1 ? `
       ${metrics.length > 1 ? `<div class="seg">${metrics.map(m => `<button data-m="${m[0]}" class="${m[0]===metric?'on':''}">${m[1]}</button>`).join('')}</div>` : ''}
@@ -836,6 +956,7 @@ function openLog(name = ''){
     <div class="seg unitseg" id="unitSeg"><button data-unit="reps">Wiederholungen</button><button data-unit="sec">Sekunden halten</button></div>
     <p class="info ziel" id="ziel"></p>
     <p class="info" id="last"></p>
+    <div id="progBox"></div>
     <div id="vidBox"></div>
     <div class="steppers">
       <div class="stepper"><label for="w" id="wLabel">Gewicht kg</label><input id="w" class="num" inputmode="decimal" autocomplete="off">
@@ -879,6 +1000,10 @@ function applyDefaults(){
     if(db.ex[id].unit) log.unit = db.ex[id].unit;
     const s = setsOf(id); if(s.length){ const l = s[s.length-1]; log.w = l.w; log.r = l.r; }
   }
+  /* Letztes Mal alles geschafft: mehr Gewicht, wieder unten im Wiederholungsbereich */
+  const slot = po && slotFor(log.name), o = slot?.optionen.find(x => x.name.toLowerCase() === log.name.trim().toLowerCase());
+  const st = o && steigerung(slot, o);
+  if(st){ log.w = st.w; log.r = o.von; }
 }
 function syncLog(){
   const id = findEx(log.name), po = optionFor(log.name), named = !!log.name.trim();
@@ -922,6 +1047,8 @@ function syncLog(){
     lastEl.innerHTML = `Letztes Mal (${relDay(s.day)}): <b class="num">${s.sets.map(x => fmtSetPlain(x, mode).replace(' kg × ', '×')).join(' · ')}</b>`;
   } else lastEl.textContent = named && !id ? (po ? 'Erstes Mal – starte locker.' : 'Neue Übung') : '';
   document.getElementById('saveBtn').disabled = !named;
+  const pSlot = po && slotFor(log.name);
+  document.getElementById('progBox').innerHTML = pSlot ? progHtml(pSlot, pSlot.optionen.find(x => x.name.toLowerCase() === cur)) : '';
   /* Video nur neu setzen, wenn die Übung wechselt – sonst würde ein laufendes Video abbrechen */
   const vb = document.getElementById('vidBox'), vNow = videoOf(log.name.trim()) ? log.name.trim() : '';
   if(vb.dataset.cur !== vNow){ vb.dataset.cur = vNow; vb.innerHTML = vNow ? videoRow(vNow) : ''; }
@@ -951,7 +1078,13 @@ function saveSet(){
   db.sets.push(set); save();
   navigator.vibrate?.(12);
   const n = setsOf(id).filter(s => dayKey(s.t) === today()).length;
-  if(prIds(id).has(set.id)){ toast('Neuer Rekord 🎉', true); confetti(); }
+  const auf = pruefeAufstieg(name, id);
+  if(auf.length){
+    navigator.vibrate?.([20, 60, 20]);
+    toast("Stufe geschafft 🎉", true, () => { auf.forEach(a => aufstiegZurueck(a.slot.id)); render(); if(sheetOpen && log) syncLog(); });
+    confetti();
+  }
+  else if(prIds(id).has(set.id)){ toast('Neuer Rekord 🎉', true); confetti(); }
   else if(po && n === po.opt.s) toast('Übung geschafft ✓');
   else toast('Gespeichert');
   if(!po) ex.pause = log.pause;
@@ -1031,7 +1164,7 @@ function beep(){
 document.addEventListener('visibilitychange', () => { if(!document.hidden) updateTimerUI(); });
 function deleteSet(sid){
   const i = db.sets.findIndex(s => s.id === sid); if(i < 0) return;
-  const [removed] = db.sets.splice(i, 1); save(); render();
+  const [removed] = db.sets.splice(i, 1); aufstiegeNachpruefen(); save(); render();
   if(sheetOpen && log) syncLog();
   toast('Satz gelöscht', false, () => { db.sets.push(removed); save(); render(); if(sheetOpen && log) syncLog(); });
 }

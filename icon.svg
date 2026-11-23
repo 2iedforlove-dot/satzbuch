@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#0b0b0c"/>
-  <rect x="112" y="276" width="80" height="128" rx="24" fill="#d4ff3a" opacity=".45"/>
-  <rect x="216" y="200" width="80" height="204" rx="24" fill="#d4ff3a" opacity=".72"/>
-  <rect x="320" y="108" width="80" height="296" rx="24" fill="#d4ff3a"/>
+  <defs><radialGradient id="g" cx="50%" cy="0%" r="90%"><stop offset="0" stop-color="#3a2014"/><stop offset="1" stop-color="#0a0908"/></radialGradient>
+  <linearGradient id="o" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff8650"/><stop offset="1" stop-color="#ff5a1f"/></linearGradient></defs>
+  <rect width="512" height="512" rx="112" fill="url(#g)"/>
+  <rect x="112" y="276" width="80" height="128" rx="24" fill="#ff6a2b" opacity=".4"/>
+  <rect x="216" y="200" width="80" height="204" rx="24" fill="#ff6a2b" opacity=".7"/>
+  <rect x="320" y="108" width="80" height="296" rx="24" fill="url(#o)"/>
 </svg>

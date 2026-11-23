@@ -17,10 +17,10 @@ PRUEF = ROOT / 'werkzeug' / 'videos_einbettbar.json'
 
 def uebungen():
     """Name und Suchbegriff aller Übungen aus plan.js (per Node ausgewertet)."""
-    js = ("global.window={};require(process.argv[1]);const m={};"
-          "for(const w of window.WORKOUTS)for(const s of w.slots)for(const o of s.optionen)m[o.name]=o.yt;"
+    js = ("global.window={};require(process.argv[1]);require(process.argv[2]);const m={};"
+          "for(const w of [...window.WORKOUTS,...window.EXTRAS])for(const s of w.slots)for(const o of s.optionen)m[o.name]=o.yt;"
           "console.log(JSON.stringify(m))")
-    return json.loads(subprocess.check_output(['node', '-e', js, str(PLAN)], text=True, encoding='utf-8'))
+    return json.loads(subprocess.check_output(['node', '-e', js, str(PLAN), str(ROOT / 'extras.js')], text=True, encoding='utf-8'))
 
 def sekunden(text):
     teile = [int(x) for x in text.split(':')]

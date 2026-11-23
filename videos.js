@@ -839,5 +839,185 @@ window.VIDEOS = {
   "titel": "How to do Medicine Ball Slams for Core Strength and Conditioning",
   "kanal": "Seriously Strong Training",
   "dauer": 142
+ },
+ "Handgelenk-Vorbereitung": {
+  "id": "CF-RHMI-Oo0",
+  "titel": "TURBO Wrist Warm Up!",
+  "kanal": "Tykato Fitness",
+  "dauer": 124
+ },
+ "Handgelenk-Curls": {
+  "id": "7ac_qmBjkFI",
+  "titel": "How to Do Dumbbell Wrist Curls",
+  "kanal": "LIVESTRONG",
+  "dauer": 89
+ },
+ "Passives Hängen": {
+  "id": "986OVu3oRdY",
+  "titel": "6 Benefits Of Dead Hangs - Why You Should Hang Every Day",
+  "kanal": "Melvin Thinks",
+  "dauer": 138
+ },
+ "Deutsches Hängen": {
+  "id": "GXppiY-SitY",
+  "titel": "Learn the German hang in 30 seconds.",
+  "kanal": "The Movement Collective ",
+  "dauer": 38
+ },
+ "Pike-Dehnung": {
+  "id": "WSkPQ1lXfNk",
+  "titel": "CTM - Pike Stretch",
+  "kanal": "CompTrain Masters",
+  "dauer": 15
+ },
+ "Pancake-Dehnung": {
+  "id": "Kb_tRC_V52M",
+  "titel": "3 move Routine to Improve your Pancake Stretch",
+  "kanal": "Loco Motion New York",
+  "dauer": 190
+ },
+ "Jefferson Curl": {
+  "id": "YGlAdtSKQaU",
+  "titel": "Jefferson Curls",
+  "kanal": "The Barbell Physio",
+  "dauer": 25
+ },
+ "Couch Stretch": {
+  "id": "QiKl5UoiG5c",
+  "titel": "Couch Stretch for Hip Flexors",
+  "kanal": "Movement Enhanced",
+  "dauer": 33
+ },
+ "90/90-Wechsel": {
+  "id": "m51AZSXMvEA",
+  "titel": "90 90 Hip Switch",
+  "kanal": "The Active Life",
+  "dauer": 31
+ },
+ "Ring-Bizepscurls": {
+  "id": "dLBQxcjsdSs",
+  "titel": "How To Ring Bicep Curl | Gymnastic Ring Bicep Curls | Calisthenics Bicep Workout",
+  "kanal": "Kace Hollingsworth",
+  "dauer": 56
+ },
+ "Kurzhantel-Curls": {
+  "id": "6DeLZ6cbgWQ",
+  "titel": "How to Perform Standing Dumbbell Bicep Curls",
+  "kanal": "Chris McCarthy",
+  "dauer": 28
+ },
+ "Hammer-Curls": {
+  "id": "BRVDS6HVR9Q",
+  "titel": "How To Perform HAMMER CURLS | Biceps Exercise Tutorial",
+  "kanal": "Buff Dudes Workouts",
+  "dauer": 90
+ },
+ "Kabel-Curls": {
+  "id": "2MUEL4nL6hA",
+  "titel": "How to PROPERLY Cable Bicep Curl For Bigger Biceps (EASY FIX)",
+  "kanal": "Colossus Fitness",
+  "dauer": 73
+ },
+ "Diamant-Liegestütze": {
+  "id": "J0DnG1_S92I",
+  "titel": "How To: Diamond Push-Up",
+  "kanal": "ScottHermanFitness",
+  "dauer": 110
+ },
+ "Überkopf-Trizepsstrecken am Kabel": {
+  "id": "ns-RGsbzqok",
+  "titel": "Overhead Cable Tricep Extension",
+  "kanal": "ChadMollickDotCom",
+  "dauer": 43
+ },
+ "Y-Heben liegend": {
+  "id": "YpE7HmoJ2wY",
+  "titel": "How to do a Prone Y Raise",
+  "kanal": "Get Strong with Emily",
+  "dauer": 35
+ },
+ "Kurzhantel-Seitheben": {
+  "id": "pgrWjBfaFe8",
+  "titel": "How to PROPERLY Dumbbell Lateral Raise For Bigger Shoulders (FIX THIS!)",
+  "kanal": "Colossus Fitness",
+  "dauer": 103
+ },
+ "Kabel-Seitheben": {
+  "id": "Z5FA9aq3L6A",
+  "titel": "How To Do Cable Lateral Raises",
+  "kanal": "PureGym",
+  "dauer": 15
+ },
+ "Band Pull-Aparts": {
+  "id": "stwYTTPXubo",
+  "titel": "How To Do Banded Pull-Aparts",
+  "kanal": "Tangelo - Seattle Chiropractor + Rehab",
+  "dauer": 51
+ },
+ "Face Pulls": {
+  "id": "0Po47vvj9g4",
+  "titel": "How To Do Cable Face Pulls",
+  "kanal": "PureGym",
+  "dauer": 15
+ },
+ "Reverse Flys an der Maschine": {
+  "id": "v0rJuhEa59c",
+  "titel": "Reverse Pec Deck Fly | Proper Form Tutorial for Rear Delts",
+  "kanal": "FIT.nl",
+  "dauer": 20
+ },
+ "Farmer’s Walk": {
+  "id": "PV5cqXK_Lgo",
+  "titel": "How To Farmers Walk | Best Grip Workout | DB Farmers Hold | Forearms - Traps Exercise | HASfit",
+  "kanal": "HASfit",
+  "dauer": 108
+ },
+ "Cossack Squat": {
+  "id": "MJvazUpmdZU",
+  "titel": "COSSACK SQUAT | DO IT RIGHT ✅ 📝 The Cossack squat is a great hip, hamstring and adductor mobility",
+  "kanal": "Elastaboy 😎",
+  "dauer": 29
+ },
+ "Hüftbrücke": {
+  "id": "OUgsJ8-Vi0E",
+  "titel": "How to Perform the Perfect Glute Bridge",
+  "kanal": "Airrosti Rehab Centers",
+  "dauer": 140
+ },
+ "Ausfallschritte rückwärts": {
+  "id": "xrPteyQLGAo",
+  "titel": "How To Reverse Lunge",
+  "kanal": "PureGym",
+  "dauer": 15
+ },
+ "Tibialis-Heben": {
+  "id": "VzIcGAgBiaM",
+  "titel": "Tibialis Wall Raises (Exercise Demo)",
+  "kanal": "The Barefoot Sprinter",
+  "dauer": 26
+ },
+ "Dead Bug": {
+  "id": "o4GKiEoYClI",
+  "titel": "Dead Bug Exercise For Core Stability  | Pursuit Physical Therapy",
+  "kanal": "Pursuit Physical Therapy",
+  "dauer": 21
+ },
+ "Bird Dog": {
+  "id": "QABW99qPiNM",
+  "titel": "Bird Dog Exercise | Improve Your Core and Balance",
+  "kanal": "Muscle & Motion",
+  "dauer": 79
+ },
+ "Kreuzheben": {
+  "id": "GxsLrTzyGUU",
+  "titel": "How to Do A Conventional Deadlift Correctly",
+  "kanal": "PureGym",
+  "dauer": 53
+ },
+ "Freier Handstand üben": {
+  "id": "QGQrf7GQya4",
+  "titel": "Why Wall Handstand Push-Ups Won’t Teach You How to Balance a Freestanding HSPU",
+  "kanal": "Prismatic Strength",
+  "dauer": 48
  }
 };

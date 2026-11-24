@@ -4531,7 +4531,38 @@
    "dauer": 13
   }
  ],
- "Schulter-Dislocates mit Band": [],
+ "Schulter-Dislocates mit Band": [
+  {
+   "id": "a9rqTzZaI7s",
+   "titel": "Band Shoulder Dislocates",
+   "kanal": "STRONG ATHLETE",
+   "dauer": 45
+  },
+  {
+   "id": "hmIgcZgNPVk",
+   "titel": "Band Shoulder Dislocates",
+   "kanal": "Theory of Motion Exercise Library",
+   "dauer": 19
+  },
+  {
+   "id": "th1CUY49IzY",
+   "titel": "Band Shoulder Dislocates",
+   "kanal": "Testosterone Nation",
+   "dauer": 60
+  },
+  {
+   "id": "riVxa9By-pM",
+   "titel": "How To Do Band Dislocates / Pass-Throughs (Shoulder Mobility)",
+   "kanal": "66 Days Fitness Coaching",
+   "dauer": 96
+  },
+  {
+   "id": "nikVq2pMVg4",
+   "titel": "Shoulder Dislocatations / Passthroughs with a Resistance Band! An exercise you dont want to miss.",
+   "kanal": "Tom Morrison",
+   "dauer": 60
+  }
+ ],
  "Passives Hängen": [
   {
    "id": "986OVu3oRdY",
@@ -4712,7 +4743,38 @@
    "dauer": 55
   }
  ],
- "Tiefe Hocke halten": [],
+ "Tiefe Hocke halten": [
+  {
+   "id": "D3zYzIlbjXM",
+   "titel": "Mobility - Deep Squat Hold",
+   "kanal": "AV High Performance Academy",
+   "dauer": 24
+  },
+  {
+   "id": "uQbUORRwzqk",
+   "titel": "How to do a Supported Deep Squat Hold",
+   "kanal": "Get Strong with Emily",
+   "dauer": 20
+  },
+  {
+   "id": "ExcAvoAiUQk",
+   "titel": "Deep Squat Mobility Stick Challenge",
+   "kanal": "Nate Amado",
+   "dauer": 50
+  },
+  {
+   "id": "enThal66tUs",
+   "titel": "The Deep Squat Rotation (Mobility Exercise) By Squat University",
+   "kanal": "Squat University",
+   "dauer": 28
+  },
+  {
+   "id": "w6R9sszZrIw",
+   "titel": "Deep Squat Hold IR Knee Drops Tutorial",
+   "kanal": "Jacobs Fitness",
+   "dauer": 61
+  }
+ ],
  "90/90-Wechsel": [
   {
    "id": "m51AZSXMvEA",
@@ -5414,6 +5476,422 @@
    "id": "GDVq14_1k_Y",
    "titel": "How to properly do a toe pull #handstand #balance #drill",
    "kanal": "Austin Cole",
+   "dauer": 22
+  }
+ ],
+ "Schulterantippen im Stütz": [
+  {
+   "id": "amA9sc6dmH0",
+   "titel": "Plank Shoulder Taps",
+   "kanal": "Foundation Chiropractic + Physiotherapy",
+   "dauer": 64
+  },
+  {
+   "id": "gKA5LBy7WAI",
+   "titel": "How To Properly Do a Plank with Shoulder Taps - Strength Exercises - Wellen",
+   "kanal": "Wellen",
+   "dauer": 118
+  },
+  {
+   "id": "8rgurWd-PB8",
+   "titel": "Plank Shoulder Taps",
+   "kanal": "The Active Life",
+   "dauer": 19
+  },
+  {
+   "id": "jgQ49dXfznk",
+   "titel": "Plank with Shoulder Taps - Moving through Cancer – Penn State College of Medicine",
+   "kanal": "Penn State Health",
+   "dauer": 30
+  },
+  {
+   "id": "N1fOPufXOuY",
+   "titel": "Healthworks Youth Fitness 201: Wide Leg Plank with Shoulder Taps Exercise | Cincinnati Children's",
+   "kanal": "Cincinnati Children's",
+   "dauer": 84
+  }
+ ],
+ "Knieheben im Einbeinstand": [
+  {
+   "id": "T1s9sK3W6cs",
+   "titel": "Balance and Stability: Single Leg Knee Drive Hold + Catch",
+   "kanal": "Coach Nick Finest Athletics",
+   "dauer": 59
+  },
+  {
+   "id": "tZ63qfVZ9KU",
+   "titel": "Single Leg Balance (Hip Hinge to Knee Drive)",
+   "kanal": "E3 Rehab Exercise Library",
+   "dauer": 18
+  },
+  {
+   "id": "6-dcr-zmbV4",
+   "titel": "Single Leg Balance with Knee Drive",
+   "kanal": "Rohrsen_Performance",
+   "dauer": 24
+  },
+  {
+   "id": "1elLhR4lDA8",
+   "titel": "Single Leg Knee Drive Hold with the Double Line SlackBoard Plus",
+   "kanal": "GIBBON SlackBoards and SlackLines",
+   "dauer": 35
+  },
+  {
+   "id": "1hrOIfy-6F8",
+   "titel": "Weighted Step-Up with Knee Drive | Single-Leg Strength & Balance Exercise",
+   "kanal": "Therapeutic EDGE",
+   "dauer": 124
+  }
+ ],
+ "Step-up mit Knieheben": [
+  {
+   "id": "PemRK2kC_w8",
+   "titel": "Step Up and Knee Drive Tutorial - Proper Form and Technique",
+   "kanal": "Runna",
+   "dauer": 45
+  },
+  {
+   "id": "1abkEJQ7gWE",
+   "titel": "Step Up with Knee Drive",
+   "kanal": "Theory of Motion Exercise Library",
+   "dauer": 21
+  },
+  {
+   "id": "8fURQlBUtTY",
+   "titel": "Box Step Up Knee Drive | Lunge | Strength and Conditioning Exercises",
+   "kanal": "Rehab My Patient",
+   "dauer": 35
+  },
+  {
+   "id": "uo5xxhBgFN4",
+   "titel": "Single Leg Step Up With Knee Drive",
+   "kanal": "ProForm Physical Therapy",
+   "dauer": 25
+  },
+  {
+   "id": "1hrOIfy-6F8",
+   "titel": "Weighted Step-Up with Knee Drive | Single-Leg Strength & Balance Exercise",
+   "kanal": "Therapeutic EDGE",
+   "dauer": 124
+  }
+ ],
+ "Hürdengehen": [
+  {
+   "id": "CetJZG0NUdk",
+   "titel": "Hurdles: Walkover Drills",
+   "kanal": "Tim D",
+   "dauer": 125
+  },
+  {
+   "id": "77VIMFS1dO4",
+   "titel": "Hurdle drills Walkover bent leg forward backward",
+   "kanal": "Steve Lumley",
+   "dauer": 148
+  },
+  {
+   "id": "v_SkWz8mGVs",
+   "titel": "Hurdle drills straight leg walkover",
+   "kanal": "Steve Lumley",
+   "dauer": 64
+  },
+  {
+   "id": "GCAzr3mX18Q",
+   "titel": "Hurdle Walkover Drill 4 Athlete 1",
+   "kanal": "Aberdare VAAC",
+   "dauer": 17
+  },
+  {
+   "id": "9ZThcFDKxh4",
+   "titel": "One-Step Hurdle Walkover Drill from Terrence Trammell!",
+   "kanal": "Championship Productions",
+   "dauer": 105
+  }
+ ],
+ "Nachziehbein an der Wand": [
+  {
+   "id": "Vm7-UZ_90OU",
+   "titel": "HOW TO HURDLE - Wall Drills Trail Leg Right",
+   "kanal": "Trackwired",
+   "dauer": 30
+  },
+  {
+   "id": "Exr2CHqHp5o",
+   "titel": "HURDLE DRILLS: Wall Drills Trail Leg Right",
+   "kanal": "Trackwired",
+   "dauer": 29
+  },
+  {
+   "id": "wkEbs6znupc",
+   "titel": "HURDLE DRILLS: Wall Drills Trail Leg Left",
+   "kanal": "Trackwired",
+   "dauer": 27
+  },
+  {
+   "id": "HrV9YDcVQkk",
+   "titel": "Hurdle+Wall+Drills+Trail+Leg+Right",
+   "kanal": "Training Videos - Hurdles",
+   "dauer": 30
+  },
+  {
+   "id": "NA2UvqKxXBs",
+   "titel": "Hurdle+Wall+Drills+Trail+Leg+Left",
+   "kanal": "Training Videos - Hurdles",
+   "dauer": 27
+  }
+ ],
+ "Pogo-Sprünge": [
+  {
+   "id": "tdpoXvHNA_o",
+   "titel": "Avoid these 3 MISTAKES doing POGO jumps   #plyometrics",
+   "kanal": "FCoaching",
+   "dauer": 30
+  },
+  {
+   "id": "L_khHgMz9uU",
+   "titel": "Pogo Jumps",
+   "kanal": "Ashby Smith",
+   "dauer": 19
+  },
+  {
+   "id": "j0nl5dWuqN4",
+   "titel": "Pogo Jumps Tutorial - Proper Form and Technique",
+   "kanal": "Runna",
+   "dauer": 28
+  },
+  {
+   "id": "89sNU6fyftI",
+   "titel": "Pogo Jumps",
+   "kanal": "Jr. NBA Jr. WNBA",
+   "dauer": 97
+  },
+  {
+   "id": "Oy4GBFpMYtM",
+   "titel": "Straight Leg Quick Jump | Plyometric POGO JUMPS for Height",
+   "kanal": "Simple Speed Coach",
+   "dauer": 130
+  }
+ ],
+ "Hocksprünge": [
+  {
+   "id": "4hXaSh2WlyE",
+   "titel": "How to Tuck Jump (Technique Guide)",
+   "kanal": "Les Mills UK",
+   "dauer": 37
+  },
+  {
+   "id": "Yl7tEmpzknY",
+   "titel": "Onnit Tutorials | Tuck Jumps",
+   "kanal": "Onnit",
+   "dauer": 16
+  },
+  {
+   "id": "7sxajJ4VpJI",
+   "titel": "Tuck Jumps for Beginner Gymnasts : Beginning Gymnastics",
+   "kanal": "eHowSports",
+   "dauer": 58
+  },
+  {
+   "id": "-bnJGikRGsM",
+   "titel": "How to do a Tuck Jump | Proper Form & Technique | NASM",
+   "kanal": "National Academy of Sports Medicine (NASM)",
+   "dauer": 27
+  },
+  {
+   "id": "IbqkHBfZxHY",
+   "titel": "Mastering Handstand Tuck Jump Entry",
+   "kanal": "Joseph Flinders",
+   "dauer": 84
+  }
+ ],
+ "Skater-Sprünge": [
+  {
+   "id": "usZgF8TBWcA",
+   "titel": "Skater Jumps Lateral Bounds",
+   "kanal": "Made Possible Personal Training",
+   "dauer": 58
+  },
+  {
+   "id": "Xz27DudBfSs",
+   "titel": "Lateral Skater Jumps",
+   "kanal": "The Active Life",
+   "dauer": 13
+  },
+  {
+   "id": "gjiZLF5S6aA",
+   "titel": "Lateral Bounds ‘Lateral Jumps’ | Lateral Power & Agility Training",
+   "kanal": "Simple Speed Coach",
+   "dauer": 222
+  },
+  {
+   "id": "xds4dDS6a7Y",
+   "titel": "Continuous Lateral Bounds/Speed Skaters",
+   "kanal": "Performance Course",
+   "dauer": 14
+  },
+  {
+   "id": "QnXHHri9hbs",
+   "titel": "Skater/Heiden Jump/Lateral Bound",
+   "kanal": "Anthony Vernice",
+   "dauer": 37
+  }
+ ],
+ "Medizinball-Stoß aus der Hocke": [
+  {
+   "id": "97BoQfHJduo",
+   "titel": "Medicine Ball Squat Chest Passes",
+   "kanal": "Kai Simon",
+   "dauer": 15
+  },
+  {
+   "id": "_uPWwgIkEiM",
+   "titel": "Medicine Ball Squat Jump Chest Pass - GymCalc.com",
+   "kanal": "GymCalc",
+   "dauer": 24
+  },
+  {
+   "id": "XeOPJbDw34w",
+   "titel": "Bosu Ball Squat Medicine Ball Chest Pass",
+   "kanal": "Kai Simon",
+   "dauer": 35
+  },
+  {
+   "id": "WUdZhktKo8Q",
+   "titel": "Medicine Ball Squat Throw",
+   "kanal": "Coach Rachel Andersen",
+   "dauer": 16
+  },
+  {
+   "id": "7Id08Z1Dw7I",
+   "titel": "Medicine Ball Vertical Squat Push Throw",
+   "kanal": "Aaron Howse Strength and Conditioning",
+   "dauer": 14
+  }
+ ],
+ "Kurzhantel-Reißen einarmig": [
+  {
+   "id": "0yd9443Y-fg",
+   "titel": "How to do a Dumbbell Snatch | The Right Way | Well+Good",
+   "kanal": "Well+Good",
+   "dauer": 112
+  },
+  {
+   "id": "3mlhF3dptAo",
+   "titel": "The Dumbbell Power Snatch",
+   "kanal": "CrossFit",
+   "dauer": 55
+  },
+  {
+   "id": "BAupN_03YkI",
+   "titel": "Alternating Dumbbell Snatch Standard",
+   "kanal": "Turf Games",
+   "dauer": 20
+  },
+  {
+   "id": "oAo-jRIRthM",
+   "titel": "Alternating Dumbbell Snatch | CrossFit Invictus",
+   "kanal": "CrossFit Invictus",
+   "dauer": 20
+  },
+  {
+   "id": "9520DJiFmvE",
+   "titel": "The Dumbbell Power Snatch",
+   "kanal": "CrossFit",
+   "dauer": 69
+  }
+ ],
+ "Hürdensprünge": [
+  {
+   "id": "YfzVNbJh8yY",
+   "titel": "High Hurdle Hops | Plyometric | Strength and Conditioning Exercises",
+   "kanal": "Rehab My Patient",
+   "dauer": 47
+  },
+  {
+   "id": "1jZx2Rcaorc",
+   "titel": "Depth Drop to Hurdle Hop",
+   "kanal": "Ochsner Performance Training",
+   "dauer": 15
+  },
+  {
+   "id": "aQwKvO4yCG4",
+   "titel": "20 Mini Hurdle Drills for Speed, Quickness, and Agility",
+   "kanal": "Nick Parasiliti",
+   "dauer": 141
+  },
+  {
+   "id": "vqQPFVqf77o",
+   "titel": "MINI HURDLE DRILLS: 8 athletics running exercises. Agility, Plyo, Speed training (run faster today)",
+   "kanal": "Bogdan Bondarenko",
+   "dauer": 116
+  },
+  {
+   "id": "x8r4gYO2uRg",
+   "titel": "Plyo Hurdle Jumps",
+   "kanal": "Champion Physical Therapy and Performance",
+   "dauer": 16
+  }
+ ],
+ "Sprungläufe": [
+  {
+   "id": "fPcGgGDz6_8",
+   "titel": "Bounding (Running Drill)",
+   "kanal": "The Barefoot Sprinter",
+   "dauer": 18
+  },
+  {
+   "id": "LwsQ-AGc8JU",
+   "titel": "BOUNDING DRILLS - ALTERNATE BOUND FOR SPEED",
+   "kanal": "Trackwired",
+   "dauer": 27
+  },
+  {
+   "id": "Z-vUom5uAJw",
+   "titel": "4 BOUNDING DRILLS TO INCREASE YOUR SPRINT SPEED",
+   "kanal": "Amanda Ruller",
+   "dauer": 101
+  },
+  {
+   "id": "w8OlWv7I3Ko",
+   "titel": "BOUNDING DRILLS - GALLOPS",
+   "kanal": "Trackwired",
+   "dauer": 36
+  },
+  {
+   "id": "LGOV4CKtZGA",
+   "titel": "Drills Bounding",
+   "kanal": "focusnfly",
+   "dauer": 29
+  }
+ ],
+ "Kettlebell-Swing": [
+  {
+   "id": "RU88iqRVunk",
+   "titel": "How to do a Russian Kettlebell Swing by Wodstar",
+   "kanal": "Wodstar",
+   "dauer": 32
+  },
+  {
+   "id": "3DhYS0oXAeo",
+   "titel": "Master The Russian Kettlebell Swing In 3 Minutes!",
+   "kanal": "Mobility Doc",
+   "dauer": 139
+  },
+  {
+   "id": "_vtp1QiJjeY",
+   "titel": "Russian Kettlebell Swing (RKBS) - CrossFit Movement Library",
+   "kanal": "Rec Gym Kirrawee",
+   "dauer": 26
+  },
+  {
+   "id": "wE7YblnbRws",
+   "titel": "Russian Kettlebell Swing - Demo Video",
+   "kanal": "THECoachDannyB",
+   "dauer": 21
+  },
+  {
+   "id": "0Qa51JIevwI",
+   "titel": "Russian Kettlebell Swings Tutorial",
+   "kanal": "IronmasterPro",
    "dauer": 22
   }
  ]

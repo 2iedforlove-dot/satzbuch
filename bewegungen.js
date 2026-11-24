@@ -570,11 +570,11 @@
     return { dauer: d, fokus: ['beinbeuger'], props: o.props, keys: [
       { t: 0, ...pose(o.von), k: 0, a: [160, 40], arel: true, txt: o.txt0 },
       { t: .3, txt: o.txt1 },
-      { t: 2.6, ...pose(o.bis), a: [85, 88], txt: o.txt2 },
+      { t: 2.6, ...pose(o.bis), a: o.arme || [85, 88], txt: o.txt2 },
       { t: 3, txt: 'zurück nach oben' },
       { t: d - .3, ...pose(o.von), a: [160, 40] } ] };
   }
-  B['Nordic Curls'] = knieLinie({ von: 2, bis: 72, props: [{ typ: 'block', c: [0, .03], g: [.3, .06, .5] }, { typ: 'block', c: [-.46, .2], g: [.12, .12, .5] }], txt0: 'Füße fixiert, Körper gerade', txt1: 'so langsam wie möglich nach vorn', txt2: 'mit den Händen abfangen' });
+  B['Nordic Curls'] = knieLinie({ von: 2, bis: 72, props: [{ typ: 'block', c: [0, .03], g: [.3, .06, .5] }, { typ: 'block', c: [-.46, .2], g: [.12, .12, .5] }], arme: [62, 66], txt0: 'Füße fixiert, Körper gerade', txt1: 'so langsam wie möglich nach vorn', txt2: 'mit den Händen abfangen' });
   B['Glute-Ham Raise'] = knieLinie({ von: 4, bis: 96, ky: .95, props: [{ typ: 'block', c: [.05, .8], g: [.45, .22, .4] }, { typ: 'block', c: [-.46, 1.04], g: [.12, .12, .4] }, { typ: 'block', c: [-.2, .4], g: [.2, .8, .3] }], txt0: 'Knie auf dem Polster, Füße fixiert', txt1: 'nach vorn ablassen', txt2: 'mit den Beinbeugern hochziehen' });
   const PADS = [{ typ: 'block', an: 'fussL', c: [0, -.06], g: [.14, .02, .12], z: .14 }, { typ: 'block', an: 'fussR', c: [0, -.06], g: [.14, .02, .12], z: -.14 }];
   B['Gleit-Beinbeuger'] = { dauer: 3.4, fokus: ['beinbeuger', 'gesaess'], props: PADS, keys: [
@@ -833,13 +833,15 @@
   }
   B['Farmer’s Walk'] = gehen({ fokus: ['unterarme', 'schultern', 'bauch'], arme: { a: [180, 180], as: 7 }, props: [{ typ: 'kh' }], txt0: 'aufrecht, zügig gehen' });
   B['Einseitiges Tragen'] = gehen({ fokus: ['bauch', 'unterarme'], arme: { L: { a: [180, 180], as: 6 }, R: { a: [176, 170] } }, props: [{ typ: 'kh', an: 'L' }], txt0: 'nicht zur Seite kippen' });
-  B['Schlittenschieben'] = gehen({ r: 48, x: -.2, y: STAND - .12, fokus: ['beine', 'gesaess'], arme: { h: [.72, 1.0], az: .05, ah: [-1, -.3] }, props: [{ typ: 'block', c: [1.1, .25], g: [.6, .3, .6] }, { typ: 'block', c: [.84, .65], g: [.05, .8, .5] }], txt0: 'weit vorgelehnt, kräftig vom Boden abdrücken' });
+  B['Schlittenschieben'] = gehen({ r: 48, x: -.2, y: STAND - .06, fokus: ['beine', 'gesaess'], arme: { h: [.72, 1.0], az: .05, ah: [-1, -.3] }, props: [{ typ: 'block', c: [1.1, .25], g: [.6, .3, .6] }, { typ: 'block', c: [.84, .65], g: [.05, .8, .5] }], txt0: 'weit vorgelehnt, kräftig vom Boden abdrücken' });
   B['Wall Drill'] = (() => { const al = 45, P = [SIN(al) * .89 - .1, .1 + COS(al) * .89];
     return { dauer: 1.6, fokus: ['beine', 'gesaess'], cam: -40, props: [{ typ: 'wand', x: .98, n: 1 }], keys: [
       { t: 0, p: P, r: al, k: 0, h: [.96, 1.32], az: .02, L: { f: [-.1, .1], fw: 25 }, R: { l: [al + 70, al + 160] }, txt: 'schräg an der Wand, Knie hoch' },
-      { t: .4, R: { f: [-.1, .1], fw: 25 } },
+      { t: .2, R: { l: [176, 262] } },
+      { t: .4, R: { f: [-.1, .1], fw: 25 }, L: { l: [176, 262] } },
       { t: .8, L: { l: [al + 70, al + 160] }, R: { f: [-.1, .1] }, txt: 'schnell wechseln' },
-      { t: 1.2, L: { f: [-.1, .1] } } ] }; })();
+      { t: 1.0, L: { l: [176, 262] } },
+      { t: 1.2, L: { f: [-.1, .1] }, R: { l: [176, 262] } } ] }; })();
   B['Kabel-Knieheben'] = { dauer: 2.4, fokus: ['oberschenkel'], props: [{ typ: 'kabel', von: [-.9, .12, -.12], an: 'fussR' }], keys: [
     { t: 0, ...STEH, L: { f: [0, .08], a: [150, 70] }, R: { l: [185, 190], a: [200, 120] }, txt: 'Kabel am Fuß' },
     { t: .8, R: { l: [82, 172], a: [150, 70] }, L: { a: [200, 120] }, txt: 'Knie explosiv hoch' },
@@ -867,6 +869,107 @@
     { t: 0, p: [0, .52], r: 18, k: 0, L: { f: [.46, .08], lh: [1, 0] }, R: { l: [188, 4] }, a: [180, 100], txt: 'hinteres Knie an der Bank, Schienbein hoch' },
     { t: 1.3, r: -4, a: [176, 176], txt: 'Oberkörper aufrichten, Gesäß anspannen' },
     { t: 3.8, txt: 'halten …' } ] };
+
+  /* ---------- Explosivkraft (Extra-Einheiten) ---------- */
+  /* Hürde: Latte plus zwei Pfosten mit Fuß, x = Lattenposition, h = Höhe */
+  const huerde = (x, h, b = .9) => [
+    { typ: 'block', c: [x, h - .035], g: [.03, .07, b], holz: true },
+    ...[1, -1].flatMap(s => [{ typ: 'block', c: [x, h / 2], g: [.025, h, .025], z: s * b / 2 }, { typ: 'block', c: [x - .1, .015], g: [.28, .03, .03], z: s * b / 2 }]) ];
+  B['Hocksprünge'] = { dauer: 2, fokus: ['beine', 'gesaess'], keys: [
+    { t: 0, ...STEH, a: [175, 175], txt: 'kurz ausholen …' },
+    { t: .3, p: [-.1, .76], r: 30, ...ARME_HINTEN },
+    { t: .6, p: [0, 1.42], r: 4, l: [62, 185], a: [60, 40], txt: 'explosiv hoch, Knie zur Brust' },
+    { t: .9, p: [-.02, .8], r: 24, f: [.02, .08], a: [110, 90], txt: 'leise landen, gleich wieder hoch' },
+    { t: 1.3, ...STEH, a: [175, 175] } ] };
+  B['Pogo-Sprünge'] = { dauer: .7, fokus: ['waden'], keys: [
+    { t: 0, p: [0, STAND - .02], r: 2, k: 0, f: [0, .08], fz: .07, lh: [1, 0], fw: 0, a: [165, 110], as: 10, txt: 'Knie fast gestreckt, nur aus den Füßen federn' },
+    { t: .35, p: [0, STAND + .16], f: [0, .26], fw: 32 } ] };
+  B['Hürdensprünge'] = { dauer: 2.8, fade: true, fokus: ['beine', 'gesaess', 'waden'], props: [...huerde(.5, .35), ...huerde(1.3, .35)], keys: [
+    { t: 0, ...STEH, a: [175, 175], txt: 'vor der ersten Hürde' },
+    { t: .3, p: [-.08, .78], r: 28, ...ARME_HINTEN, txt: 'ausholen' },
+    { t: .6, p: [.5, 1.44], r: 6, l: [68, 190], ...ARME_VORN, txt: 'Knie hoch über die Hürde' },
+    { t: .9, p: [.86, .86], r: 16, f: [.92, .08], ...ARME_HINTEN, txt: 'kurz aufkommen …' },
+    { t: 1.2, p: [1.3, 1.44], r: 6, l: [68, 190], ...ARME_VORN, txt: '… und sofort weiter' },
+    { t: 1.5, p: [1.66, .8], r: 24, f: [1.72, .08], a: [100, 90], txt: 'weich landen' },
+    { t: 2.2, p: [1.72, STAND - .01], r: 2, f: [1.72, .08], a: [175, 175] } ] };
+  /* Sprintarme: vorn Oberarm schräg nach vorn, Unterarm hoch; hinten Oberarm nach hinten */
+  const ARM_VOR = [125, 40], ARM_ZURUECK = [218, 165];
+  B['Sprungläufe'] = { dauer: 2.8, fade: true, fokus: ['beine', 'gesaess'], keys: [
+    { t: 0, p: [0, .94], r: 10, k: 0, L: { f: [.05, .08], a: ARM_VOR }, R: { l: [100, 178], a: ARM_ZURUECK }, txt: 'vom linken Bein weit abspringen' },
+    { t: .35, p: [.62, 1.18], r: 8, L: { l: [212, 228] }, R: { l: [78, 165] }, txt: 'Knie weit nach vorn, Gegenarm schwingt' },
+    { t: .7, p: [1.16, .94], r: 10, R: { f: [1.25, .08] }, L: { l: [190, 245], a: [178, 130] }, txt: 'auf dem rechten Bein landen …' },
+    { t: 1, p: [1.38, .96], L: { l: [100, 178], a: ARM_ZURUECK }, R: { a: ARM_VOR }, txt: '… und gleich weiter' },
+    { t: 1.35, p: [2.0, 1.18], R: { l: [212, 228] }, L: { l: [78, 165] } },
+    { t: 1.7, p: [2.52, .94], L: { f: [2.62, .08] }, R: { l: [190, 245] } },
+    { t: 2.3, p: [2.6, STAND - .01], r: 2, L: { f: [2.62, .08], a: [176, 176] }, R: { f: [2.62, .08], a: [176, 176] }, txt: 'auslaufen' } ] };
+  /* Seitlich: z zeigt zur linken Körperseite; für die rechte Seite wird f[2] gespiegelt */
+  const SKATE = s => ({ p: [0, .84], pz: s * .34, r: 26, k: -10 });
+  B['Skater-Sprünge'] = { dauer: 3.2, fokus: ['beine', 'gesaess'], cam: 78, keys: [
+    { t: 0, ...SKATE(1), L: { f: [0, .08, .4], a: [150, 100] }, R: { l: [200, 242], ls: -16, a: [200, 160] }, txt: 'auf dem linken Bein, Knie stabil' },
+    { t: .45, p: [0, 1.12], pz: 0, r: 14, L: { l: [160, 205], ls: 0, a: [175, 150] }, R: { l: [160, 205], ls: 0, a: [175, 150] }, txt: 'seitlich abspringen' },
+    { t: .85, ...SKATE(-1), R: { f: [0, .08, .4], a: [150, 100] }, L: { l: [200, 242], ls: -16, a: [200, 160] }, txt: 'auf dem rechten Bein landen, 1 s halten' },
+    { t: 1.6, txt: 'zurück' },
+    { t: 2.05, p: [0, 1.12], pz: 0, r: 14, L: { l: [160, 205], ls: 0, a: [175, 150] }, R: { l: [160, 205], ls: 0, a: [175, 150] } },
+    { t: 2.45, ...SKATE(1), L: { f: [0, .08, .4], a: [150, 100] }, R: { l: [200, 242], ls: -16, a: [200, 160] }, txt: 'links landen, halten' } ] };
+  B['Kettlebell-Swing'] = { dauer: 2, fokus: ['gesaess', 'beinbeuger', 'ruecken'], props: [{ typ: 'kh', an: 'mitte', quer: true }], keys: [
+    { t: 0, p: [-.26, .84], r: 64, k: -28, f: [0, .08], fz: .13, lh: [1, 0], h: [-.03, .5], az: -.16, ah: [0, -1], txt: 'Hüfte nach hinten, Kugel zwischen den Beinen' },
+    { t: .7, p: [0, STAND - .01], r: -3, k: 0, h: [.62, 1.3], txt: 'Hüfte explosiv nach vorn schnappen' },
+    { t: 1.05, txt: 'Kugel fallen lassen, Hüfte zurück' } ] };
+  B['Kurzhantel-Reißen einarmig'] = { dauer: 3.2, fokus: ['gesaess', 'beine', 'schultern'], props: [{ typ: 'kh', an: 'R' }], keys: [
+    { t: 0, p: [-.24, .7], r: 52, k: -22, f: [0, .08], fz: .12, lh: [1, 0], L: { a: [176, 176], as: 8 }, R: { h: [.12, .2], az: -.1, ah: [0, -1] }, txt: 'Hantel zwischen den Füßen, Rücken gerade' },
+    { t: .6, p: [-.18, .84], r: 36, R: { h: [.1, .52] }, txt: 'Hüfte strecken …' },
+    { t: .9, p: [.02, 1.06], r: -4, k: 0, f: [0, .16], fw: 30, R: { h: [.12, 1.18], ah: [0, 1] }, txt: '… explosiv, Hantel nah am Körper hoch' },
+    { t: 1.25, p: [-.06, .86], r: 6, f: [0, .08], fw: 0, L: { a: [125, 110], as: 30 }, R: { h: [.03, 2.02], az: .02 }, txt: 'drunter tauchen, Arm oben gestreckt fangen' },
+    { t: 1.9, p: [0, STAND - .01], r: 0, R: { h: [.03, 2.12] }, txt: 'aufstehen' },
+    { t: 2.6, L: { a: [176, 176], as: 8 }, R: { h: [.12, 1.0], ah: [0, -1] }, txt: 'kontrolliert zurück' } ] };
+  B['Medizinball-Stoß aus der Hocke'] = { dauer: 3, fade: true, fokus: ['beine', 'gesaess', 'brust'], props: [{ typ: 'ball', r: .14 }], keys: [
+    { t: 0, ...STEH, h: [.3, 1.22], az: -.13, ah: [0, -1], ahz: .5, ball: [.4, 1.22], txt: 'Ball an der Brust' },
+    { t: .5, p: [-.14, .72], r: 32, h: [.24, 1.0], ball: [.34, 1.0], txt: 'halbe Hocke, Brust raus' },
+    { t: .85, p: [.15, 1.08], r: 24, f: [0, .18], fw: 35, h: [.75, 1.6], ball: [.88, 1.66], txt: 'explosiv nach vorn-oben stoßen' },
+    { t: 1.4, p: [.45, .95], r: 12, f: [.55, .08], fw: 0, h: [.85, 1.45], ball: [2.4, 1.9], txt: 'hinterherfallen wie beim Start' },
+    { t: 2.2, p: [.55, STAND - .01], r: 2, a: [175, 175], ball: [3.4, .3] } ] };
+
+  /* ---------- Rumpf und Hürde (Extra-Einheiten) ---------- */
+  /* Hände bleiben im Ziel-Modus h (ein Moduswechsel verliert die Seitenlage); h[2] = Abstand zur Mitte, negativ = andere Körperseite */
+  B['Schulterantippen im Stütz'] = (() => { const S = brett(0, .1, .6), hand = { h: [S.sx, .05, .23], hd: 90, ah: [-1, .4] }, tipp = { h: [S.sx - .02, .57, -.1], ah: [0, -1], ahz: .9 };
+    return { dauer: 2.8, fokus: ['bauch', 'schultern'], keys: [
+      { t: 0, ...ohneSx(S), f: [0, .1], fz: .17, fa: 175, b: 0, k: 10, L: hand, R: hand, txt: 'Liegestützposition, Füße etwas breiter' },
+      { t: .5, L: tipp, txt: 'Gegenschulter antippen, Hüfte bleibt ruhig' },
+      { t: .9, L: hand },
+      { t: 1.9, R: tipp, txt: 'andere Seite' },
+      { t: 2.3, R: hand } ] }; })();
+  B['Knieheben im Einbeinstand'] = { dauer: 4.4, fokus: ['oberschenkel', 'bauch', 'gesaess'], keys: [
+    { t: 0, ...STEH, a: [176, 176], txt: 'aufrecht, Becken waagrecht' },
+    { t: .8, pz: .06, L: { a: ARM_VOR }, R: { l: [84, 182], fw: -20, a: ARM_ZURUECK }, txt: 'Knie über Hüfthöhe, Fuß angezogen' },
+    { t: 1.8, p: [0, STAND + .06], L: { f: [0, .14], fw: 34 }, txt: 'schwerer: auf die Zehen' },
+    { t: 2.9, p: [0, STAND], L: { f: [0, .08], fw: 0 }, txt: 'halten …' },
+    { t: 3.6, pz: 0, L: { a: [176, 176] }, R: { f: [0, .08], fw: 0, a: [176, 176] } } ] };
+  B['Step-up mit Knieheben'] = { dauer: 3, fokus: ['beine', 'gesaess', 'oberschenkel'], props: [{ typ: 'block', c: [.4, .225], g: [.45, .45, .6], holz: true }], keys: [
+    { t: 0, ...STEH, p: [.02, STAND - .03], r: 8, L: { f: [.4, .53] }, R: { f: [0, .08] }, a: [176, 176], txt: 'ein Fuß auf der Box' },
+    { t: .9, p: [.4, 1.43], r: 2, L: { f: [.4, .53], a: ARM_VOR }, R: { l: [84, 182], fw: -20, a: ARM_ZURUECK }, txt: 'kräftig hochdrücken, Knie hoch' },
+    { t: 1.6, txt: 'oben kurz stabil halten' },
+    { t: 2.2, p: [.02, STAND - .03], r: 8, L: { a: [176, 176] }, R: { f: [0, .08], fw: 0, a: [176, 176] }, txt: 'kontrolliert zurück' } ] };
+  /* Nachziehbein: Oberschenkel seitlich hochgeklappt, Unterschenkel zeigt nach vorn */
+  const NACHZIEH = { l: [92, 92], ls: 72, ls2: 6 };
+  B['Hürdengehen'] = { dauer: 3.6, fade: true, fokus: ['oberschenkel', 'gesaess', 'bauch'], cam: 50, props: huerde(.48, .56, 1.2), keys: [
+    { t: 0, p: [0, STAND - .01], r: 0, k: 0, L: { f: [.06, .08], a: [176, 176] }, R: { f: [-.14, .08], a: [176, 176] }, txt: 'aufrecht vor der Hürde' },
+    { t: .3, p: [.03, 1.0], R: { l: [70, 200] } },
+    { t: .6, p: [.06, 1.02], L: { f: [.06, .14], fw: 30, a: ARM_ZURUECK }, R: { l: [52, 120], a: ARM_VOR }, txt: 'Schwungbein gerade über die Hürde' },
+    { t: 1.2, p: [.46, .99], R: { f: [.78, .08] }, L: { l: [200, 200] }, txt: 'auf dem Fußballen aufsetzen' },
+    { t: 1.6, p: [.52, 1.0], L: { l: [150, 250], ls: 50, ls2: 50 }, txt: 'Nachziehbein seitlich hochklappen' },
+    { t: 2.0, p: [.66, 1.02], R: { f: [.78, .12], fw: 25, a: ARM_ZURUECK }, L: { ...NACHZIEH, a: ARM_VOR }, txt: 'Knie hoch über die Latte' },
+    { t: 2.5, p: [.84, 1.0], L: { l: [70, 150], ls: 8, ls2: 0 }, txt: 'vorn durchziehen' },
+    { t: 3.0, p: [1.05, STAND - .01], R: { f: [.78, .08], fw: 0, a: [176, 176] }, L: { f: [1.18, .08], a: [176, 176] } } ] };
+  B['Nachziehbein an der Wand'] = (() => { const al = 40, P = [SIN(al) * .89 - .1, .1 + COS(al) * .89];
+    return { dauer: 2.6, fokus: ['oberschenkel', 'gesaess', 'bauch'], cam: -55, props: [{ typ: 'wand', x: .92, n: 1 }], keys: [
+      { t: 0, p: P, r: al, k: 0, h: [.9, 1.3], az: .02, R: { f: [-.1, .1], fw: 20 }, L: { l: [212, 222] }, txt: 'schräg an der Wand, Bein hinten' },
+      { t: .7, L: { ...NACHZIEH }, txt: 'seitlich hochklappen, Fuß angezogen' },
+      { t: 1.3, L: { l: [al + 65, al + 150], ls: 6, ls2: 0 }, txt: 'Knie vorn durchziehen' },
+      { t: 1.7, txt: 'zurück, Rumpf bleibt ruhig' },
+      { t: 2.1, L: { l: [175, 262], ls: 0 } } ] }; })();
+
+  /* Bewegungen mit Ortswechsel (fade): Endhaltung bis kurz vor Schluss halten, damit der Sprung zurück zum Start im Ausblenden passiert */
+  for(const bw of Object.values(B)) if(bw.fade){ const l = bw.keys[bw.keys.length - 1]; if((l.t || 0) < bw.dauer - .05) bw.keys.push({ t: bw.dauer - .02 }); }
 
   window.BEWEGUNGEN = B;
 })();

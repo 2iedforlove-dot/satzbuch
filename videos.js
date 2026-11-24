@@ -852,6 +852,12 @@ window.VIDEOS = {
   "kanal": "LIVESTRONG",
   "dauer": 89
  },
+ "Schulter-Dislocates mit Band": {
+  "id": "a9rqTzZaI7s",
+  "titel": "Band Shoulder Dislocates",
+  "kanal": "STRONG ATHLETE",
+  "dauer": 45
+ },
  "Passives Hängen": {
   "id": "986OVu3oRdY",
   "titel": "6 Benefits Of Dead Hangs - Why You Should Hang Every Day",
@@ -887,6 +893,12 @@ window.VIDEOS = {
   "titel": "Couch Stretch for Hip Flexors",
   "kanal": "Movement Enhanced",
   "dauer": 33
+ },
+ "Tiefe Hocke halten": {
+  "id": "D3zYzIlbjXM",
+  "titel": "Mobility - Deep Squat Hold",
+  "kanal": "AV High Performance Academy",
+  "dauer": 24
  },
  "90/90-Wechsel": {
   "id": "m51AZSXMvEA",
@@ -1008,6 +1020,60 @@ window.VIDEOS = {
   "kanal": "Muscle & Motion",
   "dauer": 79
  },
+ "Schulterantippen im Stütz": {
+  "id": "amA9sc6dmH0",
+  "titel": "Plank Shoulder Taps",
+  "kanal": "Foundation Chiropractic + Physiotherapy",
+  "dauer": 64
+ },
+ "Knieheben im Einbeinstand": {
+  "id": "T1s9sK3W6cs",
+  "titel": "Balance and Stability: Single Leg Knee Drive Hold + Catch",
+  "kanal": "Coach Nick Finest Athletics",
+  "dauer": 59
+ },
+ "Step-up mit Knieheben": {
+  "id": "PemRK2kC_w8",
+  "titel": "Step Up and Knee Drive Tutorial - Proper Form and Technique",
+  "kanal": "Runna",
+  "dauer": 45
+ },
+ "Hürdengehen": {
+  "id": "CetJZG0NUdk",
+  "titel": "Hurdles: Walkover Drills",
+  "kanal": "Tim D",
+  "dauer": 125
+ },
+ "Nachziehbein an der Wand": {
+  "id": "Vm7-UZ_90OU",
+  "titel": "HOW TO HURDLE - Wall Drills Trail Leg Right",
+  "kanal": "Trackwired",
+  "dauer": 30
+ },
+ "Pogo-Sprünge": {
+  "id": "tdpoXvHNA_o",
+  "titel": "Avoid these 3 MISTAKES doing POGO jumps   #plyometrics",
+  "kanal": "FCoaching",
+  "dauer": 30
+ },
+ "Hocksprünge": {
+  "id": "4hXaSh2WlyE",
+  "titel": "How to Tuck Jump (Technique Guide)",
+  "kanal": "Les Mills UK",
+  "dauer": 37
+ },
+ "Skater-Sprünge": {
+  "id": "usZgF8TBWcA",
+  "titel": "Skater Jumps Lateral Bounds",
+  "kanal": "Made Possible Personal Training",
+  "dauer": 58
+ },
+ "Medizinball-Stoß aus der Hocke": {
+  "id": "97BoQfHJduo",
+  "titel": "Medicine Ball Squat Chest Passes",
+  "kanal": "Kai Simon",
+  "dauer": 15
+ },
  "Kreuzheben": {
   "id": "GxsLrTzyGUU",
   "titel": "How to Do A Conventional Deadlift Correctly",
@@ -1019,5 +1085,29 @@ window.VIDEOS = {
   "titel": "Why Wall Handstand Push-Ups Won’t Teach You How to Balance a Freestanding HSPU",
   "kanal": "Prismatic Strength",
   "dauer": 48
+ },
+ "Kurzhantel-Reißen einarmig": {
+  "id": "0yd9443Y-fg",
+  "titel": "How to do a Dumbbell Snatch | The Right Way | Well+Good",
+  "kanal": "Well+Good",
+  "dauer": 112
+ },
+ "Hürdensprünge": {
+  "id": "YfzVNbJh8yY",
+  "titel": "High Hurdle Hops | Plyometric | Strength and Conditioning Exercises",
+  "kanal": "Rehab My Patient",
+  "dauer": 47
+ },
+ "Sprungläufe": {
+  "id": "fPcGgGDz6_8",
+  "titel": "Bounding (Running Drill)",
+  "kanal": "The Barefoot Sprinter",
+  "dauer": 18
+ },
+ "Kettlebell-Swing": {
+  "id": "RU88iqRVunk",
+  "titel": "How to do a Russian Kettlebell Swing by Wodstar",
+  "kanal": "Wodstar",
+  "dauer": 32
  }
 };

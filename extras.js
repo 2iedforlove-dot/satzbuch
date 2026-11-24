@@ -43,6 +43,23 @@
     deadBug: { name: 'Dead Bug', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, seite: true, yt: 'dead bug exercise form', tipp: 'Rücken flach am Boden, gegenüberliegenden Arm und Bein langsam strecken.' },
     birdDog: { name: 'Bird Dog', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 2, von: 8, bis: 12, seite: true, yt: 'bird dog exercise form', tipp: 'Vierfüßlerstand, gegenüberliegenden Arm und Bein strecken, Becken bleibt ruhig.' },
     kreuzheben: { name: 'Kreuzheben', art: 'gym', geraet: 'Langhantel', einheit: 'reps', s: 3, von: 3, bis: 5, plus: 5, yt: 'conventional deadlift form', tipp: 'Stange über der Fußmitte, Rücken gerade, Stange am Bein entlang hochschieben.' },
+    /* Explosivkraft (Leichtathletik) */
+    reissen: { name: 'Kurzhantel-Reißen einarmig', art: 'gym', geraet: 'Kurzhantel', einheit: 'reps', s: 4, von: 3, bis: 5, plus: 2, seite: true, yt: 'dumbbell snatch technique', tipp: 'Hantel zwischen den Füßen, Hüfte explosiv strecken und die Hantel in einem Zug nah am Körper über den Kopf reißen. Oben mit gestrecktem Arm fangen. Leichter Einstieg ins Reißen.' },
+    swing: { name: 'Kettlebell-Swing', art: 'gym', geraet: 'Kettlebell', einheit: 'reps', s: 4, von: 8, bis: 12, plus: 4, yt: 'russian kettlebell swing tutorial', tipp: 'Hüfte nach hinten schieben, Kugel zwischen den Beinen, dann die Hüfte explosiv nach vorn schnappen. Die Arme ziehen nicht, die Hüfte wirft die Kugel.' },
+    hock: { name: 'Hocksprünge', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'tuck jump technique', tipp: 'Kurz ausholen, explosiv hoch und die Knie zur Brust ziehen. Leise landen und gleich wieder abspringen.' },
+    huerdenSpr: { name: 'Hürdensprünge', art: 'cali', geraet: 'Minihürden', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 4, bis: 6, yt: 'hurdle hops plyometrics', tipp: '4–6 Minihürden hintereinander, beidbeinig darüber, Bodenkontakt so kurz wie möglich. Knie hoch, Arme schwingen mit. Wiederholungen = Hürden pro Durchgang.' },
+    bounds: { name: 'Sprungläufe', art: 'cali', geraet: 'Bahn / Rasen', stufe: 2, einheit: 'reps', bw: true, s: 4, von: 6, bis: 10, yt: 'bounding drill sprinters', tipp: 'Weite Sprünge von einem Bein aufs andere, Knie kräftig nach vorn, Gegenarm schwingt mit. Auf weichem Boden. Wiederholungen = Bodenkontakte.' },
+    skater: { name: 'Skater-Sprünge', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, seite: true, yt: 'skater jumps lateral bounds', tipp: 'Seitlich von einem Bein aufs andere springen, auf einem Bein landen und 1 s stabil halten. Kraft zur Seite und ruhige Knie.' },
+    mbStoss: { name: 'Medizinball-Stoß aus der Hocke', art: 'gym', geraet: 'Medizinball', einheit: 'reps', s: 3, von: 4, bis: 6, plus: 1, yt: 'medicine ball squat chest throw', tipp: 'Ball an der Brust, kurz in die halbe Hocke und mit dem ganzen Körper nach vorn-oben stoßen, hinterherfallen wie beim Start.' },
+    pogo: { name: 'Pogo-Sprünge', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 15, bis: 25, yt: 'pogo jumps plyometrics', tipp: 'Knie fast gestreckt, nur aus den Fußgelenken federn wie ein Flummi. Sehr kurzer Bodenkontakt, macht Waden und Achillessehne reaktiv.' },
+
+    /* Rumpf und Hürde */
+    tippen: { name: 'Schulterantippen im Stütz', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 10, bis: 20, yt: 'plank shoulder taps', tipp: 'Liegestützposition, Füße etwas breiter. Abwechselnd die Gegenschulter antippen, ohne dass die Hüfte wackelt. Wiederholungen = beide Seiten zusammen.' },
+    knieHalten: { name: 'Knieheben im Einbeinstand', art: 'cali', geraet: 'Boden', stufe: 1, einheit: 'sec', bw: true, s: 3, von: 20, bis: 40, seite: true, yt: 'single leg balance knee drive hold', tipp: 'Auf einem Bein, Knie über Hüfthöhe, Fuß angezogen, Gegenarm vorn wie beim Sprint. Becken bleibt waagrecht. Schwerer: auf die Zehen gehen.' },
+    stepKnie: { name: 'Step-up mit Knieheben', art: 'cali', geraet: 'Box / Bank', stufe: 2, einheit: 'reps', bw: true, s: 3, von: 6, bis: 10, plus: 2, seite: true, yt: 'step up knee drive', tipp: 'Ein Fuß auf der Box, kräftig hochdrücken und das andere Knie über Hüfthöhe ziehen. Oben kurz stabil halten. Mit Kurzhanteln schwerer.' },
+    huerdeGehen: { name: 'Hürdengehen', art: 'cali', geraet: 'Hürden', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 5, bis: 8, yt: 'hurdle walkover drill', tipp: 'Hürden in Gehabstand. Aufrecht auf den Fußballen darübergehen: Schwungbein gerade drüber, Nachziehbein seitlich hoch und vorn wieder runter. Wiederholungen = Hürden.' },
+    nachzieh: { name: 'Nachziehbein an der Wand', art: 'cali', geraet: 'Wand', stufe: 1, einheit: 'reps', bw: true, s: 3, von: 8, bis: 12, seite: true, yt: 'hurdle trail leg drill wall', tipp: 'Hände an der Wand, schräg lehnen. Nachziehbein seitlich hochklappen, Knie hoch, Fuß angezogen, und vorn durchziehen. Der Rumpf bleibt ruhig.' },
+
     freierHs: { name: 'Freier Handstand üben', art: 'cali', geraet: 'Boden', stufe: 3, einheit: 'sec', bw: true, s: 5, von: 5, bis: 20, yt: 'freestanding handstand balance tutorial', tipp: 'Gegen die Wand hochschwingen, eine Ferse nach der anderen lösen. Über die Finger balancieren.' },
   };
 
@@ -94,6 +111,28 @@
       ],
     },
     {
+      id: 'L5', modus: 'low', name: 'Core & Hürden', kurz: 'Hürden', dauer: '~25 min',
+      hinweis: 'Rumpfstabilität für den Hürdenlauf: Das Becken bleibt ruhig, während ein Bein arbeitet. Langsam und sauber, kein Muskelversagen. Passt auch nach dem LA-Training.',
+      aufwaermen: '2 min locker traben oder Seilspringen, Beinpendel vor-zurück und seitlich.',
+      slots: [
+        { id: 'L5a', titel: 'Gegen Verdrehen', gruppe: 'core', pause: '45 s', std: 'Pallof-Press', auf: { [neu.birdDog.name]: neu.tippen.name }, optionen: [neu.birdDog, neu.tippen, u('Pallof-Press')] },
+        { id: 'L5b', titel: 'Hüftbeuger & Becken', gruppe: 'core', pause: '45 s', std: neu.knieHalten.name, optionen: [neu.knieHalten, u('Liegendes Knieheben mit Band'), neu.deadBug, u('Kabel-Knieheben')] },
+        { id: 'L5c', titel: 'Einbeinig stabil', gruppe: 'beine', pause: '60 s', std: neu.stepKnie.name, optionen: [neu.stepKnie, u('Einbeiniges Kreuzheben'), u('Einbeinige Hüftbrücke')] },
+        { id: 'L5d', titel: 'Seitlicher Rumpf', gruppe: 'core', pause: '45 s', std: 'Copenhagen Plank', auf: { 'Seitstütz': 'Copenhagen Plank' }, optionen: [u('Seitstütz'), u('Copenhagen Plank'), u('Einseitiges Tragen')] },
+        { id: 'L5e', titel: 'Hürden-Technik', gruppe: 'beine', pause: '45 s', std: neu.huerdeGehen.name, optionen: [neu.huerdeGehen, neu.nachzieh, neu.couch] },
+      ],
+    },
+    {
+      id: 'L6', modus: 'low', name: 'Sprungkraft kurz', kurz: 'Sprünge', dauer: '~20 min',
+      hinweis: 'Wenig, aber schnell: höchstens 40–50 Sprünge insgesamt, volle Pausen, aufhören, sobald es langsamer wird. Mit nur 2 Sätzen pro Übung auch als Aktivierung vor dem LA-Training.',
+      aufwaermen: '3 min Seilspringen, 10 Kniebeugen ohne Gewicht, 3 lockere Sprünge.',
+      slots: [
+        { id: 'L6a', titel: 'Reaktiv', gruppe: 'beine', pause: '60 s', std: neu.pogo.name, optionen: [neu.pogo, u('Seilspringen')] },
+        { id: 'L6b', titel: 'Springen', gruppe: 'beine', pause: '90 s', std: neu.hock.name, optionen: [neu.hock, u('Standweitsprung'), neu.skater] },
+        { id: 'L6c', titel: 'Werfen', gruppe: 'beine', pause: '90 s', std: neu.mbStoss.name, optionen: [neu.mbStoss, u('Medizinball-Wurf über Kopf')] },
+      ],
+    },
+    {
       id: 'H1', modus: 'high', name: 'Beine Power', kurz: 'Beine+', dauer: '~70 min',
       hinweis: 'Schwer und explosiv. Danach mindestens ein Tag ohne Sprint und ohne Tag C, also z. B. Sonntag, wenn Tag C am Samstag war, oder in einer Woche ohne Wettkampf.',
       aufwaermen: '5 min Rad oder Seilspringen, Beinpendel, 2 Aufwärmsätze bei der Kniebeuge (leer, dann halbes Gewicht).',
@@ -130,6 +169,18 @@
         { id: 'H3d', titel: 'Planche-Drücken', wie: 'A2' },
         { id: 'H3e', titel: 'Front-Lever-Kraft', wie: 'B2' },
         { id: 'H3f', titel: 'Kompression', wie: 'A6' },
+      ],
+    },
+    {
+      id: 'H4', modus: 'high', name: 'Explosiv & Umsetzen', kurz: 'Explosiv', dauer: '~60 min',
+      hinweis: 'Für schnelle Beine: alles frisch, wenige Wiederholungen, volle Pausen, jede Wiederholung maximal schnell. Nicht am Tag vor dem Sprinttraining und nicht direkt nach Tag C. Umsetzen anfangs mit leerer Stange und am besten vom Trainer zeigen lassen.',
+      aufwaermen: '5 min Seilspringen, Beinpendel, 3 × 10 m Skippings, dann 2 Sätze Umsetzen mit leerer Stange.',
+      slots: [
+        { id: 'H4a', titel: 'Umsetzen', gruppe: 'beine', pause: '2–3 min', std: 'Umsetzen aus dem Hang', auf: { 'Hochzug aus dem Hang': 'Umsetzen aus dem Hang' }, optionen: [u('Hochzug aus dem Hang'), u('Umsetzen aus dem Hang'), u('Umsetzen vom Boden'), neu.reissen] },
+        { id: 'H4b', titel: 'Nach oben springen', gruppe: 'beine', pause: '2 min', std: neu.huerdenSpr.name, auf: { [neu.hock.name]: neu.huerdenSpr.name, 'Box Jumps': 'Depth Jumps' }, optionen: [neu.hock, neu.huerdenSpr, u('Box Jumps'), u('Depth Jumps'), u('Trap-Bar-Sprung')] },
+        { id: 'H4c', titel: 'Nach vorn & einbeinig', gruppe: 'beine', pause: '2 min', std: neu.bounds.name, auf: { 'Standweitsprung': neu.bounds.name }, optionen: [u('Standweitsprung'), neu.bounds, neu.skater, u('Einbeinige Sprünge auf die Box')] },
+        { id: 'H4d', titel: 'Hüfte schnell', gruppe: 'beine', pause: '2 min', std: neu.swing.name, optionen: [neu.swing, u('Kurzhantel-Sprungkniebeuge'), u('Schlittenschieben')] },
+        { id: 'H4e', titel: 'Würfe', gruppe: 'beine', pause: '90 s', std: 'Medizinball-Wurf über Kopf', optional: true, optionen: [u('Medizinball-Wurf über Kopf'), neu.mbStoss, u('Medizinball-Slams')] },
       ],
     },
   ];

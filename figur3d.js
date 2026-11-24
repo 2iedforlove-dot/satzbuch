@@ -40,7 +40,13 @@ function ik(S, T, a, b, H){
 
 /* ---------- Pose → Gelenke ---------- */
 const STANDARD = { p: [0, .97], pz: 0, r: 0, b: 0, k: 0, a: [180, 180], l: [180, 180], roll: 0 };
-function gliedSpec(pose, seite){ return Object.assign({}, pose, pose[seite] || {}); }
+/* Angaben für eine Seite (L/R) gehen vor; ein Glied-Modus dort ersetzt den allgemeinen (sonst gewinnt z. B. ein allgemeines Fußziel f über ein einseitiges l) */
+function gliedSpec(pose, seite){
+  const s = pose[seite] || {}, o = Object.assign({}, pose, s);
+  if(s.l && !s.f) delete o.f;
+  if(s.h) delete o.hb; else if(s.hb) delete o.h; else if(s.a){ delete o.h; delete o.hb; }
+  return o;
+}
 
 function loese(pose){
   const side = { L: 1, R: -1 };
@@ -149,7 +155,9 @@ function angleiche(A, B){
     if(ma === mb) continue;
     const ga = loese(a), gb = loese(b), wa = winkelAus(ga, S), wb = winkelAus(gb, S);
     const k = art === 'arm' ? 'a' : 'l', leer = art === 'arm' ? { h: null, hb: null, arel: false } : { f: null, lrel: false };
-    a = { ...a, [S]: { ...(a[S] || {}), ...leer, [k]: wa[k] } }; b = { ...b, [S]: { ...(b[S] || {}), ...leer, [k]: wb[k] } };
+    /* auf dem kurzen Weg drehen: -172° und 200° liegen nah beieinander, nicht 372° auseinander */
+    const wak = wa[k].map((x, i) => x + 360 * Math.round((wb[k][i] - x) / 360));
+    a = { ...a, [S]: { ...(a[S] || {}), ...leer, [k]: wak } }; b = { ...b, [S]: { ...(b[S] || {}), ...leer, [k]: wb[k] } };
   }
   return [a, b];
 }
@@ -160,8 +168,23 @@ function poseBei(bw, keys, zeit){
   const j = (i + 1) % keys.length;
   const t0 = bw.keys[i].t || 0, t1 = j === 0 ? T : bw.keys[j].t;
   const f = t1 > t0 ? glatt(Math.min(1, (t - t0) / (t1 - t0))) : 0;
-  const [A, B] = angleiche(keys[i], keys[j]);
+  const [A, B] = angleiche(keys[i], keys[j]).map(voll);
   return { pose: mischePose(A, B, f), txt: bw.keys[i].txt || '', idx: i };
+}
+/* Jede Seite bekommt alle Glied-Angaben, damit eine nur einseitig angegebene Bewegung von der
+   allgemeinen Haltung aus startet und am Ende der Schleife wieder dorthin zurückkehrt */
+const GLIED = ['a', 'arel', 'h', 'hb', 'az', 'ah', 'ahz', 'hd', 'as', 'as2', 'l', 'lrel', 'f', 'fz', 'lh', 'lhz', 'ls', 'ls2', 'fa', 'fw'];
+function voll(p){
+  const o = { ...p };
+  for(const S of ['L', 'R']){
+    const g = gliedSpec(p, S), s = {};
+    for(const k of GLIED) if(g[k] != null) s[k] = g[k];
+    /* nur der Modus, der gerade gilt */
+    if(s.h){ delete s.hb; delete s.a; } else if(s.hb) delete s.a;
+    if(s.f) delete s.l;
+    o[S] = s;
+  }
+  return o;
 }
 
 /* ---------- Szene ---------- */

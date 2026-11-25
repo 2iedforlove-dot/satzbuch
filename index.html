@@ -342,6 +342,7 @@ h1 i{color:var(--accent);font-style:normal}
 .xbtn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;height:44px;border-radius:14px;margin:2px 0 6px;font-weight:700;font-size:14px;color:var(--accent);box-shadow:inset 0 0 0 1px rgba(255,106,43,.4);background:var(--accent-soft)}
 .xbtn svg{width:16px;height:16px}
 .xbtn.on{color:var(--muted);box-shadow:inset 0 0 0 1px var(--line);background:none}
+.xbtn.voll{background:var(--accent);color:var(--accent-ink);box-shadow:none}
 .xseg button.on{background:linear-gradient(180deg,#2a211b,#1f1915);color:var(--text);box-shadow:inset 0 0 0 1px rgba(255,106,43,.3)}
 .seg{background:rgba(255,240,225,.04);border:1px solid rgba(255,240,225,.05);border-radius:14px}
 .seg button{border-radius:10px}
@@ -384,7 +385,62 @@ h1 i{color:var(--accent);font-style:normal}
 .opt-top{min-width:0}
 .opt-name{min-width:0}
 
-@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+/* Laufendes Training: Leiste über den Tabs, Stoppuhr */
+.wbar{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 59px);z-index:6;padding:0 var(--pad) 8px;display:none;pointer-events:none}
+body.ws-on .wbar{display:block}
+.wbar button{pointer-events:auto;max-width:520px;margin:0 auto;width:100%;display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:12px;text-align:left;height:52px;padding:0 16px;border-radius:16px;background:rgba(31,26,22,.94);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:inset 0 0 0 1px rgba(255,106,43,.35),0 8px 26px rgba(0,0,0,.55)}
+.wbar b{font-weight:700;font-size:14.5px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.wbar small{display:block;font-size:12px;color:var(--muted)}
+.wbar .wb-uhr{font:700 20px/1 var(--display);letter-spacing:-.02em;color:var(--accent)}
+.wbar .wb-ch{color:var(--muted);transform:rotate(180deg)}
+.wbar .wb-ch svg{width:18px;height:18px;display:block}
+.wdot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-soft);animation:wpuls 1.6s ease-in-out infinite}
+@keyframes wpuls{50%{opacity:.35}}
+body.ws-on .fab{bottom:calc(env(safe-area-inset-bottom) + 128px)}
+body.ws-on #app{padding-bottom:calc(env(safe-area-inset-bottom) + 220px)}
+.wuhr{text-align:center;font:400 76px/1 var(--serif);letter-spacing:-.01em;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.wuhr-sub{text-align:center;font-size:13px;color:var(--muted);margin-bottom:6px}
+.wuhr-sub b{color:var(--text);font-weight:650}
+.wlist{display:grid;gap:6px}
+.wrow{display:grid;grid-template-columns:1fr auto;background:var(--surface);border-radius:14px;overflow:hidden}
+.wrow .slot-main{padding:12px 6px 12px 12px}
+.wrow .wx{width:44px;display:grid;place-items:center;color:var(--faint)}
+.wrow .wx svg{width:16px;height:16px}
+.wrow .wx:active{background:var(--line)}
+.wadd{width:100%;height:50px;border-radius:14px;margin:10px 0 16px;font-weight:700;font-size:15px;color:var(--text);box-shadow:inset 0 0 0 1.5px var(--line);display:flex;align-items:center;justify-content:center;gap:8px}
+.wadd svg{width:18px;height:18px}
+.wadd:active{background:var(--surface)}
+.wende{background:var(--surface2);color:var(--text);box-shadow:inset 0 0 0 1.5px var(--accent)}
+.wweg{display:block;margin:10px auto 0;font-size:13px;font-weight:600;color:var(--faint);padding:8px 12px}
+.wback{display:flex;align-items:center;gap:6px;margin:-4px 0 10px;padding:6px 12px 6px 8px;border-radius:12px;background:var(--surface);font-size:13px;font-weight:650;color:var(--muted)}
+.wback svg{width:16px;height:16px}
+.wback b{color:var(--accent);font-variant-numeric:tabular-nums;margin-left:4px}
+.arow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:11px 14px}
+.arow + .arow{border-top:1px solid var(--line)}
+.arow b{display:block;font-weight:650;font-size:15px}
+.arow small{display:block;font-size:12px;color:var(--muted);margin-top:1px}
+.arow .ad{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+.arow .ad svg{width:16px;height:16px}
+.arow.drin .ad{background:var(--accent);color:var(--accent-ink)}
+.arow:active{background:var(--surface2)}
+.apick{padding:0;overflow:hidden;margin-bottom:8px}
+.apick-h{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;padding:12px 14px}
+.apick-h .wk-tag{width:36px;height:36px;font-size:15px;border-radius:11px}
+.apick-h b{display:block;font-weight:650}
+.apick-h small{display:block;font-size:12px;color:var(--muted)}
+.apick-h .chev{transition:transform .2s}
+.apick.open .apick-h .chev{transform:rotate(180deg)}
+.apick-b{display:none;border-top:1px solid var(--line)}
+.apick.open .apick-b{display:block}
+.aall{display:block;width:calc(100% - 28px);margin:10px 14px 6px;height:40px;border-radius:12px;background:var(--accent);color:var(--accent-ink);font-weight:750;font-size:14px}
+.aall:disabled{opacity:.35}
+.wsum{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 4px}
+.wsum .tile b{display:block;font:700 30px/1.1 var(--display);letter-spacing:-.02em;margin-top:4px}
+.wsum .tile b small{font-size:14px;color:var(--muted);font-weight:600;margin-left:3px}
+.wsum .tile.gross{grid-column:1 / -1;text-align:center}
+.wsum .tile.gross b{font:400 64px/1 var(--serif);letter-spacing:0}
+
+@media (prefers-reduced-motion: reduce){*{transition:none!important}.wdot{animation:none}}
 </style>
 </head>
 <body>
@@ -395,6 +451,7 @@ h1 i{color:var(--accent);font-style:normal}
   <button class="tab" data-tab="list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6.5 7v10M3.5 9.5v5M17.5 7v10M20.5 9.5v5M6.5 12h11"/></svg>Übungen</button>
   <button class="tab" data-tab="stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20v-6M12 20V9M19 20V4"/></svg>Statistik</button>
 </div></nav>
+<div class="wbar" id="wbar"></div>
 <div class="scrim" id="scrim"></div>
 <section class="sheet" id="sheet" role="dialog" aria-modal="true"></section>
 <div class="toast" id="toast"></div>
@@ -710,7 +767,7 @@ addEventListener('popstate', e => {
 document.querySelectorAll('.tab').forEach(t => t.onclick = () => { if(view.name !== t.dataset.tab) go({ name:t.dataset.tab }, true); else scrollTo({ top:0, behavior:'smooth' }); });
 document.getElementById('fab').onclick = () => {
   const timerEx = rest?.ex || (restDone && Date.now() - restDone.at < 8000 ? restDone.ex : '');
-  openLog(timerEx || (view.name === 'ex' ? db.ex[view.id].name : ''));
+  openLog(timerEx || (view.name === 'ex' ? db.ex[view.id].name : '') || naechsteUebung());
 };
 
 const app = document.getElementById('app');
@@ -756,7 +813,8 @@ function renderPlan(){
     <div class="wstrip">${strip}</div>
     <section class="card todaycard">
       <p class="eyebrow">Heute</p><h2>${title}</h2>${lines.join('')}${extra}
-      ${tw || xw ? `<div class="tbtns">${tw ? `<button class="smallbtn" data-open="${tw.id}">Training ansehen</button>` : ''}${xw ? `<button class="smallbtn ghost" data-open="${xw.id}">Extra ansehen</button>` : ''}</div>` : ''}
+      <div class="tbtns">${db.training ? `<button class="smallbtn" data-wopen>Training läuft · öffnen</button>`
+        : tw || xw ? `<button class="smallbtn" data-wstart="${(tw || xw).id}">Training starten</button>` : `<button class="smallbtn ghost" data-wstart="">Freies Training starten</button>`}${tw ? `<button class="smallbtn ghost" data-open="${tw.id}">${tw.kurz || tw.id} ansehen</button>` : ''}${xw ? `<button class="smallbtn ghost" data-open="${xw.id}">Extra ansehen</button>` : ''}</div>
     </section>
     <h2 class="section"><span>Trainings</span><span>3 × pro Woche</span></h2>
     <div class="seg stil">${[['mix','Gemischt'],['cali','Calisthenics'],['gym','Gym']].map(([k,l]) => `<button data-stil="${k}" class="${currentStil() === k ? 'on' : ''}">${l}</button>`).join('')}</div>
@@ -781,6 +839,12 @@ function renderPlan(){
     document.getElementById('wk-' + offen)?.scrollIntoView({ behavior:'smooth', block:'start' });
   });
   app.querySelectorAll('[data-log]').forEach(b => b.onclick = () => openLog(b.dataset.log));
+  app.querySelectorAll('[data-wstart]').forEach(b => b.onclick = () => trainingStarten(b.dataset.wstart));
+  app.querySelectorAll('[data-wopen]').forEach(b => b.onclick = openTraining);
+  app.querySelectorAll('[data-wplus]').forEach(b => b.onclick = () => {
+    const n = zumTraining(planNamen(wkById(b.dataset.wplus)));
+    toast(n ? `${n} ${n === 1 ? 'Übung' : 'Übungen'} zum Training hinzugefügt` : 'Schon alle im Training'); renderPlan(); uhrZeigen();
+  });
   app.querySelectorAll('[data-swap]').forEach(b => b.onclick = () => openSwap(b.dataset.swap));
   app.querySelectorAll('[data-stil]').forEach(b => b.onclick = () => {
     for(const s of allSlots()) planCfg().wahl[s.id] = stilPick(s, b.dataset.stil);
@@ -815,6 +879,9 @@ function workoutHtml(w){
     <div class="wk-body">
       ${cChoice}
       <p class="wk-note">${w.id !== 'C' || d === 6 ? w.hinweis + '<br>' : ''}<b>Aufwärmen:</b> ${w.aufwaermen}</p>
+      ${db.training?.wk === w.id ? `<button class="xbtn voll" data-wopen>${PLAY} Training läuft · öffnen</button>`
+        : db.training ? `<button class="xbtn" data-wplus="${w.id}">${I.plus} Zum laufenden Training hinzufügen</button>`
+        : `<button class="xbtn voll" data-wstart="${w.id}">${PLAY} Training starten</button>`}
       ${w.modus ? `<button class="xbtn ${xOn ? 'on' : ''}" data-xtoday="${w.id}">${xOn ? I.check + ' Heute dabei · entfernen' : '+ Heute dazunehmen'}</button>` : ''}
       ${w.slots.map((s, i) => slotHtml(s, i)).join('')}
     </div>
@@ -957,6 +1024,7 @@ function renderStats(){
       <div class="tile"><p class="eyebrow">Bewegt</p><b class="num">${fmt(vol / 1000, 1)}<small>t</small></b></div>
       <div class="tile"><p class="eyebrow">Rekorde</p><b class="num up">${prCount}</b></div>
     </div>
+    ${trainingsHtml()}
     <h2 class="section"><span>Sätze pro Woche</span><span class="num">Ø ${fmt(weeks.reduce((a,w) => a + w.sets, 0) / WEEKS, 0)}</span></h2>
     <section class="card chartcard"><svg viewBox="0 0 ${W} ${H}">${bars}${wl(0)}${wl(5)}${wl(WEEKS - 1)}</svg></section>
     <h2 class="section"><span>Trainingstage</span><span>12 Wochen</span></h2>
@@ -970,6 +1038,16 @@ function renderStats(){
     <section class="card prs" style="padding:4px 0">${prList.slice(0, 5).map(p => `<button class="pr-row" data-ex="${p.id}">
       <div><p class="n">${esc(db.ex[p.id].name)}</p><p class="d">${relDay(dayKey(p.s.t))}</p></div><span class="num">${fmtSet(p.s, p.mode)}</span></button>`).join('')}</section>` : ''}`;
   app.querySelectorAll('[data-ex]').forEach(b => b.onclick = () => go({ name:'ex', id:b.dataset.ex }));
+}
+function trainingsHtml(){
+  const tl = (db.trainings || []).slice().sort((a, b) => b.start - a.start);
+  if(!tl.length) return '';
+  const sek = t => (t.end - t.start) / 1000, letzte = tl.slice(0, 10);
+  const avg = letzte.reduce((a, t) => a + sek(t), 0) / letzte.length;
+  return `<h2 class="section"><span>Letzte Trainings</span><span>Ø ${fmtDauerKurz(avg)}</span></h2>
+    <section class="card prs" style="padding:4px 0">${tl.slice(0, 5).map(t => `<div class="pr-row">
+      <div><p class="n">${esc(t.name)}</p><p class="d">${relDay(dayKey(t.start))} · ${fmtUhrzeit(t.start)} · ${t.saetze} Sätze${t.prs ? ` · <span class="up">${t.prs} Rekord${t.prs > 1 ? 'e' : ''}</span>` : ''}</p></div>
+      <span class="num">${fmtDauerKurz(sek(t))}</span></div>`).join('')}</section>`;
 }
 function ringSvg(f){
   const r = 37, c = 2 * Math.PI * r, v = Math.min(1, f);
@@ -1071,13 +1149,14 @@ function openSheet(html){
   sheet.scrollTop = 0;
   if(!sheetOpen){ sheetOpen = true; history.pushState({ view, sheet:true }, ''); }
   requestAnimationFrame(() => { sheet.classList.add('open'); scrim.classList.add('open'); });
+  uhrZeigen();
 }
 function closeSheet(fromPop){
   if(!sheetOpen) return;
   sheetOpen = false; sheet.classList.remove('open'); scrim.classList.remove('open');
   log = null;
   if(!fromPop) history.back();
-  updateTimerUI();
+  updateTimerUI(); uhrZeigen();
   if(f3dModul) f3dModul.then(m => { if(sheet.querySelector('canvas')) m.stoppe(); belebeDetail3d(); });
 }
 scrim.onclick = () => closeSheet();
@@ -1088,6 +1167,7 @@ function openLog(name = ''){
   log = { name, w: 20, r: 8, unit: 'reps', pause: 90 };
   applyDefaults();
   openSheet(`
+    ${db.training ? `<button class="wback" id="toTr">${I.back}<span>${esc(db.training.name)}</span><b data-uhr>${fmtDauer(trainingSek(db.training))}</b></button>` : ''}
     <div class="sheet-head"><h2>Satz eintragen</h2><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
     <input class="field" id="exName" placeholder="Übung, z. B. Bankdrücken" autocomplete="off" autocapitalize="words" value="${esc(name)}" enterkeyhint="next">
     <p class="chips-t" id="chipsT"></p>
@@ -1118,7 +1198,8 @@ function openLog(name = ''){
   updateTimerUI();
   const nameEl = document.getElementById('exName');
   document.getElementById('closeBtn').onclick = () => closeSheet();
-  nameEl.oninput = () => { log.name = nameEl.value; applyDefaults(); syncLog(); };
+  const toTr = document.getElementById('toTr'); if(toTr) toTr.onclick = openTraining;
+  nameEl.oninput =() => { log.name = nameEl.value; applyDefaults(); syncLog(); };
   ['w','r'].forEach(k => { const el = document.getElementById(k);
     el.oninput = () => { log[k] = parseNum(el.value); };
     el.onfocus = () => el.select(); });
@@ -1213,8 +1294,12 @@ function saveSet(){
   const ex = db.ex[id];
   if(!ex.unit && log.unit === 'sec' && !setsOf(id).length) ex.unit = 'sec';
   if(!ex.gruppe && po) ex.gruppe = po.slot.gruppe;
+  /* Erster Satz ohne laufendes Training: Stoppuhr startet von selbst */
+  let gestartet = false;
+  if(!db.training){ trainingStarten(heutigeEinheit(name)?.id, true); gestartet = true; }
+  zumTraining([name]);
   const set = { id: uid(), ex: id, w: log.w, r: log.r, t: Date.now() };
-  db.sets.push(set); save();
+  db.sets.push(set); save(); uhrZeigen();
   navigator.vibrate?.(12);
   const n = setsOf(id).filter(s => dayKey(s.t) === today()).length;
   const auf = pruefeAufstieg(name, id);
@@ -1225,6 +1310,7 @@ function saveSet(){
   }
   else if(prIds(id).has(set.id)){ toast('Neuer Rekord 🎉', true); confetti(); }
   else if(po && n === po.opt.s) toast('Übung geschafft ✓');
+  else if(gestartet) toast('Gespeichert · Trainingsuhr läuft');
   else toast('Gespeichert');
   if(!po) ex.pause = log.pause;
   save();
@@ -1303,9 +1389,227 @@ function beep(){
 document.addEventListener('visibilitychange', () => { if(!document.hidden) updateTimerUI(); });
 function deleteSet(sid){
   const i = db.sets.findIndex(s => s.id === sid); if(i < 0) return;
-  const [removed] = db.sets.splice(i, 1); aufstiegeNachpruefen(); save(); render();
+  const [removed] = db.sets.splice(i, 1); aufstiegeNachpruefen(); save(); render(); uhrZeigen();
   if(sheetOpen && log) syncLog();
-  toast('Satz gelöscht', false, () => { db.sets.push(removed); save(); render(); if(sheetOpen && log) syncLog(); });
+  toast('Satz gelöscht', false, () => { db.sets.push(removed); save(); render(); uhrZeigen(); if(sheetOpen && log) syncLog(); });
+}
+
+/* ---------- Training: Stoppuhr für die ganze Einheit ----------
+   db.training = laufendes Training { start, wk, name, ex:[Übungsnamen] }
+   db.trainings = abgeschlossene Trainings { id, start, end, wk, name, saetze, uebungen, vol, prs }
+   Zum Training zählen alle Sätze ab dem Start. Der erste gespeicherte Satz startet es von selbst. */
+const pad2 = n => String(n).padStart(2, '0');
+function fmtDauer(s){ const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60), x = s % 60; return h ? `${h}:${pad2(m)}:${pad2(x)}` : `${m}:${pad2(x)}`; }
+function fmtDauerKurz(s){ const m = Math.round(s / 60); return m < 60 ? `${m} min` : `${Math.floor(m / 60)} h ${pad2(m % 60)}`; }
+const fmtUhrzeit = t => new Date(t).toLocaleTimeString('de-DE', { hour:'2-digit', minute:'2-digit' });
+const wkById = id => ALLE_WK().find(w => w.id === id);
+const planNamen = w => [...new Set(w.slots.map(s => chosen(mainSlot(s)).name))];
+const trainingSaetze = (tr, end = Date.now()) => db.sets.filter(s => s.t >= tr.start && s.t <= end);
+const trainingSek = tr => Math.max(0, Math.floor(((tr.end || Date.now()) - tr.start) / 1000));
+const imTraining = name => db.training?.ex.some(n => n.toLowerCase() === String(name).trim().toLowerCase());
+function saetzeImTraining(name){
+  const id = findEx(name), tr = db.training;
+  return id && tr ? db.sets.filter(s => s.ex === id && s.t >= tr.start) : [];
+}
+/* Einheit, zu der eine Übung heute gehört (Gym-Tag zuerst, dann Extra) */
+function heutigeEinheit(name){
+  const n = String(name || '').trim().toLowerCase();
+  const kand = [workoutOn(new Date().getDay()), extraHeute()].filter(Boolean);
+  return kand.find(w => !n || planNamen(w).some(x => x.toLowerCase() === n)) || null;
+}
+let uhrTick = null;
+function trainingStarten(wkId, still){
+  if(db.training) return;
+  const w = wkId ? wkById(wkId) : null;
+  db.training = { start: Date.now(), wk: w?.id || null, name: w ? w.name : 'Freies Training', ex: w ? planNamen(w) : [] };
+  save(); unlockAudio(); navigator.vibrate?.(15);
+  uhrLaeuft(); render();
+  if(!still) openTraining();
+}
+function zumTraining(names){
+  const tr = db.training; if(!tr) return 0;
+  let n = 0;
+  for(const name of names) if(name && !imTraining(name)){ tr.ex.push(name.trim()); n++; }
+  if(n) save();
+  return n;
+}
+function uhrLaeuft(){
+  clearInterval(uhrTick); uhrTick = null;
+  if(db.training) uhrTick = setInterval(uhrZeigen, 1000);
+  uhrZeigen();
+}
+function uhrZeigen(){
+  const tr = db.training;
+  document.body.classList.toggle('ws-on', !!tr && !sheetOpen);
+  const bar = document.getElementById('wbar');
+  if(!tr){ bar.innerHTML = ''; return; }
+  const txt = fmtDauer(trainingSek(tr));
+  document.querySelectorAll('[data-uhr]').forEach(el => { el.textContent = txt; });
+  if(!bar.firstChild){
+    bar.innerHTML = `<button id="wbarBtn" aria-label="Laufendes Training öffnen"><span class="wdot"></span><span style="min-width:0"><b></b><small></small></span><span class="wb-uhr num" data-uhr>${txt}</span><span class="wb-ch">${I.back}</span></button>`;
+    document.getElementById('wbarBtn').onclick = openTraining;
+  }
+  const n = trainingSaetze(tr).length;
+  bar.querySelector('b').textContent = tr.name;
+  bar.querySelector('small').textContent = n ? `${n} ${n === 1 ? 'Satz' : 'Sätze'} · seit ${fmtUhrzeit(tr.start)}` : `läuft seit ${fmtUhrzeit(tr.start)}`;
+}
+/* Nächste offene Übung: erste, bei der noch Sätze fehlen */
+function naechsteUebung(){
+  const tr = db.training; if(!tr) return '';
+  return tr.ex.find(n => saetzeImTraining(n).length < (optionFor(n)?.opt.s || 1)) || '';
+}
+function wRowHtml(name, i){
+  const po = optionFor(name), sets = saetzeImTraining(name), id = findEx(name), ziel = po?.opt.s;
+  const ok = ziel ? sets.length >= ziel : sets.length > 0, mode = id ? modeOf(id) : 'kg';
+  const letzter = sets.length ? fmtSetPlain(sets[sets.length - 1], mode) : '';
+  const sub = [po ? zielText(po.opt) : '', letzter ? 'zuletzt ' + letzter : ''].filter(Boolean).join(' · ') || 'Noch kein Satz';
+  return `<div class="wrow">
+    <button class="slot-main" data-wlog="${esc(name)}">
+      <span class="slot-n ${ok ? 'ok' : ''}">${ok ? I.check : i + 1}</span>
+      <div style="min-width:0"><p class="slot-name">${esc(name)}</p><p class="slot-ziel">${esc(sub)}</p></div>
+      <span class="slot-cnt num">${sets.length ? sets.length + (ziel ? '/' + ziel : '') : ''}</span>
+    </button>
+    ${sets.length ? '<span></span>' : `<button class="wx" data-wraus="${esc(name)}" aria-label="Aus dem Training nehmen">${I.x}</button>`}
+  </div>`;
+}
+function openTraining(){
+  const tr = db.training; if(!tr){ closeSheet(); return; }
+  const sets = trainingSaetze(tr), fertig = tr.ex.filter(n => { const z = optionFor(n)?.opt.s || 1; return saetzeImTraining(n).length >= z; }).length;
+  openSheet(`
+    <div class="sheet-head"><div><h2>${esc(tr.name)}</h2><p>Gestartet um ${fmtUhrzeit(tr.start)}</p></div><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
+    <div class="wuhr" data-uhr>${fmtDauer(trainingSek(tr))}</div>
+    <p class="wuhr-sub"><b class="num">${sets.length}</b> ${sets.length === 1 ? 'Satz' : 'Sätze'} · <b class="num">${fertig}/${tr.ex.length}</b> Übungen fertig</p>
+    <h2 class="section"><span>Übungen</span><span>tippen zum Eintragen</span></h2>
+    ${tr.ex.length ? `<div class="wlist">${tr.ex.map(wRowHtml).join('')}</div>` : '<p class="info" style="text-align:center;margin:4px 0 0">Noch keine Übungen. Füge welche hinzu oder trag einfach einen Satz ein.</p>'}
+    <button class="wadd" id="wAdd">${I.plus}Übung hinzufügen</button>
+    <button class="primary wende" id="wEnde">Training beenden</button>
+    <button class="wweg" id="wWeg">Training verwerfen</button>`);
+  document.getElementById('closeBtn').onclick = () => closeSheet();
+  sheet.querySelectorAll('[data-wlog]').forEach(b => b.onclick = () => openLog(b.dataset.wlog));
+  sheet.querySelectorAll('[data-wraus]').forEach(b => b.onclick = () => {
+    tr.ex = tr.ex.filter(n => n !== b.dataset.wraus); save(); openTraining(); render();
+  });
+  document.getElementById('wAdd').onclick = () => openHinzu();
+  document.getElementById('wEnde').onclick = () => trainingBeenden(false);
+  document.getElementById('wWeg').onclick = () => {
+    if(!confirm('Training verwerfen? Die Stoppuhr wird gelöscht, deine eingetragenen Sätze bleiben.')) return;
+    db.training = null; save(); uhrLaeuft(); closeSheet(); render(); toast('Training verworfen');
+  };
+}
+/* Übung hinzufügen: suchen, neu anlegen oder aus dem Plan übernehmen */
+let hinzuOffen = null;
+function openHinzu(q = ''){
+  const tr = db.training; if(!tr) return;
+  if(hinzuOffen === null) hinzuOffen = tr.wk || heutigeEinheit()?.id || '';
+  const plan = ALLE_WK().map(w => {
+    const namen = planNamen(w), neu = namen.filter(n => !imTraining(n)).length, auf = hinzuOffen === w.id;
+    const wann = w.modus ? (w.modus === 'high' ? 'High-Key' : 'Low-Key') : TAGE_LANG[gymDay(w.id)];
+    return `<section class="card apick ${auf ? 'open' : ''}">
+      <button class="apick-h" data-aopen="${w.id}"><span class="wk-tag ${w.modus || ''}">${w.id}</span>
+        <span style="min-width:0"><b>${esc(w.name)}</b><small>${wann} · ${namen.length} Übungen${neu < namen.length ? ` · ${namen.length - neu} schon drin` : ''}</small></span><span class="chev">${I.chev}</span></button>
+      <div class="apick-b">
+        <button class="aall" data-aall="${w.id}" ${neu ? '' : 'disabled'}>${neu ? `Alle ${neu} hinzufügen` : 'Alle schon im Training'}</button>
+        ${w.slots.map(s => aRowHtml(chosen(mainSlot(s)).name, s.titel + (s.optional ? ' · optional' : ''))).join('')}
+      </div>
+    </section>`;
+  }).join('');
+  openSheet(`
+    <div class="sheet-head"><h2>Übung hinzufügen</h2><button class="smallbtn" id="aFertig">Fertig</button></div>
+    <input class="field" id="aQ" placeholder="Suchen oder neue Übung eingeben" autocomplete="off" autocapitalize="words" value="${esc(q)}" enterkeyhint="done">
+    <div class="card" id="aRes" style="padding:2px 0;margin-top:10px"></div>
+    <h2 class="section"><span>Aus deinem Plan</span><span>mit deiner Stufe</span></h2>
+    ${plan}`);
+  const qEl = document.getElementById('aQ');
+  document.getElementById('aFertig').onclick = () => { hinzuOffen = null; openTraining(); };
+  qEl.oninput = () => aSuche(qEl.value);
+  /* Enter: erster Treffer, sonst der getippte Name als neue Übung */
+  qEl.onkeydown = e => { if(e.key !== 'Enter') return; const t = qEl.value.trim(); if(!t) return;
+    const erster = document.querySelector('#aRes [data-aadd]')?.dataset.aadd || t;
+    zumTraining([erster]); toast(`${erster} hinzugefügt`); qEl.value = ''; aSuche(''); qEl.blur(); };
+  sheet.querySelectorAll('[data-aopen]').forEach(b => b.onclick = () => {
+    hinzuOffen = hinzuOffen === b.dataset.aopen ? '' : b.dataset.aopen;
+    b.parentElement.classList.toggle('open', hinzuOffen === b.dataset.aopen);
+    sheet.querySelectorAll('.apick').forEach(c => { if(c !== b.parentElement) c.classList.remove('open'); });
+  });
+  sheet.querySelectorAll('[data-aall]').forEach(b => b.onclick = () => {
+    const n = zumTraining(planNamen(wkById(b.dataset.aall)));
+    toast(n === 1 ? '1 Übung hinzugefügt' : `${n} Übungen hinzugefügt`); hinzuOffen = null; openTraining(); render();
+  });
+  bindARows(sheet);
+  aSuche(q);
+}
+function aRowHtml(name, sub){
+  const drin = imTraining(name);
+  return `<button class="arow ${drin ? 'drin' : ''}" data-aadd="${esc(name)}"><span style="min-width:0"><b>${esc(name)}</b>${sub ? `<small>${esc(sub)}</small>` : ''}</span><span class="ad">${drin ? I.check : I.plus}</span></button>`;
+}
+function bindARows(root){
+  root.querySelectorAll('[data-aadd]').forEach(b => b.onclick = () => {
+    const name = b.dataset.aadd, tr = db.training;
+    if(imTraining(name)){
+      if(saetzeImTraining(name).length){ toast('Hat schon Sätze, bleibt drin'); return; }
+      tr.ex = tr.ex.filter(n => n.toLowerCase() !== name.toLowerCase()); save();
+    } else { zumTraining([name]); navigator.vibrate?.(8); }
+    const drin = imTraining(name);
+    sheet.querySelectorAll('[data-aadd]').forEach(x => { if(x.dataset.aadd === name){ x.classList.toggle('drin', drin); x.querySelector('.ad').innerHTML = drin ? I.check : I.plus; } });
+    render();
+  });
+}
+function aSuche(q){
+  const box = document.getElementById('aRes'); if(!box) return;
+  const n = q.trim().toLowerCase(), alle = new Map();
+  for(const id of exercisesSorted()) alle.set(db.ex[id].name.toLowerCase(), { name: db.ex[id].name, sub: setsOf(id).length ? `zuletzt ${relDay(dayKey(lastUsed(id)))}` : '' });
+  for(const w of ALLE_WK()) for(const s of w.slots) for(const o of s.optionen){
+    const k = o.name.toLowerCase(), e = alle.get(k) || alle.set(k, { name: o.name }).get(k);
+    e.plan ||= `${w.id} · ${s.titel}`;
+  }
+  let items;
+  if(!n) items = exercisesSorted().slice(0, 6).map(id => alle.get(db.ex[id].name.toLowerCase()));
+  else items = [...alle.values()].filter(x => x.name.toLowerCase().includes(n))
+    .sort((a, b) => a.name.toLowerCase().indexOf(n) - b.name.toLowerCase().indexOf(n) || !!b.sub - !!a.sub).slice(0, 12);
+  const neu = n && !alle.has(n) ? `<button class="arow" data-aadd="${esc(q.trim())}"><span><b>„${esc(q.trim())}“</b><small>als neue Übung hinzufügen</small></span><span class="ad">${I.plus}</span></button>` : '';
+  box.innerHTML = items.map(x => aRowHtml(x.name, [x.sub, x.plan].filter(Boolean).join(' · ') || 'eigene Übung')).join('') + neu;
+  box.style.display = box.innerHTML ? '' : 'none';
+  if(!n && items.length) box.insertAdjacentHTML('afterbegin', '<p class="chips-t" style="margin:10px 14px 2px">Zuletzt benutzt</p>');
+  bindARows(box);
+}
+/* Beenden: Zusammenfassung speichern. Vergessen zu stoppen? Dann zählt das Ende kurz nach dem letzten Satz. */
+function trainingBeenden(auto){
+  const tr = db.training; if(!tr) return;
+  const jetzt = Date.now(), sets = trainingSaetze(tr, jetzt);
+  if(!sets.length){
+    if(!auto && !confirm('Noch kein Satz eingetragen. Training ohne Speichern beenden?')) return;
+    db.training = null; save(); uhrLaeuft(); if(!auto){ closeSheet(); render(); toast('Training beendet, nichts gespeichert'); }
+    return;
+  }
+  const letzter = Math.max(...sets.map(s => s.t)), spaet = jetzt - letzter > 20 * 60e3;
+  const end = spaet ? letzter + 3 * 60e3 : jetzt;
+  const ids = [...new Set(sets.map(s => s.ex))];
+  let prs = 0; for(const id of ids){ const p = prIds(id); prs += sets.filter(s => p.has(s.id)).length; }
+  const rec = { id: uid(), start: tr.start, end, wk: tr.wk, name: tr.name, saetze: sets.length, uebungen: ids.length, vol: Math.round(sets.reduce((a, s) => a + s.w * s.r, 0)), prs };
+  (db.trainings ||= []).push(rec);
+  db.training = null; save(); uhrLaeuft(); render();
+  if(auto) return rec;
+  zeigeAbschluss(rec, sets, spaet);
+  if(prs) confetti();
+}
+function zeigeAbschluss(rec, sets, spaet){
+  const ids = [...new Set(sets.map(s => s.ex))];
+  const zeilen = ids.filter(id => db.ex[id]).map(id => { const ss = sets.filter(s => s.ex === id), m = modeOf(id);
+    return `<div class="pr-row"><div><p class="n">${esc(db.ex[id].name)}</p><p class="d">${ss.length} ${ss.length === 1 ? 'Satz' : 'Sätze'}</p></div><span class="num" style="font-size:13px;color:var(--muted);text-align:right">${ss.map(s => fmtSetPlain(s, m).replace(' kg × ', '×')).join(' · ')}</span></div>`; }).join('');
+  openSheet(`
+    <div class="sheet-head"><div><h2>Training beendet</h2><p>${esc(rec.name)} · ${fmtUhrzeit(rec.start)}–${fmtUhrzeit(rec.end)}</p></div><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
+    <div class="wsum">
+      <div class="tile gross"><p class="eyebrow">Dauer</p><b class="num">${fmtDauer(Math.floor((rec.end - rec.start) / 1000))}</b></div>
+      <div class="tile"><p class="eyebrow">Sätze</p><b class="num">${rec.saetze}</b></div>
+      <div class="tile"><p class="eyebrow">Übungen</p><b class="num">${rec.uebungen}</b></div>
+      <div class="tile"><p class="eyebrow">Bewegt</p><b class="num">${fmt(rec.vol, 0)}<small>kg</small></b></div>
+      <div class="tile"><p class="eyebrow">Rekorde</p><b class="num ${rec.prs ? 'up' : ''}">${rec.prs}</b></div>
+    </div>
+    ${spaet ? '<p class="info">Die Uhr lief nach dem letzten Satz noch über 20 Minuten. Als Ende zählt deshalb 3 Minuten nach dem letzten Satz.</p>' : ''}
+    <div class="card" style="padding:2px 0;margin:14px 0">${zeilen}</div>
+    <button class="primary" id="wOk">Fertig</button>`);
+  document.getElementById('closeBtn').onclick = () => closeSheet();
+  document.getElementById('wOk').onclick = () => closeSheet();
 }
 
 /* ---------- Menüs ---------- */
@@ -1402,7 +1706,18 @@ function confetti(){
   })();
 }
 
+/* Training vergessen zu stoppen: nach 4 Stunden ohne Satz von selbst beenden */
+function trainingAufraeumen(){
+  const tr = db.training; if(!tr) return;
+  const s = trainingSaetze(tr), zuletzt = Math.max(tr.start, ...s.map(x => x.t));
+  if(Date.now() - zuletzt < 4 * 36e5) return;
+  const rec = trainingBeenden(true);
+  render(); if(rec) setTimeout(() => toast(`Training von ${relDay(dayKey(rec.start))} automatisch beendet`), 400);
+}
+trainingAufraeumen();
+document.addEventListener('visibilitychange', () => { if(!document.hidden){ trainingAufraeumen(); uhrZeigen(); } });
 render();
+uhrLaeuft();
 /* Laufende Pause nach dem Neuladen fortsetzen */
 if(rest){ if(rest.end > Date.now()) restTick = setInterval(updateTimerUI, 250); else { rest = null; saveRest(); } }
 updateTimerUI();

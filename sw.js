@@ -1,5 +1,5 @@
 // Bei jeder Änderung an der App VERSION hochzählen, sonst bleibt am Handy die alte Fassung im Speicher.
-const VERSION = 'satzbuch-v9';
+const VERSION = 'satzbuch-v10';
 const FILES = ['./', 'index.html', 'plan.js', 'extras.js', 'videos.js', 'bewegungen.js', 'figur3d.js', 'vendor/three.module.min.js',
   'fonts/InstrumentSerif-Regular.woff2', 'fonts/InstrumentSerif-Italic.woff2', 'manifest.json', 'icon.svg', 'icon-192.png', 'icon-512.png'];
 

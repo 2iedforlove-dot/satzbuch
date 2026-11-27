@@ -777,6 +777,7 @@ function render(){
   const tab = n === 'ex' ? 'list' : n;
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('on', t.dataset.tab === tab));
   const mb = document.getElementById('menuBtn'); if(mb) mb.onclick = openMenu;
+  uhrPlanBald();
 }
 const header = (eyebrow, title) => `<header class="top"><div><p class="eyebrow">${eyebrow}</p><h1>${title}<i>.</i></h1></div><button class="iconbtn" id="menuBtn" aria-label="Menü">${I.more}</button></header>`;
 
@@ -1616,12 +1617,14 @@ function zeigeAbschluss(rec, sets, spaet){
 function openMenu(){
   openSheet(`<div class="sheet-head"><h2>Daten</h2><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
     <div class="menu">
+      <button id="uhrBtn">Amazfit-Uhr<small>${uhr ? 'Gekoppelt · Code ' + uhrCodeZeigen(uhr.code) : 'Training an die Uhr schicken, Sätze von der Uhr übernehmen'}</small></button>
       <button id="exp">Sichern<small>Alle Sätze und deine Planwahl als Datei speichern</small></button>
       <button id="imp">Wiederherstellen<small>Eine gesicherte Datei laden</small></button>
       <button id="wipe" class="danger">Alles löschen<small>Entfernt alle Übungen und Sätze</small></button>
     </div>
-    <p class="info" style="text-align:center;margin-top:16px">Deine Daten bleiben auf diesem Gerät.</p>`);
+    <p class="info" style="text-align:center;margin-top:16px">${uhr ? 'Dein heutiges Training wird mit der Uhr abgeglichen, sonst bleibt alles auf diesem Gerät.' : 'Deine Daten bleiben auf diesem Gerät.'}</p>`);
   document.getElementById('closeBtn').onclick = () => closeSheet();
+  document.getElementById('uhrBtn').onclick = openUhr;
   document.getElementById('exp').onclick = exportData;
   document.getElementById('imp').onclick = () => document.getElementById('importFile').click();
   document.getElementById('wipe').onclick = () => {
@@ -1706,6 +1709,143 @@ function confetti(){
   })();
 }
 
+/* ---------- Amazfit-Uhr: heutiges Training an die Uhr, Sätze von der Uhr zurück ----------
+   Brücke ist der Worker satzbuch-sync (Cloudflare). Satzbuch legt dort den Plan ab (PUT plan),
+   die Uhr holt ihn über die Zepp-App und legt ihre Sätze ab, Satzbuch holt sie (GET sets) und bestätigt (POST ack).
+   Kopplungscode in localStorage 'satzbuch.uhr' = { code, ok } (ok = letzter erfolgreicher Abgleich). */
+var UHR_URL = 'https://satzbuch-sync.lernhirn-2026.workers.dev/api/';
+var UHR_KEY = 'satzbuch.uhr';
+var uhr = null, uhrLetzter = '', uhrT = null, uhrHolt = false;
+try{ uhr = JSON.parse(localStorage.getItem(UHR_KEY)); if(!uhr || !/^[A-Z0-9]{8,32}$/.test(uhr.code)) uhr = null; }catch(e){ uhr = null; }
+function uhrSpeichern(){ try{ uhr ? localStorage.setItem(UHR_KEY, JSON.stringify(uhr)) : localStorage.removeItem(UHR_KEY); }catch(e){} }
+function uhrCodeNeu(){
+  const z = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789', a = crypto.getRandomValues(new Uint8Array(10));
+  return Array.from(a, x => z[x % z.length]).join('');
+}
+const uhrCodeZeigen = c => c.slice(0, 5) + '-' + c.slice(5);
+async function uhrFetch(pfad, body){
+  const opt = body ? { method: pfad === 'plan' ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {};
+  const r = await fetch(UHR_URL + uhr.code + '/' + pfad, { ...opt, cache: 'no-store' });
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+/* Übungen fürs Uhr-Training: laufendes Training, sonst heutige Einheit(en), sonst zuletzt benutzte */
+function uhrNamen(){
+  let names = db.training?.ex?.length ? [...db.training.ex] : [];
+  if(!names.length) for(const w of [workoutOn(new Date().getDay()), extraHeute()]) if(w) names.push(...planNamen(w));
+  if(!names.length) names = exercisesSorted().slice(0, 8).map(id => db.ex[id].name);
+  return [...new Set(names.map(n => n.trim()).filter(Boolean))].slice(0, 20);
+}
+/* Eine Übung für die Uhr: Ziel aus dem Plan, Vorschlag wie beim Eintragen am Handy (applyDefaults) */
+function uhrUebung(name){
+  const po = optionFor(name), id = findEx(name), slot = po && slotFor(name);
+  const o = slot?.optionen.find(x => x.name.toLowerCase() === name.toLowerCase()) || po?.opt || null;
+  const sec = (id && db.ex[id].unit === 'sec') || o?.einheit === 'sec';
+  let w = o?.bw || (id && modeOf(id) !== 'kg' && setsOf(id).length) ? 0 : 20, r = o ? o.von : 8;
+  if(id){ const s = setsOf(id); if(s.length){ const l = s[s.length-1]; w = l.w; r = l.r; } }
+  const st = o && slot && steigerung(slot, o);
+  if(st){ w = st.w; r = o.von; }
+  const heute = id ? setsOf(id).filter(s => dayKey(s.t) === today()) : [];
+  return {
+    n: name, u: sec ? 'sec' : 'reps', s: o?.s || 3, von: o?.von || 0, bis: o?.bis || 0, w, r,
+    p: po ? pauseSec(po.slot.pause) : (id && db.ex[id].pause) || 90,
+    plus: o?.plus || (o?.bw ? 2.5 : 2.5), bw: !!(o?.bw || (id && setsOf(id).length && modeOf(id) !== 'kg')),
+    done: heute.length, am: o ? amZiel(o, heute) : 0,
+    hint: o ? readyFor(o, slot).replace('→', 'auf') : '',
+  };
+}
+function uhrPlanBald(){ if(!uhr) return; clearTimeout(uhrT); uhrT = setTimeout(uhrPlanSenden, 1200); }
+async function uhrPlanSenden(force){
+  if(!uhr) return false;
+  const tw = workoutOn(new Date().getDay()), xw = extraHeute();
+  const name = db.training?.name || tw?.name || xw?.name || 'Freies Training';
+  const ex = uhrNamen().map(uhrUebung);
+  const kern = JSON.stringify([today(), name, ex]);
+  if(!force && kern === uhrLetzter) return true;
+  try{
+    await uhrFetch('plan', { plan: { v: 1, t: Date.now(), tag: today(), name, ex } });
+    uhrLetzter = kern; uhr.ok = Date.now(); uhrSpeichern(); return true;
+  }catch(e){ return false; }
+}
+/* Sätze der Uhr übernehmen wie am Handy gespeichert (Training, Aufstieg, Rekorde) */
+function uhrUebernehmen(liste){
+  const da = new Set(db.sets.map(s => s.id)), auf = [];
+  let neu = 0, pr = false;
+  for(const x of liste.slice().sort((a, b) => a.t - b.t)){
+    if(!x || da.has(x.id) || !String(x.n || '').trim() || !(x.r >= 1)) continue;
+    const name = String(x.n).trim(), po = optionFor(name);
+    let id = findEx(name);
+    if(!id){ id = uid(); db.ex[id] = { name: po ? po.opt.name : name, created: x.t }; if(po?.opt.einheit === 'sec') db.ex[id].unit = 'sec'; }
+    if(!db.ex[id].gruppe && po) db.ex[id].gruppe = po.slot.gruppe;
+    const frisch = Date.now() - x.t < 4 * 36e5;
+    if(!db.training && frisch) trainingStarten(heutigeEinheit(name)?.id, true);
+    if(db.training && frisch){
+      if(x.t < db.training.start) db.training.start = x.t;
+      zumTraining([db.ex[id].name]);
+    }
+    const set = { id: x.id, ex: id, w: +x.w || 0, r: Math.round(x.r), t: x.t };
+    db.sets.push(set); da.add(x.id); neu++;
+    if(dayKey(x.t) === today()) auf.push(...pruefeAufstieg(db.ex[id].name, id));
+    if(prIds(id).has(set.id)) pr = true;
+  }
+  if(!neu) return 0;
+  save(); uhrZeigen();
+  if(auf.length){ navigator.vibrate?.([20, 60, 20]); toast('Stufe geschafft 🎉 (Uhr)', true); confetti(); }
+  else if(pr){ toast('Neuer Rekord 🎉 (Uhr)', true); confetti(); }
+  else toast(neu === 1 ? '⌚ 1 Satz von der Uhr' : `⌚ ${neu} Sätze von der Uhr`);
+  render();
+  try{ if(sheetOpen && log && document.getElementById('todayList')) syncLog(); }catch(e){}
+  return neu;
+}
+async function uhrHolen(){
+  if(!uhr || uhrHolt || document.hidden) return;
+  uhrHolt = true;
+  try{
+    const { sets } = await uhrFetch('sets');
+    if(sets?.length){
+      uhrUebernehmen(sets);
+      await uhrFetch('ack', { ids: sets.map(s => s.id) });
+    }
+    uhr.ok = Date.now(); uhrSpeichern();
+    uhrPlanBald();
+  }catch(e){}
+  finally{ uhrHolt = false; }
+}
+function openUhr(){
+  const schritte = `<ol class="info" style="text-align:left;line-height:1.55;padding-left:20px;margin:14px 0 0">
+      <li>Uhr-App <b>Satzbuch</b> auf der Uhr installieren.</li>
+      <li>Zepp-App öffnen → <b>Profil</b> → deine Uhr → <b>App-Liste</b> → <b>Satzbuch</b> → Einstellungen.</li>
+      <li>Diesen Code eintragen. Danach auf der Uhr Satzbuch öffnen.</li>
+    </ol>`;
+  const stand = uhr?.ok ? `Zuletzt abgeglichen: ${relDay(dayKey(uhr.ok))}, ${fmtUhrzeit(uhr.ok)}` : 'Noch nicht abgeglichen';
+  openSheet(`<div class="sheet-head"><h2>Amazfit-Uhr</h2><button class="iconbtn" id="closeBtn" aria-label="Schließen">${I.x}</button></div>
+    ${uhr ? `<p class="info" style="text-align:center;margin:4px 0 6px">Kopplungscode</p>
+      <p class="num" style="text-align:center;font-size:34px;font-weight:800;letter-spacing:3px;margin:0;user-select:all">${uhrCodeZeigen(uhr.code)}</p>
+      ${schritte}
+      <p class="info" style="text-align:center;margin-top:14px">${stand}</p>
+      <div class="menu" style="margin-top:12px">
+        <button id="uhrSync">Jetzt abgleichen<small>Heutiges Training an die Uhr, Sätze von der Uhr holen</small></button>
+        <button id="uhrAus" class="danger">Entkoppeln<small>Die Uhr bekommt keine Daten mehr</small></button>
+      </div>`
+    : `<p class="info" style="margin-top:4px">Die Uhr zeigt dein heutiges Training mit Ziel und vorgeschlagenem Gewicht. Sätze, die du dort abhakst, landen automatisch hier, mit Progression und Rekorden. Übertragen wird über einen kleinen Gratis-Speicher (nur dein Training, kein Name, kein Login).</p>
+      <div class="menu" style="margin-top:12px"><button id="uhrAn">Uhr koppeln<small>Erstellt einen Kopplungscode für die Zepp-App</small></button></div>`}`);
+  document.getElementById('closeBtn').onclick = () => closeSheet();
+  const an = document.getElementById('uhrAn');
+  if(an) an.onclick = async () => { uhr = { code: uhrCodeNeu(), ok: 0 }; uhrSpeichern(); uhrLetzter = ''; await uhrPlanSenden(true); openUhr(); };
+  const sy = document.getElementById('uhrSync');
+  if(sy) sy.onclick = async () => {
+    sy.disabled = true; await uhrHolen(); const ok = await uhrPlanSenden(true);
+    toast(ok ? 'Abgeglichen ✓' : 'Keine Verbindung'); openUhr();
+  };
+  const aus = document.getElementById('uhrAus');
+  if(aus) aus.onclick = () => {
+    if(!confirm('Uhr entkoppeln? Auf der Uhr musst du danach einen neuen Code eintragen.')) return;
+    uhr = null; uhrSpeichern(); closeSheet(); toast('Uhr entkoppelt');
+  };
+}
+setInterval(uhrHolen, 10000);
+document.addEventListener('visibilitychange', () => { if(!document.hidden) uhrHolen(); });
+
 /* Training vergessen zu stoppen: nach 4 Stunden ohne Satz von selbst beenden */
 function trainingAufraeumen(){
   const tr = db.training; if(!tr) return;
@@ -1721,6 +1861,7 @@ uhrLaeuft();
 /* Laufende Pause nach dem Neuladen fortsetzen */
 if(rest){ if(rest.end > Date.now()) restTick = setInterval(updateTimerUI, 250); else { rest = null; saveRest(); } }
 updateTimerUI();
+uhrHolen();
 if('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
